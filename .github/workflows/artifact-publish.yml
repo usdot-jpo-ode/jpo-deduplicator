@@ -37,12 +37,12 @@ jobs:
         MAVEN_GITHUB_ORG: ${{ github.repository_owner }}
       run: |
         cd jpo-deduplicator
-        mvn -s ../settings.xml -B package --file pom.xml -DskipTests -Ppackage-jar
+        mvn -s settings.xml -B package --file pom.xml -DskipTests -Ppackage-jar
 
     - name: Publish to GitHub Packages
       run: |
         cd jpo-deduplicator
-        mvn -s ../settings.xml --batch-mode -Dgithub_organization=${{ github.repository_owner }} deploy -DskipTests -Ppackage-jar
+        mvn -s settings.xml --batch-mode -Dgithub_organization=${{ github.repository_owner }} deploy -DskipTests -Ppackage-jar
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MAVEN_GITHUB_TOKEN_NAME: ${{ vars.MAVEN_GITHUB_TOKEN_NAME }}
