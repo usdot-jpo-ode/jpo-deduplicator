@@ -15,7 +15,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: jpo-deduplicator
+          context: .
           build-args: |
             MAVEN_GITHUB_TOKEN_NAME=${{ vars.MAVEN_GITHUB_TOKEN_NAME }}
             MAVEN_GITHUB_TOKEN=${{ secrets.MAVEN_GITHUB_TOKEN }}

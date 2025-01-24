@@ -28,7 +28,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: jpo-deduplicator
+          context: .
           push: true
           tags: usdotjpoode/jpo-deduplicator:${{ env.TAG }}
           build-args: |
