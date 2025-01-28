@@ -38,8 +38,6 @@ public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
         Instant newValueTime = getMessageTime(newMessage);
         Instant oldValueTime = getMessageTime(lastMessage);
 
-        System.out.println(newValueTime + " " +  oldValueTime);
-
         if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
             return false;
             

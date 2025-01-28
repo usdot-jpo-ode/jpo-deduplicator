@@ -63,11 +63,11 @@ public class OdeRawEncodedTimDeduplicatorTopology {
     }
 
     public Instant getInstantFromJsonTim(JsonNode tim){
+        String time = tim.get("metadata").get("odeReceivedAt").asText();
         try{
-            String time = tim.get("metadata").get("odeReceivedAt").asText();
             return Instant.from(formatter.parse(time));
         }catch(Exception e){
-            System.out.println("Failed to parse time");
+            System.out.println("Failed to parse time: " + time);
             return Instant.ofEpochMilli(0);
         }
     }

@@ -10,8 +10,6 @@ import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
 import us.dot.its.jpo.ode.model.OdeTimData;
 import us.dot.its.jpo.ode.model.OdeTimMetadata;
-import us.dot.its.jpo.ode.model.OdeTimPayload;
-import us.dot.its.jpo.ode.plugin.j2735.OdeTravelerInformationMessage;
 import us.dot.its.jpo.ode.plugin.j2735.travelerinformation.TravelerInformation;
 
 import org.apache.kafka.streams.kstream.*;
@@ -90,7 +88,7 @@ public class TimDeduplicatorTopology {
                 String newKey = rsuIP + "_" + packetId + "_" + msgCnt;
                 return newKey;
             } catch (Exception e) {
-                System.out.println(e);
+                logger.error(e.toString());
                 return "";
             }
         }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeTim()));

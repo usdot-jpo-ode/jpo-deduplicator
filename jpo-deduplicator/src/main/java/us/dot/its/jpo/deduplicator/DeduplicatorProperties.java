@@ -197,7 +197,7 @@ public class DeduplicatorProperties implements EnvironmentAware  {
          confluentCloudEnabled = kafkaType.equals("CONFLUENT");
          if (confluentCloudEnabled) {
                
-               System.out.println("Enabling Confluent Cloud Integration");
+               logger.info("Enabling Confluent Cloud Integration");
 
                confluentKey = CommonUtils.getEnvironmentVariable("CONFLUENT_KEY");
                confluentSecret = CommonUtils.getEnvironmentVariable("CONFLUENT_SECRET");

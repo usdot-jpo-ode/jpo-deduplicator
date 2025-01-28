@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 import org.geotools.referencing.GeodeticCalculator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeBsmData;
@@ -19,6 +21,8 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
     DeduplicatorProperties props;
     GeodeticCalculator calculator;
 
+    private static final Logger logger = LoggerFactory.getLogger(OdeBsmJsonProcessor.class);
+
     public OdeBsmJsonProcessor(String storeName, DeduplicatorProperties props){
         this.storeName = storeName;
         this.props = props;
@@ -28,11 +32,11 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
 
     @Override
     public Instant getMessageTime(OdeBsmData message) {
+        String time = ((OdeBsmMetadata)message.getMetadata()).getOdeReceivedAt();
         try {
-            String time = ((OdeBsmMetadata)message.getMetadata()).getOdeReceivedAt();
             return Instant.from(formatter.parse(time));
         } catch (Exception e) {
-            System.out.println("Failed to Parse Time");
+            logger.warn("Failed to Parse Time: " + time);
             return Instant.ofEpochMilli(0);
         }
     }
@@ -55,8 +59,6 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
         if(newCore.getSpeed().doubleValue() > props.getOdeBsmAlwaysIncludeAtSpeed()){
             return false; 
         }
-
-        System.out.println("Testing BSM ");
 
 
         double distance = calculateGeodeticDistance(
