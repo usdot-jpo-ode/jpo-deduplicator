@@ -67,7 +67,7 @@ public class OdeRawEncodedTimDeduplicatorTopology {
         try{
             return Instant.from(formatter.parse(time));
         }catch(Exception e){
-            System.out.println("Failed to parse time: " + time);
+            logger.warn("Failed to parse time: " + time);
             return Instant.ofEpochMilli(0);
         }
     }

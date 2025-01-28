@@ -17,32 +17,32 @@ log4j.logger.org.apache.kafka: OFF
 # Processed Map Configuration
 kafkaTopicProcessedMap: topic.ProcessedMap
 kafkaTopicDeduplicatedProcessedMap: topic.DeduplicatedProcessedMap
-enableProcessedMapDeduplication: true
+enableProcessedMapDeduplication: ${ENABLE_PROCESSED_MAP_DEDUPLICATION:true}
 
 # Processed Map WKT Configuration
 kafkaTopicProcessedMapWKT: topic.ProcessedMapWKT
 kafkaTopicDeduplicatedProcessedMapWKT: topic.DeduplicatedProcessedMapWKT
-enableProcessedMapWktDeduplication: true
+enableProcessedMapWktDeduplication: ${ENABLE_PROCESSED_MAP_WKT_DEDUPLICATION:true}
 
 # Ode Map Json Configuration
 kafkaTopicOdeMapJson: topic.OdeMapJson
 kafkaTopicDeduplicatedOdeMapJson: topic.DeduplicatedOdeMapJson
-enableOdeMapDeduplication: true
+enableOdeMapDeduplication: ${ENABLE_ODE_MAP_DEDUPLICATION:true}
 
 # Ode Tim Json Configuration
 kafkaTopicOdeTimJson: topic.OdeTimJson
 kafkaTopicDeduplicatedOdeTimJson: topic.DeduplicatedOdeTimJson
-enableOdeTimDeduplication: true
+enableOdeTimDeduplication: ${ENABLE_ODE_TIM_DEDUPLICATION:true}
 
 # Ode Raw Encoded Tim Json Configuration
 kafkaTopicOdeRawEncodedTimJson: topic.OdeRawEncodedTIMJson
 kafkaTopicDeduplicatedOdeRawEncodedTimJson: topic.DeduplicatedOdeRawEncodedTIMJson
-enableOdeRawEncodedTimDeduplication: true
+enableOdeRawEncodedTimDeduplication: ${ENABLE_ODE_RAW_ENCODED_TIM_DEDUPLICATION:true}
 
 # Ode Bsm Json Configuration
 kafkaTopicOdeBsmJson: topic.OdeBsmJson
 kafkaTopicDeduplicatedOdeBsmJson: topic.DeduplicatedOdeBsmJson
-enableOdeBsmDeduplication: true
+enableOdeBsmDeduplication: ${ENABLE_ODE_BSM_DEDUPLICATION:true}
 odeBsmMaximumTimeDelta: 10000 # Milliseconds
 odeBsmMaximumPositionDelta: 1 # Meter
 odeBsmAlwaysIncludeAtSpeed: 1 # Meter / Second
@@ -50,7 +50,7 @@ odeBsmAlwaysIncludeAtSpeed: 1 # Meter / Second
 # Processed Map Configuration
 kafkaTopicProcessedSpat: topic.ProcessedSpat
 kafkaTopicDeduplicatedProcessedSpat: topic.DeduplicatedProcessedSpat
-enableProcessedSpatDeduplication: true 
+enableProcessedSpatDeduplication: ${ENABLE_PROCESSED_SPAT_DEDUPLICATION:true} 
 
 
 # Amount of time to wait to try and increase batching
