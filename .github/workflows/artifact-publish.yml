@@ -2,12 +2,10 @@ name: Publish Java Package
 
 on:
   push:
-    tags:
-      - 'jpo-deduplicator-*'
-  # pull_request:
-  #   types: [opened, reopened, synchronize]
-  pull_request:
-      types: [opened, synchronize, reopened]
+    branches:
+      - "develop"
+      - "master"
+      - "release/*"
     
 
 jobs:
