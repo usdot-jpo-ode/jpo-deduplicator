@@ -4,7 +4,8 @@ services:
   deduplicator:
     profiles:
       - all
-      - deduplicator
+      - deduplicator_base
+      - deduplicator_full
     build:
       context: .
       dockerfile: Dockerfile
@@ -24,10 +25,9 @@ services:
       ENABLE_ODE_RAW_ENCODED_TIM_DEDUPLICATION: ${ENABLE_ODE_RAW_ENCODED_TIM_DEDUPLICATION}
       ENABLE_PROCESSED_SPAT_DEDUPLICATION: ${ENABLE_PROCESSED_SPAT_DEDUPLICATION}
       ENABLE_ODE_BSM_DEDUPLICATION: ${ENABLE_ODE_BSM_DEDUPLICATION}
-      KAFKA_TYPE: CONFLUENT
-      CONFLUENT_KEY: 12345
-      CONFLUENT_SECRET: 12345
-
+      KAFKA_TYPE: ${KAFKA_TYPE}
+      CONFLUENT_KEY: ${CONFLUENT_KEY}
+      CONFLUENT_SECRET: ${CONFLUENT_SECRET}
     healthcheck:
       test: ["CMD", "java", "-version"]
       interval: 10s
@@ -41,3 +41,7 @@ services:
       resources:
         limits:
           memory: 3G
+    depends_on:
+      kafka:
+        condition: service_healthy
+        required: false

@@ -5,7 +5,7 @@ services:
   geojsonconverter:
     profiles:
       - all
-      - cm_api_full
+      - deduplicator_full
       - geojsonconverter
     image: usdotjpoode/geojsonconverter:latest
     restart: ${RESTART_POLICY}
@@ -33,7 +33,7 @@ services:
   ode:
     profiles:
       - all
-      - cm_api_full
+      - deduplicator_full
       - ode
     image: usdotjpoode/jpo-ode:latest
     restart: ${RESTART_POLICY}
@@ -87,7 +87,7 @@ services:
   adm:
     profiles:
       - all
-      - cm_api_full
+      - deduplicator_full
       - adm
     image: usdotjpoode/asn1_codec:latest
     restart: ${RESTART_POLICY}
@@ -117,7 +117,7 @@ services:
   conflictmonitor:
     profiles:
       - all
-      - cm_api_full
+      - deduplicator_full
       - conflictmonitor
     image: usdotjpoode/jpo-conflictmonitor:latest
     restart: ${RESTART_POLICY}
