@@ -7,7 +7,7 @@ services:
       - all
       - deduplicator_full
       - geojsonconverter
-    image: usdotjpoode/geojsonconverter:latest
+    image: usdotjpoode/geojsonconverter:2025-q1
     restart: ${RESTART_POLICY}
     deploy:
       resources:
@@ -35,7 +35,7 @@ services:
       - all
       - deduplicator_full
       - ode
-    image: usdotjpoode/jpo-ode:latest
+    image: usdotjpoode/jpo-ode:2025-q1
     restart: ${RESTART_POLICY}
     deploy:
       resources:
@@ -89,7 +89,7 @@ services:
       - all
       - deduplicator_full
       - adm
-    image: usdotjpoode/asn1_codec:latest
+    image: usdotjpoode/asn1_codec:2025-q1
     restart: ${RESTART_POLICY}
     deploy:
       resources:
@@ -119,7 +119,7 @@ services:
       - all
       - deduplicator_full
       - conflictmonitor
-    image: usdotjpoode/jpo-conflictmonitor:latest
+    image: usdotjpoode/jpo-conflictmonitor:2025-q1
     restart: ${RESTART_POLICY}
     ports:
       - "8082:8082"
