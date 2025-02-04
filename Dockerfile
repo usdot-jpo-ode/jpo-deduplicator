@@ -40,8 +40,8 @@ ENV LD_PRELOAD="/usr/lib64/libjemalloc.so"
 ENTRYPOINT ["java", \
     "-Djava.rmi.server.hostname=$DOCKER_HOST_IP", \
     "-Dlogback.configurationFile=/home/logback.xml", \
-    "-Xmx128M", \
-    "-Xms16M", \
+    "-Xmx1024M", \
+    "-Xms128M", \
     "-XX:+UseG1GC", \
     "-XX:MaxGCPauseMillis=20", \
     "-XX:InitiatingHeapOccupancyPercent=35", \
@@ -50,7 +50,7 @@ ENTRYPOINT ["java", \
     "-XX:MaxMetaspaceFreeRatio=80", \
     "-XX:+ExplicitGCInvokesConcurrent", \
     "-XX:InitialRAMPercentage=5.0", \
-    "-XX:MaxRAMPercentage=50.0", \
+    # "-XX:MaxRAMPercentage=50.0", \
     "-jar", \
     "/home/jpo-deduplicator.jar"]
 
