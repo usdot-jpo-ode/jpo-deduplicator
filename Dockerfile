@@ -50,7 +50,6 @@ ENTRYPOINT ["java", \
     "-XX:MaxMetaspaceFreeRatio=80", \
     "-XX:+ExplicitGCInvokesConcurrent", \
     "-XX:InitialRAMPercentage=5.0", \
-    # "-XX:MaxRAMPercentage=50.0", \
     "-jar", \
     "/home/jpo-deduplicator.jar"]
 
