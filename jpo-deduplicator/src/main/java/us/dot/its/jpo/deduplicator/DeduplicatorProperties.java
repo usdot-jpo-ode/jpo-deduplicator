@@ -41,6 +41,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
 import us.dot.its.jpo.conflictmonitor.AlwaysContinueProductionExceptionHandler;
+import us.dot.its.jpo.deduplicator.deduplicator.BoundedMemoryRocksDBConfig;
 import us.dot.its.jpo.ode.eventlog.EventLogger;
 import us.dot.its.jpo.ode.util.CommonUtils;
 
@@ -239,6 +240,9 @@ public class DeduplicatorProperties implements EnvironmentAware  {
 
       // Reduce cache buffering per topology to 1MB
       streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 1 * 1024 * 1024L);
+      // Optionally, to disable caching:
+      //streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0);
+      
 
       // Decrease default commit interval. Default for 'at least once' mode of 30000ms
       // is too slow.
@@ -280,8 +284,10 @@ public class DeduplicatorProperties implements EnvironmentAware  {
          else {
              logger.error("Environment variables CONFLUENT_KEY and CONFLUENT_SECRET are not set. Set these in the .env file to use Confluent Cloud");
          }
-     }
+      }
 
+      // Configure RocksDB memory usage
+      streamProps.put(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, BoundedMemoryRocksDBConfig.class);
 
       return streamProps;
    }

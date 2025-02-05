@@ -33,15 +33,23 @@ COPY --from=builder /home/jpo-deduplicator/target/jpo-deduplicator.jar /home
 #COPY cert.crt /home/cert.crt
 #RUN keytool -import -trustcacerts -keystore /usr/local/openjdk-11/lib/security/cacerts -storepass changeit -noprompt -alias mycert -file cert.crt
 
+RUN amazon-linux-extras install -y epel && \
+     yum install -y jemalloc-devel
+ENV LD_PRELOAD="/usr/lib64/libjemalloc.so"
+
 ENTRYPOINT ["java", \
     "-Djava.rmi.server.hostname=$DOCKER_HOST_IP", \
-    "-Dcom.sun.management.jmxremote.port=9090", \
-    "-Dcom.sun.management.jmxremote.rmi.port=9090", \
-    "-Dcom.sun.management.jmxremote", \
-    "-Dcom.sun.management.jmxremote.local.only=true", \
-    "-Dcom.sun.management.jmxremote.authenticate=false", \
-    "-Dcom.sun.management.jmxremote.ssl=false", \
     "-Dlogback.configurationFile=/home/logback.xml", \
+    "-Xmx1024M", \
+    "-Xms128M", \
+    "-XX:+UseG1GC", \
+    "-XX:MaxGCPauseMillis=20", \
+    "-XX:InitiatingHeapOccupancyPercent=35", \
+    "-XX:MetaspaceSize=96m", \
+    "-XX:MinMetaspaceFreeRatio=50", \
+    "-XX:MaxMetaspaceFreeRatio=80", \
+    "-XX:+ExplicitGCInvokesConcurrent", \
+    "-XX:InitialRAMPercentage=5.0", \
     "-jar", \
     "/home/jpo-deduplicator.jar"]
 
