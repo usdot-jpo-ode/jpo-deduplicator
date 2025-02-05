@@ -74,7 +74,7 @@ the system.  Larger data flows can require much larger space requirements depend
    2. Click local -> Topics
    3. Select `topic.OdeMapJson`
    4. Select `Produce Message`
-   5. Copy in sample JSON for a Map Message
+   5. Copy in sample JSON for a Map Message. Sample messages are located [here](https://github.com/usdot-jpo-ode/jpo-deduplicator/tree/develop/jpo-deduplicator/src/test/resources/json/map)
    6. Click `Produce  Message` multiple times
 7. View the synced message in `kafka_ui` by:
    1. Go to `localhost:8001`
