@@ -19,6 +19,7 @@ import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopolo
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.TimDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.OdeRawEncodedTimDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedBsmDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapWktDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
@@ -105,7 +106,15 @@ public class DeduplicatorServiceController {
                 BsmDeduplicatorTopology bsmDeduplicatorTopology = new BsmDeduplicatorTopology(props);
                 bsmDeduplicatorTopology.start();
             }
-            
+
+            if(props.isEnableProcessedBsmDeduplication()){
+                logger.info("Starting Processed BSM Deduplicator");
+                ProcessedBsmDeduplicatorTopology processedBsmDeduplicatorTopology = new ProcessedBsmDeduplicatorTopology(
+                    props,
+                    props.createStreamProperties("ProcessedBsmDeduplicator")
+                );
+                processedBsmDeduplicatorTopology.start();
+            }
 
         } catch (Exception e) {
             logger.error("Encountered issue with creating topologies", e);
