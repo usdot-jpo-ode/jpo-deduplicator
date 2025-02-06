@@ -1,4 +1,4 @@
-package deduplicator;
+package us.dot.its.jpo.deduplicator.deduplicator;
 
 
 

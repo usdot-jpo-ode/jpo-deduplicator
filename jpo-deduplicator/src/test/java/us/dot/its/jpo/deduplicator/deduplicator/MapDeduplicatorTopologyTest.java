@@ -1,4 +1,4 @@
-package deduplicator;
+package us.dot.its.jpo.deduplicator.deduplicator;
 
 
 
@@ -47,16 +47,16 @@ public class MapDeduplicatorTopologyTest {
         // Load test files from resources
         
         // Reference MAP
-        inputMap1 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/map/sample.map-reference.json")));
+        inputMap1 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
 
         // Duplicate of Number 1
-        inputMap2 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/map/sample.map-reference.json")));
+        inputMap2 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
 
         // A different Message entirely
-        inputMap3 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/map/sample.map-different.json")));
+        inputMap3 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-different.json")));
 
         // Message 1 but 1 hour later
-        inputMap4 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/map/sample.map-reference-1-hour-later.json")));
+        inputMap4 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference-1-hour-later.json")));
     }
 
     @Test

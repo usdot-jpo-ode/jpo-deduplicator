@@ -94,10 +94,4 @@ public class ProcessedBsmDeduplicatorTopology {
     public void registerUncaughtExceptionHandler(StreamsUncaughtExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
-
-    public double calculateGeodeticDistance(double lat1, double lon1, double lat2, double lon2) {
-        calculator.setStartingGeographicPoint(lon1, lat1);
-        calculator.setDestinationGeographicPoint(lon2, lat2);
-        return calculator.getOrthodromicDistance();
-    }
 }

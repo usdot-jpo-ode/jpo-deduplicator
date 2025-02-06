@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
-import org.geotools.referencing.GeodeticCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,19 +13,18 @@ import us.dot.its.jpo.ode.model.OdeBsmData;
 import us.dot.its.jpo.ode.model.OdeBsmMetadata;
 import us.dot.its.jpo.ode.plugin.j2735.J2735Bsm;
 import us.dot.its.jpo.ode.plugin.j2735.J2735BsmCoreData;
+import us.dot.its.jpo.deduplicator.utils.GeoUtils;
 
 public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
 
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     DeduplicatorProperties props;
-    GeodeticCalculator calculator;
 
     private static final Logger logger = LoggerFactory.getLogger(OdeBsmJsonProcessor.class);
 
     public OdeBsmJsonProcessor(String storeName, DeduplicatorProperties props){
         this.storeName = storeName;
         this.props = props;
-        calculator = new GeodeticCalculator();
     }
 
 
@@ -61,7 +59,7 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
         }
 
 
-        double distance = calculateGeodeticDistance(
+        double distance = GeoUtils.calculateGeodeticDistance(
             newCore.getPosition().getLatitude().doubleValue(),
             newCore.getPosition().getLongitude().doubleValue(),
             oldCore.getPosition().getLatitude().doubleValue(),
@@ -74,11 +72,5 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
         }
 
         return true;
-    }
-
-    public double calculateGeodeticDistance(double lat1, double lon1, double lat2, double lon2) {
-        calculator.setStartingGeographicPoint(lon1, lat1);
-        calculator.setDestinationGeographicPoint(lon2, lat2);
-        return calculator.getOrthodromicDistance();
     }
 }
