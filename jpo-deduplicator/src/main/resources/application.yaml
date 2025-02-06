@@ -52,6 +52,13 @@ kafkaTopicProcessedSpat: topic.ProcessedSpat
 kafkaTopicDeduplicatedProcessedSpat: topic.DeduplicatedProcessedSpat
 enableProcessedSpatDeduplication: ${ENABLE_PROCESSED_SPAT_DEDUPLICATION:true} 
 
+# Processed Bsm Configuration
+kafkaTopicProcessedBsm: topic.ProcessedBsm
+kafkaTopicDeduplicatedProcessedBsm: topic.DeduplicatedProcessedBsm
+enableProcessedBsmDeduplication: ${ENABLE_PROCESSED_BSM_DEDUPLICATION:true}
+processedBsmMaximumTimeDelta: 10000 # Milliseconds
+processedBsmMaximumPositionDelta: 1 # Meter
+processedBsmAlwaysIncludeAtSpeed: 1 # Meter / Second
 
 # Amount of time to wait to try and increase batching
 kafka.linger_ms: 50
@@ -92,5 +99,12 @@ kafka.topics:
     - name: ${kafkaTopicDeduplicatedProcessedSpat}
       cleanupPolicy: delete
       retentionMs: 300000
+    - name: ${kafkaTopicProcessedBsm}
+      cleanupPolicy: delete
+      retentionMs: 300000
+    - name: ${kafkaTopicDeduplicatedProcessedBsm}
+      cleanupPolicy: delete
+      retentionMs: 300000
+    
     
     

@@ -104,6 +104,14 @@ public class DeduplicatorProperties implements EnvironmentAware  {
    private boolean enableProcessedSpatDeduplication;
    private String kafkaStateStoreProcessedSpatName = "ProcessedSpat-store";
 
+   // Processed Bsm Configuration
+   private String kafkaTopicProcessedBsm;
+   private String kafkaTopicDeduplicatedProcessedBsm;
+   private boolean enableProcessedBsmDeduplication;
+   private long processedBsmMaximumTimeDelta;
+   private double processedBsmMaximumPositionDelta;
+   private double processedBsmAlwaysIncludeAtSpeed;
+   private String kafkaStateStoreProcessedBsmName = "ProcessedBsm-store";
 
    private int lingerMs = 0;
 
@@ -432,6 +440,36 @@ public class DeduplicatorProperties implements EnvironmentAware  {
    @Value("${enableProcessedSpatDeduplication}")
    public void setEnableProcessedSpatDeduplication(boolean enableProcessedSpatDeduplication) {
       this.enableProcessedSpatDeduplication = enableProcessedSpatDeduplication;
+   }
+
+   @Value("${kafkaTopicProcessedBsm}")
+   public void setKafkaTopicProcessedBsm(String kafkaTopicProcessedBsm) {
+      this.kafkaTopicProcessedBsm = kafkaTopicProcessedBsm;
+   }
+
+   @Value("${kafkaTopicDeduplicatedProcessedBsm}")
+   public void setKafkaTopicDeduplicatedProcessedBsm(String kafkaTopicDeduplicatedProcessedBsm) {
+      this.kafkaTopicDeduplicatedProcessedBsm = kafkaTopicDeduplicatedProcessedBsm;
+   }
+
+   @Value("${enableProcessedBsmDeduplication}")
+   public void setEnableProcessedBsmDeduplication(boolean enableProcessedBsmDeduplication) {
+      this.enableProcessedBsmDeduplication = enableProcessedBsmDeduplication;
+   }
+
+   @Value("${processedBsmMaximumTimeDelta}")
+   public void setProcessedBsmMaximumTimeDelta(long processedBsmMaximumTimeDelta) {
+      this.processedBsmMaximumTimeDelta = processedBsmMaximumTimeDelta;
+   }
+
+   @Value("${processedBsmMaximumPositionDelta}")
+   public void setProcessedBsmMaximumPositionDelta(double processedBsmMaximumPositionDelta) {
+      this.processedBsmMaximumPositionDelta = processedBsmMaximumPositionDelta;
+   }
+
+   @Value("${processedBsmAlwaysIncludeAtSpeed}")
+   public void setProcessedBsmAlwaysIncludeAtSpeed(double processedBsmAlwaysIncludeAtSpeed) {
+      this.processedBsmAlwaysIncludeAtSpeed = processedBsmAlwaysIncludeAtSpeed;
    }
 
    @Override

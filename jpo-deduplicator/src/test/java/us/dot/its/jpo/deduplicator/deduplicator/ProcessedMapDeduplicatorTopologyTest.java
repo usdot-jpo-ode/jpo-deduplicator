@@ -1,4 +1,4 @@
-package deduplicator;
+package us.dot.its.jpo.deduplicator.deduplicator;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;

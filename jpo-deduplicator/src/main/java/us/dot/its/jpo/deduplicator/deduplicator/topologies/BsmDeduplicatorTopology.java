@@ -17,7 +17,6 @@ import us.dot.its.jpo.ode.plugin.j2735.J2735Bsm;
 import us.dot.its.jpo.ode.plugin.j2735.J2735BsmCoreData;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
-import org.geotools.referencing.GeodeticCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +28,7 @@ import java.util.Objects;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeBsmJsonProcessorSupplier;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
+import us.dot.its.jpo.deduplicator.utils.GeoUtils;
 
 public class BsmDeduplicatorTopology {
 
@@ -39,14 +39,12 @@ public class BsmDeduplicatorTopology {
     DeduplicatorProperties props;
     ObjectMapper objectMapper;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-    GeodeticCalculator calculator;
     
 
 
     public BsmDeduplicatorTopology(DeduplicatorProperties props){
         this.props = props;
         this.objectMapper = DateJsonMapper.getInstance();
-        calculator = new GeodeticCalculator();
     }
 
 
@@ -115,11 +113,5 @@ public class BsmDeduplicatorTopology {
     StreamsUncaughtExceptionHandler exceptionHandler;
     public void registerUncaughtExceptionHandler(StreamsUncaughtExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
-    }
-
-    public double calculateGeodeticDistance(double lat1, double lon1, double lat2, double lon2) {
-        calculator.setStartingGeographicPoint(lon1, lat1);
-        calculator.setDestinationGeographicPoint(lon2, lat2);
-        return calculator.getOrthodromicDistance();
     }
 }
