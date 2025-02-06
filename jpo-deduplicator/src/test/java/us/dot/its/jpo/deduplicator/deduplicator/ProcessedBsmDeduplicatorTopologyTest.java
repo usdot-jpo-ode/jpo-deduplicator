@@ -49,6 +49,8 @@ public class ProcessedBsmDeduplicatorTopologyTest {
 
     // Vehicle Position has changed 
     String inputProcessedBsmChanged = "";
+
+    String key = "{\"rsuId\":\"172.19.0.1\",\"logId\":\"1234567890\",\"bsmId\":\"31325433\"}";
     
     
     @Autowired
@@ -90,11 +92,11 @@ public class ProcessedBsmDeduplicatorTopologyTest {
                 Serdes.String().deserializer(), 
                 JsonSerdes.ProcessedBsm().deserializer());
 
-            inputProcessedBsmData.pipeInput("key", inputProcessedBsmReference);
-            inputProcessedBsmData.pipeInput("key", inputProcessedBsmDuplicate);
-            inputProcessedBsmData.pipeInput("key", inputProcessedBsmTimeDelta);
-            inputProcessedBsmData.pipeInput("key", inputProcessedBsmWithSpeed);
-            inputProcessedBsmData.pipeInput("key", inputProcessedBsmChanged);
+            inputProcessedBsmData.pipeInput(key, inputProcessedBsmReference);
+            inputProcessedBsmData.pipeInput(key, inputProcessedBsmDuplicate);
+            inputProcessedBsmData.pipeInput(key, inputProcessedBsmTimeDelta);
+            inputProcessedBsmData.pipeInput(key, inputProcessedBsmWithSpeed);
+            inputProcessedBsmData.pipeInput(key, inputProcessedBsmChanged);
 
             List<KeyValue<String, ProcessedBsm<Point>>> processedBsmDeduplicationResults = outputProcessedBsmData.readKeyValuesToList();
 
