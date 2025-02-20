@@ -30,9 +30,12 @@ The pipeline automatically triggers when:
 1. **Copy Files**
    - Copies project files to the artifact staging directory
    - Excludes certain files/directories by default:
-     - `data` directories
      - `docs` directories
      - Markdown (`.md`) files
+     - `jpo-utils` directory
+     - `.github` directory
+     - `.vscode` directory
+     - `.devcontainer` directory
 
 2. **Publish Artifact**
    - Creates an artifact named 'jpo-deduplicator'
