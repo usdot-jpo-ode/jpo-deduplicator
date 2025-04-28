@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeBsmJsonProcessorSupplier;
@@ -76,10 +78,17 @@ public class BsmDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
+
+        Map<String,String> stateStoreConfig = new HashMap<>();
+
+        stateStoreConfig.put("cleanup.policy", "compact,delete"); 
+        stateStoreConfig.put("retention.ms", "3600000");  // 1-hour retention
+        stateStoreConfig.put("segment.bytes", "52428800"); // 50 MB retention (smallest retention allowed)
+
         KStream<Void, OdeBsmData> inputStream = builder.stream(this.props.getKafkaTopicOdeBsmJson(), Consumed.with(Serdes.Void(), JsonSerdes.OdeBsm()));
 
         builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeBsmJsonName()),
-                Serdes.String(), JsonSerdes.OdeBsm()));
+                Serdes.String(), JsonSerdes.OdeBsm()).withLoggingEnabled(stateStoreConfig));
 
         KStream<String, OdeBsmData> bsmRekeyedStream = inputStream.selectKey((key, value)->{
                 J2735BsmCoreData core = ((J2735Bsm)value.getPayload().getData()).getCoreData();

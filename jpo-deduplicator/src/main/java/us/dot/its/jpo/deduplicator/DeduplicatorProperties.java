@@ -278,6 +278,11 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       streamProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "zstd");
       streamProps.put(ProducerConfig.LINGER_MS_CONFIG, getKafkaLingerMs());
 
+
+      // streamProps.put("cleanup.policy", "compact,delete"); 
+      // streamProps.put("log.retention.ms", "3600000");  // 1-hour retention
+      // streamProps.put("log.segment.bytes", "1048576"); // 1 MB block size
+
       if (confluentCloudEnabled) {
          streamProps.put("ssl.endpoint.identification.algorithm", "https");
          streamProps.put("security.protocol", "SASL_SSL");

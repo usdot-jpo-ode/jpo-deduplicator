@@ -41,30 +41,35 @@ public class ProcessedBsmJsonProcessor extends DeduplicationProcessor<ProcessedB
 
     @Override
     public boolean isDuplicate(ProcessedBsm<Point> lastMessage, ProcessedBsm<Point> newMessage) {
-        Instant newValueTime = getMessageTime(newMessage);
-        Instant oldValueTime = getMessageTime(lastMessage);
+        try{
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
 
-        // If the messages are more than a certain time apart, forward the new message on
-        if(newValueTime.minus(Duration.ofMillis(props.getProcessedBsmMaximumTimeDelta())).isAfter(oldValueTime)){
-            return false;  
-        }
+            // If the messages are more than a certain time apart, forward the new message on
+            if(newValueTime.minus(Duration.ofMillis(props.getProcessedBsmMaximumTimeDelta())).isAfter(oldValueTime)){
+                return false;  
+            }
 
-        // If the Vehicle is moving, forward the message on
-        BigDecimal speed = newMessage.getProperties().getSpeed();
-        if (speed != null && speed.doubleValue() > props.getProcessedBsmAlwaysIncludeAtSpeed()) {
-            return false; 
-        }
+            // If the Vehicle is moving, forward the message on
+            BigDecimal speed = newMessage.getProperties().getSpeed();
+            if (speed != null && speed.doubleValue() > props.getProcessedBsmAlwaysIncludeAtSpeed()) {
+                return false; 
+            }
 
-        double distance = GeoUtils.calculateGeodeticDistance(
-            ((Point)newMessage.getGeometry()).getCoordinates()[1],
-            ((Point)newMessage.getGeometry()).getCoordinates()[0],
-            ((Point)lastMessage.getGeometry()).getCoordinates()[1],
-            ((Point)lastMessage.getGeometry()).getCoordinates()[0]
-        );
+            double distance = GeoUtils.calculateGeodeticDistance(
+                ((Point)newMessage.getGeometry()).getCoordinates()[1],
+                ((Point)newMessage.getGeometry()).getCoordinates()[0],
+                ((Point)lastMessage.getGeometry()).getCoordinates()[1],
+                ((Point)lastMessage.getGeometry()).getCoordinates()[0]
+            );
 
-        // If the position delta between the messages is suitable large, forward the message on
-        if(distance > props.getProcessedBsmMaximumPositionDelta()){
-            return false;
+            // If the position delta between the messages is suitable large, forward the message on
+            if(distance > props.getProcessedBsmMaximumPositionDelta()){
+                return false;
+            }
+
+        } catch(Exception e){
+            logger.warn("Caught General Exception" + e);
         }
 
         return true;

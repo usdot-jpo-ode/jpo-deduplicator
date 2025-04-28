@@ -5,6 +5,9 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeMapData;
 import us.dot.its.jpo.ode.model.OdeMapMetadata;
@@ -15,6 +18,8 @@ public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 
     DeduplicatorProperties props;
+
+    private static final Logger logger = LoggerFactory.getLogger(OdeMapJsonProcessor.class);
 
     public OdeMapJsonProcessor(DeduplicatorProperties props){
         this.props = props;
@@ -34,31 +39,35 @@ public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
 
     @Override
     public boolean isDuplicate(OdeMapData lastMessage, OdeMapData newMessage) {
+        try{
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
 
-        Instant newValueTime = getMessageTime(newMessage);
-        Instant oldValueTime = getMessageTime(lastMessage);
-
-        if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
-            return false;
-            
-        }else{
-            OdeMapPayload oldPayload = (OdeMapPayload)lastMessage.getPayload();
-            OdeMapPayload newPayload = (OdeMapPayload)newMessage.getPayload();
-
-            Integer oldTimestamp = oldPayload.getMap().getTimeStamp();
-            Integer newTimestamp = newPayload.getMap().getTimeStamp();
-            
-
-            newPayload.getMap().setTimeStamp(oldTimestamp);
-
-            int oldHash = hashMapMessage(lastMessage);
-            int newhash = hashMapMessage(newMessage);
-
-            if(oldHash != newhash){
-                newPayload.getMap().setTimeStamp(newTimestamp);
+            if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
                 return false;
+                
+            }else{
+                OdeMapPayload oldPayload = (OdeMapPayload)lastMessage.getPayload();
+                OdeMapPayload newPayload = (OdeMapPayload)newMessage.getPayload();
+
+                Integer oldTimestamp = oldPayload.getMap().getTimeStamp();
+                Integer newTimestamp = newPayload.getMap().getTimeStamp();
+                
+
+                newPayload.getMap().setTimeStamp(oldTimestamp);
+
+                int oldHash = hashMapMessage(lastMessage);
+                int newhash = hashMapMessage(newMessage);
+
+                if(oldHash != newhash){
+                    newPayload.getMap().setTimeStamp(newTimestamp);
+                    return false;
+                }
             }
+        } catch(Exception e){
+            logger.warn("Caught General Exception" + e);
         }
+
         return true;
     }
 

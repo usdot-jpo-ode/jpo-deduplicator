@@ -41,34 +41,39 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
 
     @Override
     public boolean isDuplicate(OdeBsmData lastMessage, OdeBsmData newMessage) {
-        Instant newValueTime = getMessageTime(newMessage);
-        Instant oldValueTime = getMessageTime(lastMessage);
+        try{
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
 
-        // If the messages are more than a certain time apart, forward the new message on
-        if(newValueTime.minus(Duration.ofMillis(props.getOdeBsmMaximumTimeDelta())).isAfter(oldValueTime)){
-            return false;  
-        }
+            // If the messages are more than a certain time apart, forward the new message on
+            if(newValueTime.minus(Duration.ofMillis(props.getOdeBsmMaximumTimeDelta())).isAfter(oldValueTime)){
+                return false;  
+            }
 
-        J2735BsmCoreData oldCore = ((J2735Bsm)lastMessage.getPayload().getData()).getCoreData();
-        J2735BsmCoreData newCore = ((J2735Bsm)newMessage.getPayload().getData()).getCoreData();
-
-
-        // If the Vehicle is moving, forward the message on
-        if(newCore.getSpeed().doubleValue() > props.getOdeBsmAlwaysIncludeAtSpeed()){
-            return false; 
-        }
+            J2735BsmCoreData oldCore = ((J2735Bsm)lastMessage.getPayload().getData()).getCoreData();
+            J2735BsmCoreData newCore = ((J2735Bsm)newMessage.getPayload().getData()).getCoreData();
 
 
-        double distance = GeoUtils.calculateGeodeticDistance(
-            newCore.getPosition().getLatitude().doubleValue(),
-            newCore.getPosition().getLongitude().doubleValue(),
-            oldCore.getPosition().getLatitude().doubleValue(),
-            oldCore.getPosition().getLongitude().doubleValue()
-        );
+            // If the Vehicle is moving, forward the message on
+            if(newCore.getSpeed() != null && newCore.getSpeed().doubleValue() > props.getOdeBsmAlwaysIncludeAtSpeed()){
+                return false; 
+            }
 
-        // If the position delta between the messages is suitable large, forward the message on
-        if(distance > props.getOdeBsmMaximumPositionDelta()){
-            return false;
+
+            double distance = GeoUtils.calculateGeodeticDistance(
+                newCore.getPosition().getLatitude().doubleValue(),
+                newCore.getPosition().getLongitude().doubleValue(),
+                oldCore.getPosition().getLatitude().doubleValue(),
+                oldCore.getPosition().getLongitude().doubleValue()
+            );
+
+            // If the position delta between the messages is suitable large, forward the message on
+            if(distance > props.getOdeBsmMaximumPositionDelta()){
+                return false;
+            }
+
+        } catch(Exception e){
+            logger.warn("Caught General Exception" + e);
         }
 
         return true;
