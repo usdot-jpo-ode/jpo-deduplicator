@@ -78,17 +78,10 @@ public class BsmDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-
-        Map<String,String> stateStoreConfig = new HashMap<>();
-
-        stateStoreConfig.put("cleanup.policy", "compact,delete"); 
-        stateStoreConfig.put("retention.ms", "3600000");  // 1-hour retention
-        stateStoreConfig.put("segment.bytes", "52428800"); // 50 MB retention (smallest retention allowed)
-
         KStream<Void, OdeBsmData> inputStream = builder.stream(this.props.getKafkaTopicOdeBsmJson(), Consumed.with(Serdes.Void(), JsonSerdes.OdeBsm()));
 
         builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeBsmJsonName()),
-                Serdes.String(), JsonSerdes.OdeBsm()).withLoggingEnabled(stateStoreConfig));
+                Serdes.String(), JsonSerdes.OdeBsm()));
 
         KStream<String, OdeBsmData> bsmRekeyedStream = inputStream.selectKey((key, value)->{
                 J2735BsmCoreData core = ((J2735Bsm)value.getPayload().getData()).getCoreData();
