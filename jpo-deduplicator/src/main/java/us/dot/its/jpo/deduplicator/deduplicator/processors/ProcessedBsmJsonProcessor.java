@@ -56,16 +56,25 @@ public class ProcessedBsmJsonProcessor extends DeduplicationProcessor<ProcessedB
                 return false; 
             }
 
-            double distance = GeoUtils.calculateGeodeticDistance(
-                ((Point)newMessage.getGeometry()).getCoordinates()[1],
-                ((Point)newMessage.getGeometry()).getCoordinates()[0],
-                ((Point)lastMessage.getGeometry()).getCoordinates()[1],
-                ((Point)lastMessage.getGeometry()).getCoordinates()[0]
-            );
-
-            // If the position delta between the messages is suitable large, forward the message on
-            if(distance > props.getProcessedBsmMaximumPositionDelta()){
+            // If the new core and the old core have different null conditions
+            if((lastMessage.getGeometry() == null && newMessage.getGeometry() != null) || // Used to be null, but now is non-null
+                (lastMessage.getGeometry() != null && newMessage.getGeometry() == null)){ // Used to be populated, but is now null
                 return false;
+            }else if(lastMessage.getGeometry() == null && newMessage.getGeometry() == null){ // both are null, message is a duplicate
+                return true;
+            }else{
+
+                double distance = GeoUtils.calculateGeodeticDistance(
+                    ((Point)newMessage.getGeometry()).getCoordinates()[1],
+                    ((Point)newMessage.getGeometry()).getCoordinates()[0],
+                    ((Point)lastMessage.getGeometry()).getCoordinates()[1],
+                    ((Point)lastMessage.getGeometry()).getCoordinates()[0]
+                );
+
+                // If the position delta between the messages is suitable large, forward the message on
+                if(distance > props.getProcessedBsmMaximumPositionDelta()){
+                    return false;
+                }
             }
 
         } catch(Exception e){

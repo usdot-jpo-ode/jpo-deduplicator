@@ -53,25 +53,36 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
             J2735BsmCoreData oldCore = ((J2735Bsm)lastMessage.getPayload().getData()).getCoreData();
             J2735BsmCoreData newCore = ((J2735Bsm)newMessage.getPayload().getData()).getCoreData();
 
+            // If the speed field of the message is different from the previous speed field
+            if(newCore.getSpeed() == null && oldCore.getSpeed() != null || newCore.getSpeed() != null && oldCore.getSpeed() == null){
+                return false;
+            }
 
             // If the Vehicle is moving, forward the message on
             if(newCore.getSpeed() != null && newCore.getSpeed().doubleValue() > props.getOdeBsmAlwaysIncludeAtSpeed()){
                 return false; 
             }
 
-
-            double distance = GeoUtils.calculateGeodeticDistance(
-                newCore.getPosition().getLatitude().doubleValue(),
-                newCore.getPosition().getLongitude().doubleValue(),
-                oldCore.getPosition().getLatitude().doubleValue(),
-                oldCore.getPosition().getLongitude().doubleValue()
-            );
-
-            // If the position delta between the messages is suitable large, forward the message on
-            if(distance > props.getOdeBsmMaximumPositionDelta()){
+            // If the new core and the old core have different null conditions
+            if((oldCore.getPosition() == null && newCore.getPosition() != null) || // Used to be null, but now is non-null
+                (oldCore.getPosition() != null && newCore.getPosition() == null)){ // Used to be populated, but is now null
                 return false;
-            }
+            }else if(oldCore.getPosition() == null && newCore.getPosition() == null){ // both are null, message is a duplicate
+                return true;
+            }else{
 
+                double distance = GeoUtils.calculateGeodeticDistance(
+                    newCore.getPosition().getLatitude().doubleValue(),
+                    newCore.getPosition().getLongitude().doubleValue(),
+                    oldCore.getPosition().getLatitude().doubleValue(),
+                    oldCore.getPosition().getLongitude().doubleValue()
+                );
+
+                // If the position delta between the messages is suitable large, forward the message on
+                if(distance > props.getOdeBsmMaximumPositionDelta()){
+                    return false;
+                }
+            }
         } catch(Exception e){
             logger.warn("Caught General Exception" + e);
         }
