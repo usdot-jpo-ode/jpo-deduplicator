@@ -10,10 +10,10 @@
     "properties": {
         "schemaVersion": 1,
         "messageType": "BSM",
-        "odeReceivedAt": "2024-08-12T12:32:03.811Z",
+        "odeReceivedAt": "2024-08-12T12:32:14.011Z",
         "originIp": "172.19.0.1",
         "validationMessages": [],
-        "timeStamp": "2024-08-12T12:32:04.3034091Z",
+        "timeStamp": "2024-08-12T12:32:14.0114091Z",
         "accelSet": {
             "accelLat": 2001,
             "accelLong": 0,
@@ -48,6 +48,6 @@
             "length": 586
         },
         "transmission": "UNAVAILABLE",
-        "speed": 10
+        "speed": 20
     }
 }
