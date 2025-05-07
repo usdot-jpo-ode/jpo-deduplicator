@@ -1,5 +1,5 @@
 JPO-Deduplicator Release Notes
-Version 2.0.1
+Version 2.1.0
 Summary
 The second release of the jpo-deduplicator package. This release makes minor updates to how the deduplicator handles invalid messages. 
 - Add error handling to all message topologies to prevent bad messages from crashing individual topologies
