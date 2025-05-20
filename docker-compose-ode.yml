@@ -71,6 +71,9 @@ services:
       KAFKA_KEY_SERIALIZER: ${KAFKA_KEY_SERIALIZER:-org.apache.kafka.common.serialization.StringSerializer}
       KAFKA_VALUE_SERIALIZER: ${KAFKA_VALUE_SERIALIZER:-org.apache.kafka.common.serialization.StringSerializer}
       KAFKA_PARTITIONER_CLASS: ${KAFKA_PARTITIONER_CLASS:-org.apache.kafka.clients.producer.internals.DefaultPartitioner}
+      ODE_TIM_INGEST_MONITORING_ENABLED: ${ODE_TIM_INGEST_MONITORING_ENABLED:-false}
+      ODE_TIM_INGEST_MONITORING_INTERVAL: ${ODE_TIM_INGEST_MONITORING_INTERVAL:-20}
+      ODE_STOMP_EXPORTER_ENABLED: ${ODE_STOMP_EXPORTER_ENABLED:-false}
     depends_on:
       kafka:
         condition: service_healthy
