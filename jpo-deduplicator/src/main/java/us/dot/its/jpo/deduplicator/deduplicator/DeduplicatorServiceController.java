@@ -12,8 +12,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 
 import lombok.Getter;
-import us.dot.its.jpo.conflictmonitor.monitor.MonitorServiceController;
-import us.dot.its.jpo.conflictmonitor.monitor.algorithms.StreamsTopology;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
@@ -29,16 +27,11 @@ import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplic
 @Profile("!test && !testConfig")
 public class DeduplicatorServiceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MonitorServiceController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeduplicatorServiceController.class);
 
     // Temporary for KafkaStreams that don't implement the Algorithm interface
     @Getter
     final ConcurrentHashMap<String, KafkaStreams> streamsMap = new ConcurrentHashMap<String, KafkaStreams>();
-
-    @Getter
-    final ConcurrentHashMap<String, StreamsTopology> algoMap = new ConcurrentHashMap<String, StreamsTopology>();
-
-   
     
     @Autowired
     public DeduplicatorServiceController(final DeduplicatorProperties props, 
