@@ -5,6 +5,7 @@ The second release of the jpo-deduplicator package. This release makes minor upd
 - Add error handling to all message topologies to prevent bad messages from crashing individual topologies
 - Added additional null testing for BSM and Processed BSM messages. 
 - Updated unit test coverage to expand coverage for BSM and Processed BSM use cases
+- Removes Conflict Monitor as a dependency
 
 
 Version 2.0.0
