@@ -76,7 +76,7 @@ public class OdeRawEncodedTimDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<Void, JsonNode> inputStream = builder.stream(props.getKafkaTopicOdeRawEncodedTimJson(), Consumed.with(Serdes.Void(), JsonSerdes.JSON()));
+        KStream<String, JsonNode> inputStream = builder.stream(props.getKafkaTopicOdeRawEncodedTimJson(), Consumed.with(Serdes.String(), JsonSerdes.JSON()));
 
         builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeRawEncodedTimJsonName()),
                 Serdes.String(), JsonSerdes.JSON()));

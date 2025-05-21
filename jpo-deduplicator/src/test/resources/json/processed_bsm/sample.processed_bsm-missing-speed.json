@@ -3,17 +3,17 @@
     "geometry": {
         "type": "Point",
         "coordinates": [
-            -105.0342901,
-            40.5671913
+            -100.0342901,
+            20.5671913
         ]
     },
     "properties": {
         "schemaVersion": 1,
         "messageType": "BSM",
-        "odeReceivedAt": "2024-08-12T12:32:01.811Z",
+        "odeReceivedAt": "2024-08-12T12:32:14.411Z",
         "originIp": "172.19.0.1",
         "validationMessages": [],
-        "timeStamp": "2024-08-12T12:32:01.3034091Z",
+        "timeStamp": "2024-08-12T12:32:14.4034091Z",
         "accelSet": {
             "accelLat": 2001,
             "accelLong": 0,
@@ -40,14 +40,13 @@
             "auxBrakes": "unavailable"
         },
         "heading": 359.4,
-        "id": "12A7A951",
+        "id": "12A7A952",
         "msgCnt": 25,
         "secMark": 2800,
         "size": {
             "width": 208,
             "length": 586
         },
-        "transmission": "UNAVAILABLE",
-        "speed": 0
+        "transmission": "UNAVAILABLE"
     }
 }
