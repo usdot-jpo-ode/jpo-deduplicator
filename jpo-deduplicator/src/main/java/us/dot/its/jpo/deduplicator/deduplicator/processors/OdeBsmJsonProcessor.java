@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
-import org.geotools.referencing.GeodeticCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,19 +13,18 @@ import us.dot.its.jpo.ode.model.OdeBsmData;
 import us.dot.its.jpo.ode.model.OdeBsmMetadata;
 import us.dot.its.jpo.ode.plugin.j2735.J2735Bsm;
 import us.dot.its.jpo.ode.plugin.j2735.J2735BsmCoreData;
+import us.dot.its.jpo.deduplicator.utils.GeoUtils;
 
 public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
 
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     DeduplicatorProperties props;
-    GeodeticCalculator calculator;
 
     private static final Logger logger = LoggerFactory.getLogger(OdeBsmJsonProcessor.class);
 
     public OdeBsmJsonProcessor(String storeName, DeduplicatorProperties props){
         this.storeName = storeName;
         this.props = props;
-        calculator = new GeodeticCalculator();
     }
 
 
@@ -43,42 +41,52 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeBsmData>{
 
     @Override
     public boolean isDuplicate(OdeBsmData lastMessage, OdeBsmData newMessage) {
-        Instant newValueTime = getMessageTime(newMessage);
-        Instant oldValueTime = getMessageTime(lastMessage);
+        try{
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
 
-        // If the messages are more than a certain time apart, forward the new message on
-        if(newValueTime.minus(Duration.ofMillis(props.getOdeBsmMaximumTimeDelta())).isAfter(oldValueTime)){
-            return false;  
-        }
+            // If the messages are more than a certain time apart, forward the new message on
+            if(newValueTime.minus(Duration.ofMillis(props.getOdeBsmMaximumTimeDelta())).isAfter(oldValueTime)){
+                return false;  
+            }
 
-        J2735BsmCoreData oldCore = ((J2735Bsm)lastMessage.getPayload().getData()).getCoreData();
-        J2735BsmCoreData newCore = ((J2735Bsm)newMessage.getPayload().getData()).getCoreData();
+            J2735BsmCoreData oldCore = ((J2735Bsm)lastMessage.getPayload().getData()).getCoreData();
+            J2735BsmCoreData newCore = ((J2735Bsm)newMessage.getPayload().getData()).getCoreData();
 
+            // If the speed field of the message is different from the previous speed field
+            if(newCore.getSpeed() == null && oldCore.getSpeed() != null || newCore.getSpeed() != null && oldCore.getSpeed() == null){
+                return false;
+            }
 
-        // If the Vehicle is moving, forward the message on
-        if(newCore.getSpeed().doubleValue() > props.getOdeBsmAlwaysIncludeAtSpeed()){
-            return false; 
-        }
+            // If the Vehicle is moving, forward the message on
+            if(newCore.getSpeed() != null && newCore.getSpeed().doubleValue() > props.getOdeBsmAlwaysIncludeAtSpeed()){
+                return false; 
+            }
 
+            // If the new core and the old core have different null conditions
+            if((oldCore.getPosition() == null && newCore.getPosition() != null) || // Used to be null, but now is non-null
+                (oldCore.getPosition() != null && newCore.getPosition() == null)){ // Used to be populated, but is now null
+                return false;
+            }else if(oldCore.getPosition() == null && newCore.getPosition() == null){ // both are null, message is a duplicate
+                return true;
+            }else{
 
-        double distance = calculateGeodeticDistance(
-            newCore.getPosition().getLatitude().doubleValue(),
-            newCore.getPosition().getLongitude().doubleValue(),
-            oldCore.getPosition().getLatitude().doubleValue(),
-            oldCore.getPosition().getLongitude().doubleValue()
-        );
+                double distance = GeoUtils.calculateGeodeticDistance(
+                    newCore.getPosition().getLatitude().doubleValue(),
+                    newCore.getPosition().getLongitude().doubleValue(),
+                    oldCore.getPosition().getLatitude().doubleValue(),
+                    oldCore.getPosition().getLongitude().doubleValue()
+                );
 
-        // If the position delta between the messages is suitable large, forward the message on
-        if(distance > props.getOdeBsmMaximumPositionDelta()){
-            return false;
+                // If the position delta between the messages is suitable large, forward the message on
+                if(distance > props.getOdeBsmMaximumPositionDelta()){
+                    return false;
+                }
+            }
+        } catch(Exception e){
+            logger.warn("Caught General Exception" + e);
         }
 
         return true;
-    }
-
-    public double calculateGeodeticDistance(double lat1, double lon1, double lat2, double lon2) {
-        calculator.setStartingGeographicPoint(lon1, lat1);
-        calculator.setDestinationGeographicPoint(lon2, lat2);
-        return calculator.getOrthodromicDistance();
     }
 }

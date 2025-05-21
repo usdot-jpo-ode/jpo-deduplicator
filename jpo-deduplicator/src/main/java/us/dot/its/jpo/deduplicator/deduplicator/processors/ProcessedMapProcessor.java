@@ -5,6 +5,9 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.geojsonconverter.pojos.geojson.LineString;
 import us.dot.its.jpo.geojsonconverter.pojos.geojson.map.ProcessedMap;
@@ -12,6 +15,8 @@ import us.dot.its.jpo.geojsonconverter.pojos.geojson.map.ProcessedMap;
 public class ProcessedMapProcessor extends DeduplicationProcessor<ProcessedMap<LineString>>{
 
     DeduplicatorProperties props;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProcessedMapProcessor.class);
 
     public ProcessedMapProcessor(DeduplicatorProperties props){
         this.props = props;
@@ -30,27 +35,31 @@ public class ProcessedMapProcessor extends DeduplicationProcessor<ProcessedMap<L
 
     @Override
     public boolean isDuplicate(ProcessedMap<LineString> lastMessage, ProcessedMap<LineString> newMessage) {
-
-        Instant newValueTime = getMessageTime(newMessage);
-        Instant oldValueTime = getMessageTime(lastMessage);
-        
-        if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
-            return false;
-        }else{
-            ZonedDateTime newValueTimestamp = newMessage.getProperties().getTimeStamp();
-            ZonedDateTime newValueOdeReceivedAt = newMessage.getProperties().getOdeReceivedAt();
-
-            newMessage.getProperties().setTimeStamp(lastMessage.getProperties().getTimeStamp());
-            newMessage.getProperties().setOdeReceivedAt(lastMessage.getProperties().getOdeReceivedAt());
-
-            int oldHash = Objects.hash(lastMessage.toString());
-            int newHash = Objects.hash(newMessage.toString());
-
-            if(oldHash != newHash){
-                newMessage.getProperties().setTimeStamp(newValueTimestamp);
-                newMessage.getProperties().setOdeReceivedAt(newValueOdeReceivedAt);
+        try{
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
+            
+            if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
                 return false;
+            }else{
+                ZonedDateTime newValueTimestamp = newMessage.getProperties().getTimeStamp();
+                ZonedDateTime newValueOdeReceivedAt = newMessage.getProperties().getOdeReceivedAt();
+
+                newMessage.getProperties().setTimeStamp(lastMessage.getProperties().getTimeStamp());
+                newMessage.getProperties().setOdeReceivedAt(lastMessage.getProperties().getOdeReceivedAt());
+
+                int oldHash = Objects.hash(lastMessage.toString());
+                int newHash = Objects.hash(newMessage.toString());
+
+                if(oldHash != newHash){
+                    newMessage.getProperties().setTimeStamp(newValueTimestamp);
+                    newMessage.getProperties().setOdeReceivedAt(newValueOdeReceivedAt);
+                    return false;
+                }
             }
+
+        } catch(Exception e){
+            logger.warn("Caught General Exception" + e);
         }
         return true;   
     }

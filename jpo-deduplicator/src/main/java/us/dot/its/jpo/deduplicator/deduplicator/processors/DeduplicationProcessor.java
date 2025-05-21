@@ -8,7 +8,8 @@ import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.Record;
 import org.apache.kafka.streams.state.KeyValueStore;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.KeyValue;
 
@@ -17,6 +18,8 @@ public abstract class DeduplicationProcessor<T> implements Processor<String, T, 
     private ProcessorContext<String, T> context;
     private KeyValueStore<String, T> store;
     public String storeName;
+
+    private static final Logger logger = LoggerFactory.getLogger(DeduplicationProcessor.class);
 
     @Override
     public void init(ProcessorContext<String, T> context) {
@@ -40,11 +43,16 @@ public abstract class DeduplicationProcessor<T> implements Processor<String, T, 
             return;
         }
 
-        if(!isDuplicate(lastRecord, record.value())){
-            store.put(record.key(), record.value());
-            context.forward(record);
-            return;
+        try{
+            if(!isDuplicate(lastRecord, record.value())){
+                store.put(record.key(), record.value());
+                context.forward(record);
+                return;
+            }
+        } catch(Exception e){
+            logger.warn("Caught General Exception while Checking Duplicates" + e);
         }
+        
     }
 
     private void cleanupOldKeys(final long timestamp) {

@@ -12,13 +12,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 
 import lombok.Getter;
-import us.dot.its.jpo.conflictmonitor.monitor.MonitorServiceController;
-import us.dot.its.jpo.conflictmonitor.monitor.algorithms.StreamsTopology;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.TimDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.OdeRawEncodedTimDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedBsmDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapWktDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
@@ -28,16 +27,11 @@ import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplic
 @Profile("!test && !testConfig")
 public class DeduplicatorServiceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MonitorServiceController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeduplicatorServiceController.class);
 
     // Temporary for KafkaStreams that don't implement the Algorithm interface
     @Getter
     final ConcurrentHashMap<String, KafkaStreams> streamsMap = new ConcurrentHashMap<String, KafkaStreams>();
-
-    @Getter
-    final ConcurrentHashMap<String, StreamsTopology> algoMap = new ConcurrentHashMap<String, StreamsTopology>();
-
-   
     
     @Autowired
     public DeduplicatorServiceController(final DeduplicatorProperties props, 
@@ -105,7 +99,15 @@ public class DeduplicatorServiceController {
                 BsmDeduplicatorTopology bsmDeduplicatorTopology = new BsmDeduplicatorTopology(props);
                 bsmDeduplicatorTopology.start();
             }
-            
+
+            if(props.isEnableProcessedBsmDeduplication()){
+                logger.info("Starting Processed BSM Deduplicator");
+                ProcessedBsmDeduplicatorTopology processedBsmDeduplicatorTopology = new ProcessedBsmDeduplicatorTopology(
+                    props,
+                    props.createStreamProperties("ProcessedBsmDeduplicator")
+                );
+                processedBsmDeduplicatorTopology.start();
+            }
 
         } catch (Exception e) {
             logger.error("Encountered issue with creating topologies", e);
