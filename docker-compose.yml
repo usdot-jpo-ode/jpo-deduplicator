@@ -16,7 +16,7 @@ services:
     privileged: false # Set true to allow writing to /proc/sys/vm/drop_caches
     restart: ${RESTART_POLICY}
     ports:
-    - "10091:10090" # JMX
+      - "10091:10090" # JMX
     environment:
       DOCKER_HOST_IP: ${DOCKER_HOST_IP}
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.KeyValue;
 
-public abstract class DeduplicationProcessor<T> implements Processor<String, T, String, T>{
+public abstract class DeduplicationProcessor<T> implements Processor<String, T, String, T> {
 
     private ProcessorContext<String, T> context;
     private KeyValueStore<String, T> store;
@@ -32,36 +32,36 @@ public abstract class DeduplicationProcessor<T> implements Processor<String, T, 
     public void process(Record<String, T> record) {
 
         // Don't do anything if key is bad
-        if(record.key().equals("")){
+        if (record.key().equals("")) {
             return;
         }
 
         T lastRecord = store.get(record.key());
-        if(lastRecord == null){
+        if (lastRecord == null) {
             store.put(record.key(), record.value());
             context.forward(record);
             return;
         }
 
-        try{
-            if(!isDuplicate(lastRecord, record.value())){
+        try {
+            if (!isDuplicate(lastRecord, record.value())) {
                 store.put(record.key(), record.value());
                 context.forward(record);
                 return;
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             logger.warn("Caught General Exception while Checking Duplicates" + e);
         }
-        
+
     }
 
     private void cleanupOldKeys(final long timestamp) {
         try (KeyValueIterator<String, T> iterator = store.all()) {
             while (iterator.hasNext()) {
-            
-            KeyValue<String, T> record = iterator.next();
+
+                KeyValue<String, T> record = iterator.next();
                 // Delete any record more than 2 hours old.
-                if(Instant.ofEpochMilli(timestamp).minusSeconds(2 * 60 * 60).isAfter(getMessageTime(record.value))){
+                if (Instant.ofEpochMilli(timestamp).minusSeconds(2 * 60 * 60).isAfter(getMessageTime(record.value))) {
                     store.delete(record.key);
                 }
             }

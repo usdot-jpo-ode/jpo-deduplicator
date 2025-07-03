@@ -6,21 +6,22 @@ import org.apache.kafka.streams.processor.api.ProcessorSupplier;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.processors.OdeBsmJsonProcessor;
-import us.dot.its.jpo.ode.model.OdeBsmData;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-public class OdeBsmJsonProcessorSupplier implements ProcessorSupplier<String, OdeBsmData, String, OdeBsmData> {
-    
+public class OdeBsmJsonProcessorSupplier
+        implements ProcessorSupplier<String, OdeMessageFrameData, String, OdeMessageFrameData> {
+
     String storeName;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     DeduplicatorProperties props;
 
-    public OdeBsmJsonProcessorSupplier(String storeName, DeduplicatorProperties props){
+    public OdeBsmJsonProcessorSupplier(String storeName, DeduplicatorProperties props) {
         this.storeName = storeName;
         this.props = props;
     }
 
     @Override
-    public Processor<String, OdeBsmData, String, OdeBsmData> get() {
+    public Processor<String, OdeMessageFrameData, String, OdeMessageFrameData> get() {
         return new OdeBsmJsonProcessor(storeName, props);
     }
 }

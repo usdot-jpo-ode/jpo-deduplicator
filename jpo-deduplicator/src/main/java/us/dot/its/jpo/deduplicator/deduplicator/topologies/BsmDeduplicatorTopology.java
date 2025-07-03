@@ -8,12 +8,9 @@ import org.apache.kafka.streams.KafkaStreams.StateListener;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-import us.dot.its.jpo.ode.model.OdeBsmData;
-import us.dot.its.jpo.ode.model.OdeBsmMetadata;
-import us.dot.its.jpo.ode.model.OdeMapData;
-import us.dot.its.jpo.ode.model.OdeMapPayload;
-import us.dot.its.jpo.ode.plugin.j2735.J2735Bsm;
-import us.dot.its.jpo.ode.plugin.j2735.J2735BsmCoreData;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
+import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
+import us.dot.its.jpo.asn.j2735.r2024.BasicSafetyMessage.BasicSafetyMessageMessageFrame;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
 import org.slf4j.Logger;
@@ -23,11 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeBsmJsonProcessorSupplier;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
-import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
+import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
 
 public class BsmDeduplicatorTopology {
 
@@ -58,39 +54,65 @@ public class BsmDeduplicatorTopology {
         streams.start();
     }
 
-    public Instant getInstantFromBsm(OdeBsmData bsm) {
-        String time = ((OdeBsmMetadata) bsm.getMetadata()).getOdeReceivedAt();
+    public Instant getInstantFromBsm(OdeMessageFrameData bsm) {
+        try {
+            if (bsm == null || bsm.getMetadata() == null) {
+                logger.warn("BSM message or metadata is null, using epoch time");
+                return Instant.ofEpochMilli(0);
+            }
 
-        return Instant.from(formatter.parse(time));
-    }
+            String time = ((OdeMessageFrameMetadata) bsm.getMetadata()).getOdeReceivedAt();
+            if (time == null || time.isEmpty()) {
+                logger.warn("BSM message has null or empty odeReceivedAt time, using epoch time");
+                return Instant.ofEpochMilli(0);
+            }
 
-    public int hashMapMessage(OdeMapData map) {
-        OdeMapPayload payload = (OdeMapPayload) map.getPayload();
-        return Objects.hash(payload.toJson());
-
+            return Instant.from(formatter.parse(time));
+        } catch (Exception e) {
+            logger.warn("Failed to parse time from BSM: " + (bsm != null && bsm.getMetadata() != null
+                    ? ((OdeMessageFrameMetadata) bsm.getMetadata()).getOdeReceivedAt()
+                    : "null"), e);
+            return Instant.ofEpochMilli(0);
+        }
     }
 
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<Void, OdeBsmData> inputStream = builder.stream(this.props.getKafkaTopicOdeBsmJson(),
-                Consumed.with(Serdes.Void(), JsonSerdes.OdeBsm()));
+        KStream<Void, OdeMessageFrameData> inputStream = builder.stream(this.props.getKafkaTopicOdeBsmJson(),
+                Consumed.with(Serdes.Void(), JsonSerdes.OdeMessageFrame()));
 
         builder.addStateStore(
                 Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeBsmJsonName()),
-                        Serdes.String(), JsonSerdes.OdeBsm()));
+                        Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
-        KStream<String, OdeBsmData> bsmRekeyedStream = inputStream.selectKey((key, value) -> {
-            J2735BsmCoreData core = ((J2735Bsm) value.getPayload().getData()).getCoreData();
-            return core.getId();
-        }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeBsm()));
+        KStream<String, OdeMessageFrameData> bsmRekeyedStream = inputStream.selectKey((key, value) -> {
+            try {
+                if (value == null || value.getPayload() == null || value.getPayload().getData() == null) {
+                    logger.warn("Received BSM message with null payload or data, using default key");
+                    return "unknown";
+                }
 
-        KStream<String, OdeBsmData> deduplicatedStream = bsmRekeyedStream.process(
+                BasicSafetyMessageMessageFrame mf = (BasicSafetyMessageMessageFrame) value.getPayload().getData();
+                if (mf == null || mf.getValue() == null || mf.getValue().getCoreData() == null ||
+                        mf.getValue().getCoreData().getId() == null) {
+                    logger.warn("Received BSM message with null message frame data, using default key");
+                    return "unknown";
+                }
+
+                return mf.getValue().getCoreData().getId().getValue();
+            } catch (Exception e) {
+                logger.error("Error extracting key from BSM message: " + e.getMessage(), e);
+                return "unknown";
+            }
+        }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
+
+        KStream<String, OdeMessageFrameData> deduplicatedStream = bsmRekeyedStream.process(
                 new OdeBsmJsonProcessorSupplier(props.getKafkaStateStoreOdeBsmJsonName(), props),
                 props.getKafkaStateStoreOdeBsmJsonName());
 
         deduplicatedStream.to(this.props.getKafkaTopicDeduplicatedOdeBsmJson(),
-                Produced.with(Serdes.String(), JsonSerdes.OdeBsm()));
+                Produced.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
         return builder.build();
 
