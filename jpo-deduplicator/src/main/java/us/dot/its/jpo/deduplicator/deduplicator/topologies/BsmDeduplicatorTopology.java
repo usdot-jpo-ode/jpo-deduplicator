@@ -7,7 +7,6 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.KafkaStreams.StateListener;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 
-import us.dot.its.jpo.conflictmonitor.monitor.serialization.JsonSerdes;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeBsmData;
 import us.dot.its.jpo.ode.model.OdeBsmMetadata;
@@ -28,6 +27,7 @@ import java.util.Objects;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeBsmJsonProcessorSupplier;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
+import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
 
 public class BsmDeduplicatorTopology {
 
@@ -38,57 +38,59 @@ public class BsmDeduplicatorTopology {
     DeduplicatorProperties props;
     ObjectMapper objectMapper;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-    
 
-
-    public BsmDeduplicatorTopology(DeduplicatorProperties props){
+    public BsmDeduplicatorTopology(DeduplicatorProperties props) {
         this.props = props;
         this.objectMapper = DateJsonMapper.getInstance();
     }
 
-
-    
     public void start() {
         if (streams != null && streams.state().isRunningOrRebalancing()) {
             throw new IllegalStateException("Start called while streams is already running.");
         }
         Topology topology = buildTopology();
         streams = new KafkaStreams(topology, props.createStreamProperties("BsmDeduplicator"));
-        if (exceptionHandler != null) streams.setUncaughtExceptionHandler(exceptionHandler);
-        if (stateListener != null) streams.setStateListener(stateListener);
+        if (exceptionHandler != null)
+            streams.setUncaughtExceptionHandler(exceptionHandler);
+        if (stateListener != null)
+            streams.setStateListener(stateListener);
         logger.info("Starting Bsm Deduplicator Topology");
         streams.start();
     }
 
-    public Instant getInstantFromBsm(OdeBsmData bsm){
-        String time = ((OdeBsmMetadata)bsm.getMetadata()).getOdeReceivedAt();
+    public Instant getInstantFromBsm(OdeBsmData bsm) {
+        String time = ((OdeBsmMetadata) bsm.getMetadata()).getOdeReceivedAt();
 
         return Instant.from(formatter.parse(time));
     }
 
-    public int hashMapMessage(OdeMapData map){
-        OdeMapPayload payload = (OdeMapPayload)map.getPayload();
+    public int hashMapMessage(OdeMapData map) {
+        OdeMapPayload payload = (OdeMapPayload) map.getPayload();
         return Objects.hash(payload.toJson());
-        
+
     }
 
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<Void, OdeBsmData> inputStream = builder.stream(this.props.getKafkaTopicOdeBsmJson(), Consumed.with(Serdes.Void(), JsonSerdes.OdeBsm()));
+        KStream<Void, OdeBsmData> inputStream = builder.stream(this.props.getKafkaTopicOdeBsmJson(),
+                Consumed.with(Serdes.Void(), JsonSerdes.OdeBsm()));
 
-        builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeBsmJsonName()),
-                Serdes.String(), JsonSerdes.OdeBsm()));
+        builder.addStateStore(
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeBsmJsonName()),
+                        Serdes.String(), JsonSerdes.OdeBsm()));
 
-        KStream<String, OdeBsmData> bsmRekeyedStream = inputStream.selectKey((key, value)->{
-                J2735BsmCoreData core = ((J2735Bsm)value.getPayload().getData()).getCoreData();
-                return core.getId();
+        KStream<String, OdeBsmData> bsmRekeyedStream = inputStream.selectKey((key, value) -> {
+            J2735BsmCoreData core = ((J2735Bsm) value.getPayload().getData()).getCoreData();
+            return core.getId();
         }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeBsm()));
 
-        KStream<String, OdeBsmData> deduplicatedStream = bsmRekeyedStream.process(new OdeBsmJsonProcessorSupplier(props.getKafkaStateStoreOdeBsmJsonName(), props), props.getKafkaStateStoreOdeBsmJsonName());
+        KStream<String, OdeBsmData> deduplicatedStream = bsmRekeyedStream.process(
+                new OdeBsmJsonProcessorSupplier(props.getKafkaStateStoreOdeBsmJsonName(), props),
+                props.getKafkaStateStoreOdeBsmJsonName());
 
-        
-        deduplicatedStream.to(this.props.getKafkaTopicDeduplicatedOdeBsmJson(), Produced.with(Serdes.String(), JsonSerdes.OdeBsm()));
+        deduplicatedStream.to(this.props.getKafkaTopicDeduplicatedOdeBsmJson(),
+                Produced.with(Serdes.String(), JsonSerdes.OdeBsm()));
 
         return builder.build();
 
@@ -105,11 +107,13 @@ public class BsmDeduplicatorTopology {
     }
 
     StateListener stateListener;
+
     public void registerStateListener(StateListener stateListener) {
         this.stateListener = stateListener;
     }
 
     StreamsUncaughtExceptionHandler exceptionHandler;
+
     public void registerUncaughtExceptionHandler(StreamsUncaughtExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }

@@ -40,12 +40,7 @@ import org.springframework.core.env.Environment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
-import us.dot.its.jpo.conflictmonitor.AlwaysContinueProductionExceptionHandler;
 import us.dot.its.jpo.deduplicator.deduplicator.BoundedMemoryRocksDBConfig;
-import us.dot.its.jpo.ode.eventlog.EventLogger;
-import us.dot.its.jpo.ode.util.CommonUtils;
-
-// import us.dot.its.jpo.conflictmonitor.AlwaysContinueProductionExceptionHandler;
 
 @Getter
 @Setter
@@ -174,22 +169,11 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       }
       hostId = hostname;
       logger.info("Host ID: {}", hostId);
-      EventLogger.logger.info("Initializing services on host {}", hostId);
-
-      // if(dbHostIP == null){
-      //    String dbHost = CommonUtils.getEnvironmentVariable("MONGO_IP");
-
-      //    if(dbHost == null){
-      //       logger.warn(
-      //             "DB Host IP not defined, Defaulting to localhost.");
-      //       dbHost = "localhost";
-      //    }
-      //    dbHostIP = dbHost;
-      // }
+      logger.info("Initializing services on host {}", hostId);
 
       if (kafkaBrokers == null) {
 
-         String kafkaBrokers = CommonUtils.getEnvironmentVariable("KAFKA_BOOTSTRAP_SERVERS");
+         String kafkaBrokers = getEnvironmentVariable("KAFKA_BOOTSTRAP_SERVERS");
 
          logger.info("ode.kafkaBrokers property not defined. Will try KAFKA_BOOTSTRAP_SERVERS => {}", kafkaBrokers);
 
@@ -201,29 +185,17 @@ public class DeduplicatorProperties implements EnvironmentAware  {
 
       }
 
-      String kafkaType = CommonUtils.getEnvironmentVariable("KAFKA_TYPE");
+      String kafkaType = getEnvironmentVariable("KAFKA_TYPE");
       if (kafkaType != null) {
          confluentCloudEnabled = kafkaType.equals("CONFLUENT");
          if (confluentCloudEnabled) {
                
                logger.info("Enabling Confluent Cloud Integration");
 
-               confluentKey = CommonUtils.getEnvironmentVariable("CONFLUENT_KEY");
-               confluentSecret = CommonUtils.getEnvironmentVariable("CONFLUENT_SECRET");
+               confluentKey = getEnvironmentVariable("CONFLUENT_KEY");
+               confluentSecret = getEnvironmentVariable("CONFLUENT_SECRET");
          }
       }
-
-      // Initialize the Kafka Connect URL
-      // if (connectURL == null) {
-      //    String connectURL = CommonUtils.getEnvironmentVariable("CONNECT_URL");
-      //    if (connectURL == null) {
-      //       connectURL = String.format("http://%s:%s", "localhost", DEFAULT_CONNECT_PORT);
-      //    }
-      // }
-
-      // List<String> asList = Arrays.asList(this.getKafkaTopicsDisabled());
-      // logger.info("Disabled Topics: {}", asList);
-      // kafkaTopicsDisabledSet.addAll(asList);
    }
 
    public Properties createStreamProperties(String name) {
@@ -489,5 +461,13 @@ public class DeduplicatorProperties implements EnvironmentAware  {
 
    public int getKafkaLingerMs() {
       return lingerMs;
+   }
+
+   private static String getEnvironmentVariable(String variableName) {
+      String value = System.getenv(variableName);
+      if (value == null || value.equals("")) {
+          System.out.println("Something went wrong retrieving the environment variable " + variableName);
+      }
+      return value;
    }
 }
