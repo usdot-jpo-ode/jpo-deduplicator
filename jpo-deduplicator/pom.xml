@@ -115,6 +115,16 @@
             <groupId>usdot.jpo.ode</groupId>
             <artifactId>jpo-geojsonconverter</artifactId>
             <version>${jpo.geojsonconverter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>usdot.jpo.ode</groupId>
+                    <artifactId>jpo-ode-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>usdot.jpo.ode</groupId>
+                    <artifactId>jpo-ode-plugins</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
