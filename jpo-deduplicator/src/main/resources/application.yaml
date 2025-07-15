@@ -7,12 +7,15 @@ server.port: 8085
 
 # Kafka properties
 spring.kafka.bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-logging.level.org.apache.kafka: INFO
-logging.level: INFO
-log4j.logger.kafka: OFF
-log4j.logger.org.apache.kafka: OFF
-
-
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: info
+    org.springframework.web: WARN
+    guru.springframework.controllers: WARN
+    org.springframework.integration.mqtt: INFO
+    us.dot.its.jpo.ode.mec.deposit: ${LOGGING_LEVEL:INFO}
+    org.apache.kafka: WARN
 
 # Processed Map Configuration
 kafkaTopicProcessedMap: topic.ProcessedMap
@@ -45,12 +48,12 @@ kafkaTopicDeduplicatedOdeBsmJson: topic.DeduplicatedOdeBsmJson
 enableOdeBsmDeduplication: ${ENABLE_ODE_BSM_DEDUPLICATION:true}
 odeBsmMaximumTimeDelta: 10000 # Milliseconds
 odeBsmMaximumPositionDelta: 1 # Meter
-odeBsmAlwaysIncludeAtSpeed: 1 # Meter / Second
+odeBsmAlwaysIncludeAtSpeed: 20 # Meter / Second
 
 # Processed Map Configuration
 kafkaTopicProcessedSpat: topic.ProcessedSpat
 kafkaTopicDeduplicatedProcessedSpat: topic.DeduplicatedProcessedSpat
-enableProcessedSpatDeduplication: ${ENABLE_PROCESSED_SPAT_DEDUPLICATION:true} 
+enableProcessedSpatDeduplication: ${ENABLE_PROCESSED_SPAT_DEDUPLICATION:true}
 
 # Processed Bsm Configuration
 kafkaTopicProcessedBsm: topic.ProcessedBsm
@@ -65,7 +68,7 @@ kafka.linger_ms: 50
 
 # Custom kafka properties
 kafka.topics:
-  autoCreateTopics: true  # Override auto-create in test properties
+  autoCreateTopics: true # Override auto-create in test properties
   numPartitions: 1
   numReplicas: 1
   createTopics:
@@ -105,6 +108,3 @@ kafka.topics:
     - name: ${kafkaTopicDeduplicatedProcessedBsm}
       cleanupPolicy: delete
       retentionMs: 300000
-    
-    
-    

@@ -45,7 +45,7 @@ import us.dot.its.jpo.deduplicator.deduplicator.BoundedMemoryRocksDBConfig;
 @Getter
 @Setter
 @ConfigurationProperties
-public class DeduplicatorProperties implements EnvironmentAware  {
+public class DeduplicatorProperties implements EnvironmentAware {
 
    private static final Logger logger = LoggerFactory.getLogger(DeduplicatorProperties.class);
 
@@ -79,7 +79,7 @@ public class DeduplicatorProperties implements EnvironmentAware  {
    private boolean enableOdeRawEncodedTimDeduplication;
    private String kafkaStateStoreOdeRawEncodedTimJsonName = "OdeRawEncodedTimJson-store";
 
-   //Ode BsmJson Configuration
+   // Ode BsmJson Configuration
    private String kafkaTopicOdeBsmJson;
    private String kafkaTopicDeduplicatedOdeBsmJson;
    private boolean enableOdeBsmDeduplication;
@@ -110,40 +110,20 @@ public class DeduplicatorProperties implements EnvironmentAware  {
 
    private int lingerMs = 0;
 
-   
-
    @Autowired
    @Setter(AccessLevel.NONE)
    private Environment env;
 
-   /*
-    * General Properties
-    */
    private String version;
-   // public static final int OUTPUT_SCHEMA_VERSION = 6;
-   
+
    @Setter(AccessLevel.NONE)
    private String kafkaBrokers = null;
 
-   private static final String DEFAULT_KAFKA_PORT = "9092";
-   private static final String DEFAULT_CONNECT_PORT = "8083";
-   
    @Setter(AccessLevel.NONE)
    private String hostId;
 
-   // @Setter(AccessLevel.NONE)
-   // private String connectURL = null;
-
-   // @Setter(AccessLevel.NONE)
-   // private String dockerHostIP = null;
-
    @Setter(AccessLevel.NONE)
    private String kafkaBrokerIP = null;
-
-
-   // @Setter(AccessLevel.NONE)
-   // private String dbHostIP = null;
-
 
    @Setter(AccessLevel.NONE)
    @Autowired
@@ -155,9 +135,7 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       logger.info("groupId: {}", buildProperties.getGroup());
       logger.info("artifactId: {}", buildProperties.getArtifact());
       logger.info("version: {}", version);
-      //OdeMsgMetadata.setStaticSchemaVersion(OUTPUT_SCHEMA_VERSION);
-
-      
+      // OdeMsgMetadata.setStaticSchemaVersion(OUTPUT_SCHEMA_VERSION);
 
       String hostname;
       try {
@@ -169,7 +147,6 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       }
       hostId = hostname;
       logger.info("Host ID: {}", hostId);
-      logger.info("Initializing services on host {}", hostId);
 
       if (kafkaBrokers == null) {
 
@@ -189,11 +166,11 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       if (kafkaType != null) {
          confluentCloudEnabled = kafkaType.equals("CONFLUENT");
          if (confluentCloudEnabled) {
-               
-               logger.info("Enabling Confluent Cloud Integration");
 
-               confluentKey = getEnvironmentVariable("CONFLUENT_KEY");
-               confluentSecret = getEnvironmentVariable("CONFLUENT_SECRET");
+            logger.info("Enabling Confluent Cloud Integration");
+
+            confluentKey = getEnvironmentVariable("CONFLUENT_KEY");
+            confluentSecret = getEnvironmentVariable("CONFLUENT_SECRET");
          }
       }
    }
@@ -221,8 +198,7 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       // Reduce cache buffering per topology to 1MB
       streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 1 * 1024 * 1024L);
       // Optionally, to disable caching:
-      //streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0);
-      
+      // streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0);
 
       // Decrease default commit interval. Default for 'at least once' mode of 30000ms
       // is too slow.
@@ -250,9 +226,8 @@ public class DeduplicatorProperties implements EnvironmentAware  {
       streamProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "zstd");
       streamProps.put(ProducerConfig.LINGER_MS_CONFIG, getKafkaLingerMs());
 
-
-      streamProps.put("cleanup.policy", "compact,delete"); 
-      streamProps.put("log.retention.ms", "7200000");  // 2-hour retention
+      streamProps.put("cleanup.policy", "compact,delete");
+      streamProps.put("log.retention.ms", "7200000"); // 2-hour retention
       streamProps.put("log.segment.bytes", "1048576"); // 1 MB block size
 
       if (confluentCloudEnabled) {
@@ -261,13 +236,13 @@ public class DeduplicatorProperties implements EnvironmentAware  {
          streamProps.put("sasl.mechanism", "PLAIN");
 
          if (confluentKey != null && confluentSecret != null) {
-             String auth = "org.apache.kafka.common.security.plain.PlainLoginModule required " +
-                 "username=\"" + confluentKey + "\" " +
-                 "password=\"" + confluentSecret + "\";";
-                 streamProps.put("sasl.jaas.config", auth);
-         }
-         else {
-             logger.error("Environment variables CONFLUENT_KEY and CONFLUENT_SECRET are not set. Set these in the .env file to use Confluent Cloud");
+            String auth = "org.apache.kafka.common.security.plain.PlainLoginModule required " +
+                  "username=\"" + confluentKey + "\" " +
+                  "password=\"" + confluentSecret + "\";";
+            streamProps.put("sasl.jaas.config", auth);
+         } else {
+            logger.error(
+                  "Environment variables CONFLUENT_KEY and CONFLUENT_SECRET are not set. Set these in the .env file to use Confluent Cloud");
          }
       }
 
@@ -290,9 +265,8 @@ public class DeduplicatorProperties implements EnvironmentAware  {
    }
 
    public Boolean getConfluentCloudStatus() {
-		return confluentCloudEnabled;
-	}
-
+      return confluentCloudEnabled;
+   }
 
    @Value("${kafkaTopicProcessedMap}")
    public void setKafkaTopicProcessedMap(String kafkaTopicProcessedMap) {
@@ -466,7 +440,7 @@ public class DeduplicatorProperties implements EnvironmentAware  {
    private static String getEnvironmentVariable(String variableName) {
       String value = System.getenv(variableName);
       if (value == null || value.equals("")) {
-          System.out.println("Something went wrong retrieving the environment variable " + variableName);
+         System.out.println("Something went wrong retrieving the environment variable " + variableName);
       }
       return value;
    }

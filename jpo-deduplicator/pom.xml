@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.3</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath />
     </parent>
     <groupId>usdot.jpo.ode</groupId>
     <artifactId>jpo-deduplicator</artifactId>
@@ -32,6 +32,9 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.coverage.jacoco.xmReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmReportPaths>
         <sonar.language>java</sonar.language>
+        <jpo.ode.version>5.0.0</jpo.ode.version>
+        <jpo.geojsonconverter.version>2.1.1</jpo.geojsonconverter.version>
+        <jpo.conflictmonitor.version>1.5.0</jpo.conflictmonitor.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Dependencies -->
@@ -101,17 +104,27 @@
         <dependency>
             <groupId>usdot.jpo.ode</groupId>
             <artifactId>jpo-ode-core</artifactId>
-            <version>4.1.1</version>
+            <version>${jpo.ode.version}</version>
         </dependency>
         <dependency>
             <groupId>usdot.jpo.ode</groupId>
             <artifactId>jpo-ode-plugins</artifactId>
-            <version>4.1.1</version>
+            <version>${jpo.ode.version}</version>
         </dependency>
         <dependency>
             <groupId>usdot.jpo.ode</groupId>
             <artifactId>jpo-geojsonconverter</artifactId>
-            <version>2.1.1</version>
+            <version>${jpo.geojsonconverter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>usdot.jpo.ode</groupId>
+                    <artifactId>jpo-ode-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>usdot.jpo.ode</groupId>
+                    <artifactId>jpo-ode-plugins</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -146,17 +159,17 @@
             <version>33.0.0-jre</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
-        <!-- <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-math3</artifactId>
-        <version>3.6.1</version>
-    </dependency> -->
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.javacrumbs.json-unit</groupId>
+            <artifactId>json-unit</artifactId>
+            <version>4.1.0</version>
+            <scope>test</scope>
         </dependency>
 
 
@@ -290,45 +303,45 @@
         </plugins>
     </build>
     <profiles>
-    <profile>
-      <id>package-jar</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.0</version>
-            <configuration>
-              <archive>
-                <manifest>
-                  <addClasspath>true</addClasspath>
-                  <classpathPrefix>lib/</classpathPrefix>
-                  <mainClass>
-                    us.dot.its.jpo.deduplicator.DeduplicatorApplication</mainClass>
-                </manifest>
-              </archive>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>repackage</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-  <!-- GitHub Artifact publishing configuration -->
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/${github_organization}/jpo-deduplicator</url>
-    </repository>
-  </distributionManagement>
+        <profile>
+            <id>package-jar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <mainClass>
+                                        us.dot.its.jpo.deduplicator.DeduplicatorApplication</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>repackage</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <!-- GitHub Artifact publishing configuration -->
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github_organization}/jpo-deduplicator</url>
+        </repository>
+    </distributionManagement>
 </project>

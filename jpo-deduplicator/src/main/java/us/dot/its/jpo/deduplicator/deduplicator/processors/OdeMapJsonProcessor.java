@@ -1,79 +1,78 @@
-package us.dot.its.jpo.deduplicator.deduplicator.processors;
+// package us.dot.its.jpo.deduplicator.deduplicator.processors;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+// import java.time.Duration;
+// import java.time.Instant;
+// import java.time.format.DateTimeFormatter;
+// import java.util.Objects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 
-import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-import us.dot.its.jpo.ode.model.OdeMapData;
-import us.dot.its.jpo.ode.model.OdeMapMetadata;
-import us.dot.its.jpo.ode.model.OdeMapPayload;
+// import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
+// import us.dot.its.jpo.ode.model.OdeMapData;
+// import us.dot.its.jpo.ode.model.OdeMapMetadata;
+// import us.dot.its.jpo.ode.model.OdeMapPayload;
 
-public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
+// public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
 
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+// DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 
-    DeduplicatorProperties props;
+// DeduplicatorProperties props;
 
-    private static final Logger logger = LoggerFactory.getLogger(OdeMapJsonProcessor.class);
+// private static final Logger logger =
+// LoggerFactory.getLogger(OdeMapJsonProcessor.class);
 
-    public OdeMapJsonProcessor(DeduplicatorProperties props){
-        this.props = props;
-        this.storeName = props.getKafkaStateStoreOdeMapJsonName();
-    }
+// public OdeMapJsonProcessor(DeduplicatorProperties props){
+// this.props = props;
+// this.storeName = props.getKafkaStateStoreOdeMapJsonName();
+// }
 
+// @Override
+// public Instant getMessageTime(OdeMapData message) {
+// try {
+// String time = ((OdeMapMetadata)message.getMetadata()).getOdeReceivedAt();
+// return Instant.from(formatter.parse(time));
+// } catch (Exception e) {
+// return Instant.ofEpochMilli(0);
+// }
+// }
 
-    @Override
-    public Instant getMessageTime(OdeMapData message) {
-        try {
-            String time = ((OdeMapMetadata)message.getMetadata()).getOdeReceivedAt();
-            return Instant.from(formatter.parse(time));
-        } catch (Exception e) {
-            return Instant.ofEpochMilli(0);
-        }
-    }
+// @Override
+// public boolean isDuplicate(OdeMapData lastMessage, OdeMapData newMessage) {
+// try{
+// Instant newValueTime = getMessageTime(newMessage);
+// Instant oldValueTime = getMessageTime(lastMessage);
 
-    @Override
-    public boolean isDuplicate(OdeMapData lastMessage, OdeMapData newMessage) {
-        try{
-            Instant newValueTime = getMessageTime(newMessage);
-            Instant oldValueTime = getMessageTime(lastMessage);
+// if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
+// return false;
 
-            if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
-                return false;
-                
-            }else{
-                OdeMapPayload oldPayload = (OdeMapPayload)lastMessage.getPayload();
-                OdeMapPayload newPayload = (OdeMapPayload)newMessage.getPayload();
+// }else{
+// OdeMapPayload oldPayload = (OdeMapPayload)lastMessage.getPayload();
+// OdeMapPayload newPayload = (OdeMapPayload)newMessage.getPayload();
 
-                Integer oldTimestamp = oldPayload.getMap().getTimeStamp();
-                Integer newTimestamp = newPayload.getMap().getTimeStamp();
-                
+// Integer oldTimestamp = oldPayload.getMap().getTimeStamp();
+// Integer newTimestamp = newPayload.getMap().getTimeStamp();
 
-                newPayload.getMap().setTimeStamp(oldTimestamp);
+// newPayload.getMap().setTimeStamp(oldTimestamp);
 
-                int oldHash = hashMapMessage(lastMessage);
-                int newhash = hashMapMessage(newMessage);
+// int oldHash = hashMapMessage(lastMessage);
+// int newhash = hashMapMessage(newMessage);
 
-                if(oldHash != newhash){
-                    newPayload.getMap().setTimeStamp(newTimestamp);
-                    return false;
-                }
-            }
-        } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
-        }
+// if(oldHash != newhash){
+// newPayload.getMap().setTimeStamp(newTimestamp);
+// return false;
+// }
+// }
+// } catch(Exception e){
+// logger.warn("Caught General Exception" + e);
+// }
 
-        return true;
-    }
+// return true;
+// }
 
-    public int hashMapMessage(OdeMapData map){
-        OdeMapPayload payload = (OdeMapPayload)map.getPayload();
-        return Objects.hash(payload.toJson());
-        
-    }
-}
+// public int hashMapMessage(OdeMapData map){
+// OdeMapPayload payload = (OdeMapPayload)map.getPayload();
+// return Objects.hash(payload.toJson());
+
+// }
+// }
