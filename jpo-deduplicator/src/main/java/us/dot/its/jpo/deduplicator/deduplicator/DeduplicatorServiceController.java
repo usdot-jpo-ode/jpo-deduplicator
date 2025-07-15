@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import lombok.Getter;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopology;
-// import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.TimDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.OdeRawEncodedTimDeduplicatorTopology;
 // import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedBsmDeduplicatorTopology;
@@ -59,15 +59,11 @@ public class DeduplicatorServiceController {
             // processedMapWktDeduplicatorTopology.start();
             // }
 
-            // if(props.isEnableProcessedMapDeduplication()){
-            // logger.info("Starting Map Deduplicator");
-            // MapDeduplicatorTopology mapDeduplicatorTopology = new
-            // MapDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("MapDeduplicator")
-            // );
-            // mapDeduplicatorTopology.start();
-            // }
+            if (props.isEnableOdeMapDeduplication()) {
+                logger.info("Starting Map Deduplicator");
+                MapDeduplicatorTopology mapDeduplicatorTopology = new MapDeduplicatorTopology(props);
+                mapDeduplicatorTopology.start();
+            }
 
             // if (props.isEnableOdeTimDeduplication()) {
             // logger.info("Starting Tim Deduplicator");

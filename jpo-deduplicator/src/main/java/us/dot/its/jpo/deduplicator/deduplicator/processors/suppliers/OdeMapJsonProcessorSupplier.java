@@ -1,24 +1,25 @@
-// package us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers;
+package us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers;
 
-// import org.apache.kafka.streams.processor.api.Processor;
-// import org.apache.kafka.streams.processor.api.ProcessorSupplier;
+import org.apache.kafka.streams.processor.api.Processor;
+import org.apache.kafka.streams.processor.api.ProcessorSupplier;
 
-// import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-// import
-// us.dot.its.jpo.deduplicator.deduplicator.processors.OdeMapJsonProcessor;
-// import us.dot.its.jpo.ode.model.OdeMapData;
+import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
+import us.dot.its.jpo.deduplicator.deduplicator.processors.OdeMapJsonProcessor;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-// public class OdeMapJsonProcessorSupplier implements ProcessorSupplier<String,
-// OdeMapData, String, OdeMapData> {
+public class OdeMapJsonProcessorSupplier
+        implements ProcessorSupplier<String, OdeMessageFrameData, String, OdeMessageFrameData> {
 
-// DeduplicatorProperties props;
+    private String storeName;
+    private DeduplicatorProperties props;
 
-// public OdeMapJsonProcessorSupplier(DeduplicatorProperties props) {
-// this.props = props;
-// }
+    public OdeMapJsonProcessorSupplier(String storeName, DeduplicatorProperties props) {
+        this.storeName = storeName;
+        this.props = props;
+    }
 
-// @Override
-// public Processor<String, OdeMapData, String, OdeMapData> get() {
-// return new OdeMapJsonProcessor(props);
-// }
-// }
+    @Override
+    public Processor<String, OdeMessageFrameData, String, OdeMessageFrameData> get() {
+        return new OdeMapJsonProcessor(storeName, props);
+    }
+}

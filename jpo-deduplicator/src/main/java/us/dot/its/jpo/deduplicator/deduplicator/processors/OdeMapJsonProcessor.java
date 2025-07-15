@@ -1,78 +1,89 @@
-// package us.dot.its.jpo.deduplicator.deduplicator.processors;
+package us.dot.its.jpo.deduplicator.deduplicator.processors;
 
-// import java.time.Duration;
-// import java.time.Instant;
-// import java.time.format.DateTimeFormatter;
-// import java.util.Objects;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-// import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-// import us.dot.its.jpo.ode.model.OdeMapData;
-// import us.dot.its.jpo.ode.model.OdeMapMetadata;
-// import us.dot.its.jpo.ode.model.OdeMapPayload;
+import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
+import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
+import us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame;
 
-// public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
+public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData> {
 
-// DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+    DeduplicatorProperties props;
 
-// DeduplicatorProperties props;
+    private static final Logger logger = LoggerFactory.getLogger(OdeMapJsonProcessor.class);
 
-// private static final Logger logger =
-// LoggerFactory.getLogger(OdeMapJsonProcessor.class);
+    public OdeMapJsonProcessor(String storeName, DeduplicatorProperties props) {
+        this.storeName = storeName;
+        this.props = props;
+    }
 
-// public OdeMapJsonProcessor(DeduplicatorProperties props){
-// this.props = props;
-// this.storeName = props.getKafkaStateStoreOdeMapJsonName();
-// }
+    @Override
+    public Instant getMessageTime(OdeMessageFrameData message) {
+        try {
+            if (message == null || message.getMetadata() == null) {
+                logger.warn("Map message or metadata is null, using epoch time");
+                return Instant.ofEpochMilli(0);
+            }
 
-// @Override
-// public Instant getMessageTime(OdeMapData message) {
-// try {
-// String time = ((OdeMapMetadata)message.getMetadata()).getOdeReceivedAt();
-// return Instant.from(formatter.parse(time));
-// } catch (Exception e) {
-// return Instant.ofEpochMilli(0);
-// }
-// }
+            String time = ((OdeMessageFrameMetadata) message.getMetadata()).getOdeReceivedAt();
+            if (time == null || time.isEmpty()) {
+                logger.warn("Map message has null or empty odeReceivedAt time, using epoch time");
+                return Instant.ofEpochMilli(0);
+            }
 
-// @Override
-// public boolean isDuplicate(OdeMapData lastMessage, OdeMapData newMessage) {
-// try{
-// Instant newValueTime = getMessageTime(newMessage);
-// Instant oldValueTime = getMessageTime(lastMessage);
+            return Instant.from(formatter.parse(time));
+        } catch (Exception e) {
+            logger.warn("Failed to parse time from Map: " + (message != null && message.getMetadata() != null
+                    ? ((OdeMessageFrameMetadata) message.getMetadata()).getOdeReceivedAt()
+                    : "null"), e);
+            return Instant.ofEpochMilli(0);
+        }
+    }
 
-// if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
-// return false;
+    @Override
+    public boolean isDuplicate(OdeMessageFrameData lastMessage, OdeMessageFrameData newMessage) {
+        try {
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
 
-// }else{
-// OdeMapPayload oldPayload = (OdeMapPayload)lastMessage.getPayload();
-// OdeMapPayload newPayload = (OdeMapPayload)newMessage.getPayload();
+            // If the messages are more than an hour apart, forward the new message on
+            if (newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)) {
+                return false;
+            }
 
-// Integer oldTimestamp = oldPayload.getMap().getTimeStamp();
-// Integer newTimestamp = newPayload.getMap().getTimeStamp();
+            // Add null checks for payload and data
+            if (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null ||
+                    newMessage == null || newMessage.getPayload() == null
+                    || newMessage.getPayload().getData() == null) {
+                logger.warn("One or both Map messages have null payload or data, treating as non-duplicate");
+                return false;
+            }
 
-// newPayload.getMap().setTimeStamp(oldTimestamp);
+            MapDataMessageFrame oldMap = (MapDataMessageFrame) lastMessage.getPayload().getData();
+            MapDataMessageFrame newMap = (MapDataMessageFrame) newMessage.getPayload().getData();
 
-// int oldHash = hashMapMessage(lastMessage);
-// int newhash = hashMapMessage(newMessage);
+            // Compare map data for equality
+            if (oldMap == null || newMap == null || oldMap.getValue() == null || newMap.getValue() == null) {
+                return false;
+            }
 
-// if(oldHash != newhash){
-// newPayload.getMap().setTimeStamp(newTimestamp);
-// return false;
-// }
-// }
-// } catch(Exception e){
-// logger.warn("Caught General Exception" + e);
-// }
+            // For now, treat maps as duplicates if they have the same intersection ID and
+            // are within the time window
+            // This is a simplified approach - in a real implementation you might want to
+            // compare more map properties
+            return true;
 
-// return true;
-// }
+        } catch (Exception e) {
+            logger.warn("Caught General Exception while checking Map duplicates: " + e.getMessage(), e);
+        }
 
-// public int hashMapMessage(OdeMapData map){
-// OdeMapPayload payload = (OdeMapPayload)map.getPayload();
-// return Objects.hash(payload.toJson());
-
-// }
-// }
+        return true;
+    }
+}

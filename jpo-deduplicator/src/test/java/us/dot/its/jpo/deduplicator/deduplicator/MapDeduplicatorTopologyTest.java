@@ -1,120 +1,141 @@
-// package us.dot.its.jpo.deduplicator.deduplicator;
+package us.dot.its.jpo.deduplicator.deduplicator;
 
-// import org.apache.kafka.common.serialization.Serdes;
-// import org.apache.kafka.streams.KeyValue;
-// import org.apache.kafka.streams.TestInputTopic;
-// import org.apache.kafka.streams.TestOutputTopic;
-// import org.apache.kafka.streams.Topology;
-// import org.apache.kafka.streams.TopologyTestDriver;
-// import org.junit.Before;
-// import org.junit.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-// import com.fasterxml.jackson.core.JsonProcessingException;
-// import com.fasterxml.jackson.databind.JsonMappingException;
-// import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.TestInputTopic;
+import org.apache.kafka.streams.TestOutputTopic;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.TopologyTestDriver;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-// import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-// import
-// us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
-// import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
-// import us.dot.its.jpo.ode.model.OdeMapData;
-// import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-// import java.io.IOException;
-// import java.nio.file.Files;
-// import java.nio.file.Paths;
-// import java.util.List;
+import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-// public class MapDeduplicatorTopologyTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// String inputTopic = "topic.OdeMapJson";
-// String outputTopic = "topic.DeduplicatedOdeMapJson";
-// ObjectMapper objectMapper;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-// String inputMap1 = "";
-// String inputMap2 = "";
-// String inputMap3 = "";
-// String inputMap4 = "";
+public class MapDeduplicatorTopologyTest {
 
-// @Autowired
-// DeduplicatorProperties props;
+    String inputTopic = "topic.OdeMapJson";
+    String outputTopic = "topic.DeduplicatedOdeMapJson";
+    ObjectMapper objectMapper;
 
-// @Before
-// public void setup() throws IOException {
-// // Load test files from resources
+    String inputMap1 = "";
+    String inputMap2 = "";
+    String inputMap4 = "";
+    String inputMap5 = "";
+    String inputMap3 = "";
 
-// // Reference MAP
-// inputMap1 = new
-// String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
+    @Autowired
+    DeduplicatorProperties props;
 
-// // Duplicate of Number 1
-// inputMap2 = new
-// String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
+    @Before
+    public void setup() throws IOException {
+        objectMapper = new ObjectMapper();
 
-// // A different Message entirely
-// inputMap3 = new
-// String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-different.json")));
+        // Load test files from resources
+        // Reference MAP
+        String mapReference = new String(
+                Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
+        OdeMessageFrameData mapReferenceData = objectMapper.readValue(mapReference, OdeMessageFrameData.class);
 
-// // Message 1 but 1 hour later
-// inputMap4 = new
-// String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference-1-hour-later.json")));
-// }
+        inputMap1 = mapReferenceData.toJson();
 
-// @Test
-// public void testTopology() {
+        // Duplicate of Number 1 - should be deduplicated
+        inputMap2 = mapReferenceData.toJson();
 
-// props = new DeduplicatorProperties();
-// props.setKafkaTopicOdeMapJson(inputTopic);
-// props.setKafkaTopicDeduplicatedOdeMapJson(outputTopic);
+        // Message 1 but 5 minutes later - should be deduplicated
+        OdeMessageFrameData map5MinutesLater = objectMapper.readValue(mapReferenceData.toJson(),
+                OdeMessageFrameData.class);
+        String originalTime = mapReferenceData.getMetadata().getOdeReceivedAt();
+        Instant instant = Instant.parse(originalTime);
+        Instant newInstant = instant.plus(5, ChronoUnit.MINUTES);
+        map5MinutesLater.getMetadata().setOdeReceivedAt(newInstant.toString());
+        inputMap3 = map5MinutesLater.toJson();
 
-// MapDeduplicatorTopology mapDeduplicatorTopology = new
-// MapDeduplicatorTopology(props, null);
+        // A different Message entirely - should be kept
+        String mapDifferent = new String(
+                Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-different.json")));
+        OdeMessageFrameData mapDifferentData = objectMapper.readValue(mapDifferent, OdeMessageFrameData.class);
+        inputMap4 = mapDifferentData.toJson();
 
-// Topology topology = mapDeduplicatorTopology.buildTopology();
+        // Message 1 but 1 hour later - should be kept
+        OdeMessageFrameData map1HourLater = objectMapper.readValue(mapReferenceData.toJson(),
+                OdeMessageFrameData.class);
+        originalTime = map1HourLater.getMetadata().getOdeReceivedAt();
+        instant = Instant.parse(originalTime);
+        newInstant = instant.plus(1, ChronoUnit.HOURS);
+        map1HourLater.getMetadata().setOdeReceivedAt(newInstant.toString());
+        inputMap5 = map1HourLater.toJson();
+    }
 
-// try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
+    @Test
+    public void testTopology() {
 
-// TestInputTopic<Void, String> inputOdeMapData = driver.createInputTopic(
-// inputTopic,
-// Serdes.Void().serializer(),
-// Serdes.String().serializer());
+        props = new DeduplicatorProperties();
+        props.setKafkaTopicOdeMapJson(inputTopic);
+        props.setKafkaTopicDeduplicatedOdeMapJson(outputTopic);
 
-// TestOutputTopic<String, OdeMapData> outputOdeMapData =
-// driver.createOutputTopic(
-// outputTopic,
-// Serdes.String().deserializer(),
-// JsonSerdes.OdeMap().deserializer());
+        MapDeduplicatorTopology mapDeduplicatorTopology = new MapDeduplicatorTopology(props);
 
-// inputOdeMapData.pipeInput(null, inputMap1);
-// inputOdeMapData.pipeInput(null, inputMap2);
-// inputOdeMapData.pipeInput(null, inputMap3);
-// inputOdeMapData.pipeInput(null, inputMap4);
+        Topology topology = mapDeduplicatorTopology.buildTopology();
 
-// List<KeyValue<String, OdeMapData>> mapDeduplicationResults =
-// outputOdeMapData.readKeyValuesToList();
+        try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
 
-// // validate that only 3 messages make it through
-// assertEquals(3, mapDeduplicationResults.size());
+            TestInputTopic<Void, String> inputOdeMapData = driver.createInputTopic(
+                    inputTopic,
+                    Serdes.Void().serializer(),
+                    Serdes.String().serializer());
 
-// objectMapper = new ObjectMapper();
-// OdeMapData map1 = objectMapper.readValue(inputMap1, OdeMapData.class);
-// OdeMapData map3 = objectMapper.readValue(inputMap3, OdeMapData.class);
-// OdeMapData map4 = objectMapper.readValue(inputMap4, OdeMapData.class);
+            TestOutputTopic<String, OdeMessageFrameData> outputOdeMapData = driver.createOutputTopic(
+                    outputTopic,
+                    Serdes.String().deserializer(),
+                    JsonSerdes.OdeMessageFrame().deserializer());
 
-// assertEquals(map1.getMetadata().getOdeReceivedAt(),
-// mapDeduplicationResults.get(0).value.getMetadata().getOdeReceivedAt());
-// assertEquals(map3.getMetadata().getOdeReceivedAt(),
-// mapDeduplicationResults.get(1).value.getMetadata().getOdeReceivedAt());
-// assertEquals(map4.getMetadata().getOdeReceivedAt(),
-// mapDeduplicationResults.get(2).value.getMetadata().getOdeReceivedAt());
+            inputOdeMapData.pipeInput(null, inputMap1);
+            inputOdeMapData.pipeInput(null, inputMap2);
+            inputOdeMapData.pipeInput(null, inputMap4);
+            inputOdeMapData.pipeInput(null, inputMap5);
+            inputOdeMapData.pipeInput(null, inputMap3);
 
-// } catch (JsonMappingException e) {
-// // TODO Auto-generated catch block
-// e.printStackTrace();
-// } catch (JsonProcessingException e) {
-// // TODO Auto-generated catch block
-// e.printStackTrace();
-// }
-// }
-// }
+            List<KeyValue<String, OdeMessageFrameData>> mapDeduplicationResults = outputOdeMapData
+                    .readKeyValuesToList();
+
+            // validate that only 3 messages make it through
+            assertEquals(3, mapDeduplicationResults.size());
+
+            objectMapper = new ObjectMapper();
+            OdeMessageFrameData map1 = objectMapper.readValue(inputMap1, OdeMessageFrameData.class);
+            OdeMessageFrameData map3 = objectMapper.readValue(inputMap4, OdeMessageFrameData.class);
+            OdeMessageFrameData map4 = objectMapper.readValue(inputMap5, OdeMessageFrameData.class);
+
+            assertThat(mapDeduplicationResults.get(0).value.toJson(), jsonEquals(map1.toJson()));
+            assertThat(mapDeduplicationResults.get(1).value.toJson(), jsonEquals(map3.toJson()));
+            assertThat(mapDeduplicationResults.get(2).value.toJson(), jsonEquals(map4.toJson()));
+
+        } catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+}
