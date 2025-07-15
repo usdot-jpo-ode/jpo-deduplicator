@@ -81,7 +81,7 @@ public class MapDeduplicatorTopologyTest {
                 OdeMessageFrameData.class);
         originalTime = map1HourLater.getMetadata().getOdeReceivedAt();
         instant = Instant.parse(originalTime);
-        newInstant = instant.plus(1, ChronoUnit.HOURS);
+        newInstant = instant.plus(61, ChronoUnit.HOURS);
         map1HourLater.getMetadata().setOdeReceivedAt(newInstant.toString());
         inputMap5 = map1HourLater.toJson();
     }

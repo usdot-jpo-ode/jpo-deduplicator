@@ -7,9 +7,12 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.KafkaStreams.StateListener;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 
+import us.dot.its.jpo.asn.j2735.r2024.Common.IntersectionReferenceID;
+import us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
+import us.dot.its.jpo.ode.plugin.j2735.J2735IntersectionReferenceID;
 
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
@@ -18,11 +21,11 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeMapJsonProcessorSupplier;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
+import us.dot.its.jpo.geojsonconverter.partitioner.RsuIntersectionKey;
 import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
 
 public class MapDeduplicatorTopology {
@@ -54,31 +57,6 @@ public class MapDeduplicatorTopology {
         streams.start();
     }
 
-    // public Instant getInstantFromMap(OdeMessageFrameData map) {
-    // try {
-    // if (map == null || map.getMetadata() == null) {
-    // logger.warn("Map message or metadata is null, using epoch time");
-    // return Instant.ofEpochMilli(0);
-    // }
-
-    // String time = ((OdeMessageFrameMetadata)
-    // map.getMetadata()).getOdeReceivedAt();
-    // if (time == null || time.isEmpty()) {
-    // logger.warn("Map message has null or empty odeReceivedAt time, using epoch
-    // time");
-    // return Instant.ofEpochMilli(0);
-    // }
-
-    // return Instant.from(formatter.parse(time));
-    // } catch (Exception e) {
-    // logger.warn("Failed to parse time from Map: " + (map != null &&
-    // map.getMetadata() != null
-    // ? ((OdeMessageFrameMetadata) map.getMetadata()).getOdeReceivedAt()
-    // : "null"), e);
-    // return Instant.ofEpochMilli(0);
-    // }
-    // }
-
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
@@ -96,11 +74,20 @@ public class MapDeduplicatorTopology {
                     return "unknown";
                 }
 
-                // For now, use a simple key based on RSU IP and timestamp
-                // This can be enhanced later with proper intersection ID extraction
-                String rsuIp = ((OdeMessageFrameMetadata) value.getMetadata()).getOriginIp();
-                String timestamp = ((OdeMessageFrameMetadata) value.getMetadata()).getOdeReceivedAt();
-                return rsuIp + "_" + timestamp;
+                MapDataMessageFrame mf = (MapDataMessageFrame) value.getPayload().getData();
+                if (mf == null || mf.getValue() == null || mf.getValue().getIntersections() == null ||
+                        mf.getValue().getIntersections().isEmpty()) {
+                    logger.warn("Received Map message with null message frame data, using default key");
+                    return "unknown";
+                }
+
+                IntersectionReferenceID intersectionId = mf.getValue().getIntersections().get(0).getId();
+                RsuIntersectionKey newKey = new RsuIntersectionKey();
+                newKey.setRsuId(((OdeMessageFrameMetadata) value.getMetadata()).getOriginIp());
+                J2735IntersectionReferenceID j2735IntersectionId = new J2735IntersectionReferenceID();
+                j2735IntersectionId.setId((int) intersectionId.getId().getValue());
+                newKey.setIntersectionReferenceID(j2735IntersectionId);
+                return newKey.toString();
             } catch (Exception e) {
                 logger.error("Error extracting key from Map message: " + e.getMessage(), e);
                 return "unknown";
