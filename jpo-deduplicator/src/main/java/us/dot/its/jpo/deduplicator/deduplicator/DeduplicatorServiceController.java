@@ -17,8 +17,8 @@ import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopolo
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.TimDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedBsmDeduplicatorTopology;
-// import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapDeduplicatorTopology;
-// import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapWktDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapWktDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
 
 @Controller
@@ -38,25 +38,17 @@ public class DeduplicatorServiceController {
 
         try {
 
-            // if(props.isEnableProcessedMapDeduplication()){
-            // logger.info("Starting Processed Map Deduplicator");
-            // ProcessedMapDeduplicatorTopology processedMapDeduplicatorTopology = new
-            // ProcessedMapDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("ProcessedMapDeduplicator")
-            // );
-            // processedMapDeduplicatorTopology.start();
-            // }
+            if (props.isEnableProcessedMapDeduplication()) {
+                logger.info("Starting Processed Map Deduplicator");
+                ProcessedMapDeduplicatorTopology processedMapDeduplicatorTopology = new ProcessedMapDeduplicatorTopology(props);
+                processedMapDeduplicatorTopology.start();
+            }
 
-            // if(props.isEnableProcessedMapWktDeduplication()){
-            // logger.info("Starting Processed Map WKT Deduplicator");
-            // ProcessedMapWktDeduplicatorTopology processedMapWktDeduplicatorTopology = new
-            // ProcessedMapWktDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("ProcessedMapWKTdeduplicator")
-            // );
-            // processedMapWktDeduplicatorTopology.start();
-            // }
+            if (props.isEnableProcessedMapWktDeduplication()) {
+                logger.info("Starting Processed Map WKT Deduplicator");
+                ProcessedMapWktDeduplicatorTopology processedMapWktDeduplicatorTopology = new ProcessedMapWktDeduplicatorTopology(props);
+                processedMapWktDeduplicatorTopology.start();
+            }
 
             if (props.isEnableOdeMapDeduplication()) {
                 logger.info("Starting Map Deduplicator");
