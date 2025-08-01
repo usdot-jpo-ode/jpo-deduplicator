@@ -1,5 +1,10 @@
 package us.dot.its.jpo.deduplicator.deduplicator;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TestInputTopic;
@@ -14,13 +19,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapWktDeduplicatorTopology;
+import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
 import us.dot.its.jpo.geojsonconverter.pojos.geojson.map.ProcessedMap;
 import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,10 +36,9 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
 
     String inputTopic = "topic.ProcessedMapWKT";
     String outputTopic = "topic.DeduplicatedProcessedMapWKT";
-
+    ObjectMapper objectMapper;
     TypeReference<ProcessedMap<String>> typeReference = new TypeReference<>() {
     };
-    ObjectMapper objectMapper = new ObjectMapper();
 
     // Reference MAP
     String inputProcessedMapWkt1 = "";
@@ -56,11 +59,15 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
 
     @Before
     public void setup() throws IOException {
-        // Load test files from resources
+        objectMapper = DateJsonMapper.getInstance();
 
+        // Load test files from resources
         // Reference MAP
-        inputProcessedMapWkt1 = new String(Files.readAllBytes(
+        String processedMapWktReference = new String(Files.readAllBytes(
                 Paths.get("src/test/resources/json/processed_map_wkt/sample.processed_map_wkt-reference.json")));
+        ProcessedMap<String> processedMapWktReferenceData = objectMapper.readValue(processedMapWktReference, typeReference);
+
+        inputProcessedMapWkt1 = processedMapWktReferenceData.toString();
 
         // Duplicate of Number 1
         inputProcessedMapWkt2 = new String(Files.readAllBytes(
@@ -76,6 +83,22 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
     }
 
     @Test
+    public void testSerialization() throws JsonMappingException, JsonProcessingException {
+        ProcessedMap<String> processedMap = objectMapper.readValue(inputProcessedMapWkt1, typeReference);
+        String json = processedMap.toString();
+        assertEquals(inputProcessedMapWkt1, json);
+    }
+
+    @Test
+    public void testJsonSerdes() throws IOException {
+        Serde<ProcessedMap<String>> serdes = JsonSerdes.ProcessedMapWKT();
+        ProcessedMap<String> deserialized = serdes.deserializer().deserialize(null, inputProcessedMapWkt1.getBytes());
+        byte[] serialized = serdes.serializer().serialize(null, deserialized);
+        String serializedString = new String(serialized);
+        assertThat(serializedString, jsonEquals(inputProcessedMapWkt1));
+    }
+
+    @Test
     public void testTopology() {
 
         props = new DeduplicatorProperties();
@@ -85,7 +108,6 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
         ProcessedMapWktDeduplicatorTopology processedMapDeduplicatorTopology = new ProcessedMapWktDeduplicatorTopology(props);
 
         Topology topology = processedMapDeduplicatorTopology.buildTopology();
-        objectMapper.registerModule(new JavaTimeModule());
 
         try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
 
