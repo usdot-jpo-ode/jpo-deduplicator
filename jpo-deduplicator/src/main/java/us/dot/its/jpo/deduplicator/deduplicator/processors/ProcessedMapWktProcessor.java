@@ -25,7 +25,7 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
     @Override
     public Instant getMessageTime(ProcessedMap<String> message) {
         try {
-            return message.getProperties().getOdeReceivedAt().toInstant();
+            return message.getProperties().getTimeStamp().toInstant();
         } catch (Exception e) {
             return Instant.ofEpochMilli(0);
         }
@@ -34,8 +34,8 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
     @Override
     public boolean isDuplicate(ProcessedMap<String> lastMessage, ProcessedMap<String> newMessage) {
         try{
-            Instant newValueTime = newMessage.getProperties().getTimeStamp().toInstant();
-            Instant oldValueTime = lastMessage.getProperties().getTimeStamp().toInstant();
+            Instant newValueTime = getMessageTime(newMessage);
+            Instant oldValueTime = getMessageTime(lastMessage);
             
             if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
                 return false;

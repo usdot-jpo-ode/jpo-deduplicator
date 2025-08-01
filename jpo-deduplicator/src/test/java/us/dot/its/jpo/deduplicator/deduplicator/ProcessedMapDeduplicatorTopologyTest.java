@@ -32,6 +32,8 @@ import java.util.List;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 public class ProcessedMapDeduplicatorTopologyTest {
 
@@ -71,16 +73,20 @@ public class ProcessedMapDeduplicatorTopologyTest {
         inputProcessedMap1 = processedMapReferenceData.toString();
 
         // Duplicate of Number 1
-        inputProcessedMap2 = new String(Files
-                .readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-reference.json")));
-
-        // A different Message entirely
-        inputProcessedMap3 = new String(Files
-                .readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-different.json")));
+        inputProcessedMap2 = processedMapReferenceData.toString();
 
         // Message 1 but 1 hour later
-        inputProcessedMap4 = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/json/processed_map/sample.processed_map-reference-1-hour-later.json")));
+        ProcessedMap<LineString> processedMap1HourLater = objectMapper.readValue(processedMapReference, typeReference);
+        ZonedDateTime originalZdt = processedMap1HourLater.getProperties().getTimeStamp();
+        Instant newInstant = originalZdt.toInstant().plusSeconds(3601);
+        processedMap1HourLater.getProperties().setTimeStamp(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
+        inputProcessedMap3 = processedMap1HourLater.toString();
+        
+        // A different Message entirely
+        String differentProcessedMapReference = new String(Files
+                .readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-different.json")));
+        ProcessedMap<LineString> processedMapDifferentData = objectMapper.readValue(differentProcessedMapReference, typeReference);
+        inputProcessedMap4 = processedMapDifferentData.toString();
     }
 
     @Test

@@ -27,7 +27,7 @@ public class ProcessedMapProcessor extends DeduplicationProcessor<ProcessedMap<L
     @Override
     public Instant getMessageTime(ProcessedMap<LineString> message) {
         try {
-            return message.getProperties().getOdeReceivedAt().toInstant();
+            return message.getProperties().getTimeStamp().toInstant();
         } catch (Exception e) {
             return Instant.ofEpochMilli(0);
         }

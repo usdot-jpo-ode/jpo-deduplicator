@@ -29,7 +29,8 @@ import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class ProcessedMapWktDeduplicatorTopologyTest {
@@ -70,16 +71,20 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
         inputProcessedMapWkt1 = processedMapWktReferenceData.toString();
 
         // Duplicate of Number 1
-        inputProcessedMapWkt2 = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/json/processed_map_wkt/sample.processed_map_wkt-reference.json")));
-
-        // A different Message entirely
-        inputProcessedMapWkt3 = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/json/processed_map_wkt/sample.processed_map_wkt-different.json")));
+        inputProcessedMapWkt2 = processedMapWktReferenceData.toString();
 
         // Message 1 but 1 hour later
-        inputProcessedMapWkt4 = new String(Files.readAllBytes(Paths.get(
-                "src/test/resources/json/processed_map_wkt/sample.processed_map_wkt-reference-1-hour-later.json")));
+        ProcessedMap<String> processedMapWkt1HourLater = objectMapper.readValue(processedMapWktReference, typeReference);
+        ZonedDateTime originalZdt = processedMapWkt1HourLater.getProperties().getTimeStamp();
+        Instant newInstant = originalZdt.toInstant().plusSeconds(3601);
+        processedMapWkt1HourLater.getProperties().setTimeStamp(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
+        inputProcessedMapWkt3 = processedMapWkt1HourLater.toString();
+
+        // A different Message entirely
+        String differentProcessedMapWktReference = new String(Files
+                .readAllBytes(Paths.get("src/test/resources/json/processed_map_wkt/sample.processed_map_wkt-different.json")));
+        ProcessedMap<String> processedMapWktDifferentData = objectMapper.readValue(differentProcessedMapWktReference, typeReference);
+        inputProcessedMapWkt4 = processedMapWktDifferentData.toString();
     }
 
     @Test
@@ -126,25 +131,22 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
             inputProcessedMapData.pipeInput(key, inputProcessedMapWkt3);
             inputProcessedMapData.pipeInput(key, inputProcessedMapWkt4);
 
-            List<KeyValue<String, ProcessedMap<String>>> mapDeduplicatorResults = outputProcessedMapData
+            List<KeyValue<String, ProcessedMap<String>>> processedMapWktDeduplicatorResults = outputProcessedMapData
                     .readKeyValuesToList();
 
             // validate that only 3 messages make it through
-            assertEquals(3, mapDeduplicatorResults.size());
+            assertEquals(3, processedMapWktDeduplicatorResults.size());
 
-            ProcessedMap<String> map1 = objectMapper.readValue(inputProcessedMapWkt1,
+            ProcessedMap<String> processedMapWkt1 = objectMapper.readValue(inputProcessedMapWkt1,
                     typeReference);
-            ProcessedMap<String> map2 = objectMapper.readValue(inputProcessedMapWkt2,
+            ProcessedMap<String> processedMapWkt3 = objectMapper.readValue(inputProcessedMapWkt3,
                     typeReference);
-            ProcessedMap<String> map4 = objectMapper.readValue(inputProcessedMapWkt4,
+            ProcessedMap<String> processedMapWkt4 = objectMapper.readValue(inputProcessedMapWkt4,
                     typeReference);
 
-            assertEquals(map1.getProperties().getOdeReceivedAt(),
-                    mapDeduplicatorResults.get(0).value.getProperties().getOdeReceivedAt());
-            assertEquals(map2.getProperties().getOdeReceivedAt(),
-                    mapDeduplicatorResults.get(1).value.getProperties().getOdeReceivedAt());
-            assertEquals(map4.getProperties().getOdeReceivedAt(),
-                    mapDeduplicatorResults.get(2).value.getProperties().getOdeReceivedAt());
+            assertThat(processedMapWktDeduplicatorResults.get(0).value.toString(), jsonEquals(processedMapWkt1.toString()));
+            assertThat(processedMapWktDeduplicatorResults.get(1).value.toString(), jsonEquals(processedMapWkt3.toString()));
+            assertThat(processedMapWktDeduplicatorResults.get(2).value.toString(), jsonEquals(processedMapWkt4.toString()));
 
         } catch (JsonMappingException e) {
             e.printStackTrace();
