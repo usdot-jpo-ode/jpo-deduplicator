@@ -32,8 +32,8 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.coverage.jacoco.xmReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmReportPaths>
         <sonar.language>java</sonar.language>
-        <jpo.ode.version>5.0.0</jpo.ode.version>
-        <jpo.geojsonconverter.version>2.1.1</jpo.geojsonconverter.version>
+        <jpo.ode.version>5.0.2</jpo.ode.version>
+        <jpo.geojsonconverter.version>3.0.2</jpo.geojsonconverter.version>
         <jpo.conflictmonitor.version>1.5.0</jpo.conflictmonitor.version>
     </properties>
     <dependencies>

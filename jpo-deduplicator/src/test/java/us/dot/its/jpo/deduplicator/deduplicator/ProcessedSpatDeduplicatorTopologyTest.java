@@ -1,302 +1,184 @@
-// package us.dot.its.jpo.deduplicator.deduplicator;
+package us.dot.its.jpo.deduplicator.deduplicator;
 
-// import org.apache.kafka.common.serialization.Serdes;
-// import org.apache.kafka.streams.KeyValue;
-// import org.apache.kafka.streams.TestInputTopic;
-// import org.apache.kafka.streams.TestOutputTopic;
-// import org.apache.kafka.streams.Topology;
-// import org.apache.kafka.streams.TopologyTestDriver;
-// import org.junit.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// import com.fasterxml.jackson.core.JsonProcessingException;
-// import com.fasterxml.jackson.core.type.TypeReference;
-// import com.fasterxml.jackson.databind.JsonMappingException;
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.kafka.common.serialization.Serde;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.TestInputTopic;
+import org.apache.kafka.streams.TestOutputTopic;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.TopologyTestDriver;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-// import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-// import
-// us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
-// import us.dot.its.jpo.geojsonconverter.pojos.spat.ProcessedSpat;
-// import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
-// import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-// import java.util.List;
+import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
+import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
+import us.dot.its.jpo.geojsonconverter.pojos.spat.ProcessedMovementPhaseState;
+import us.dot.its.jpo.geojsonconverter.pojos.spat.ProcessedSpat;
+import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
 
-// public class ProcessedSpatDeduplicatorTopologyTest {
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.List;
 
-// String inputTopic = "topic.ProcessedSpat";
-// String outputTopic = "topic.DeduplicatedProcessedSpat";
+public class ProcessedSpatDeduplicatorTopologyTest {
 
-// TypeReference<ProcessedSpat> typeReference = new TypeReference<>(){};
-// ObjectMapper objectMapper = new ObjectMapper();
+    String inputTopic = "topic.ProcessedSpat";
+    String outputTopic = "topic.DeduplicatedProcessedSpat";
 
-// // Reference Message
-// String inputProcessedSpat1 =
-// "{\"schemaVersion\":1,\"messageType\":\"SPAT\",\"odeReceivedAt\":\"2025-02-01T00:04:56.686Z\",\"originIp\":\"172.20.0.1\",\"intersectionId\":12111,\"cti4501Conformant\":false,\"validationMessages\":[{\"message\":\"$.payload.data.timeStamp:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data\",\"schemaPath\":\"#/$defs/J2735SPAT/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id.region:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id\",\"schemaPath\":\"#/$defs/J2735IntersectionReferenceID/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"}],\"revision\":0,\"status\":{\"manualControlIsEnabled\":false,\"stopTimeIsActivated\":false,\"failureFlash\":false,\"preemptIsActive\":false,\"signalPriorityIsActive\":false,\"fixedTimeOperation\":false,\"trafficDependentOperation\":false,\"standbyOperation\":false,\"failureMode\":false,\"off\":false,\"recentMAPmessageUpdate\":false,\"recentChangeInMAPassignedLanesIDsUsed\":false,\"noValidMAPisAvailableAtThisTime\":false,\"noValidSPATisAvailableAtThisTime\":false},\"utcTimeStamp\":\"2025-02-01T00:04:35.176Z\",\"states\":[{\"signalGroup\":2,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":4,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:58.1Z\",\"maxEndTime\":\"2025-02-01T00:36:58.1Z\"}}]},{\"signalGroup\":6,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":8,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":1,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":5,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]}]}";
+    ObjectMapper objectMapper;
 
-// // Deduplicated Message - Same as Reference.
-// String inputProcessedSpat2 =
-// "{\"schemaVersion\":1,\"messageType\":\"SPAT\",\"odeReceivedAt\":\"2025-02-01T00:05:56.686Z\",\"originIp\":\"172.20.0.1\",\"intersectionId\":12111,\"cti4501Conformant\":false,\"validationMessages\":[{\"message\":\"$.payload.data.timeStamp:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data\",\"schemaPath\":\"#/$defs/J2735SPAT/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id.region:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id\",\"schemaPath\":\"#/$defs/J2735IntersectionReferenceID/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"}],\"revision\":0,\"status\":{\"manualControlIsEnabled\":false,\"stopTimeIsActivated\":false,\"failureFlash\":false,\"preemptIsActive\":false,\"signalPriorityIsActive\":false,\"fixedTimeOperation\":false,\"trafficDependentOperation\":false,\"standbyOperation\":false,\"failureMode\":false,\"off\":false,\"recentMAPmessageUpdate\":false,\"recentChangeInMAPassignedLanesIDsUsed\":false,\"noValidMAPisAvailableAtThisTime\":false,\"noValidSPATisAvailableAtThisTime\":false},\"utcTimeStamp\":\"2025-02-01T00:04:35.276Z\",\"states\":[{\"signalGroup\":2,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":4,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:58.1Z\",\"maxEndTime\":\"2025-02-01T00:36:58.1Z\"}}]},{\"signalGroup\":6,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":8,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":1,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":5,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]}]}";
+    // Reference Message
+    String inputProcessedSpat1;
 
-// // Fast forward 1 minute
-// String inputProcessedSpat3 =
-// "{\"schemaVersion\":1,\"messageType\":\"SPAT\",\"odeReceivedAt\":\"2025-02-01T00:05:57.686Z\",\"originIp\":\"172.20.0.1\",\"intersectionId\":12111,\"cti4501Conformant\":false,\"validationMessages\":[{\"message\":\"$.payload.data.timeStamp:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data\",\"schemaPath\":\"#/$defs/J2735SPAT/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id.region:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id\",\"schemaPath\":\"#/$defs/J2735IntersectionReferenceID/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"}],\"revision\":0,\"status\":{\"manualControlIsEnabled\":false,\"stopTimeIsActivated\":false,\"failureFlash\":false,\"preemptIsActive\":false,\"signalPriorityIsActive\":false,\"fixedTimeOperation\":false,\"trafficDependentOperation\":false,\"standbyOperation\":false,\"failureMode\":false,\"off\":false,\"recentMAPmessageUpdate\":false,\"recentChangeInMAPassignedLanesIDsUsed\":false,\"noValidMAPisAvailableAtThisTime\":false,\"noValidSPATisAvailableAtThisTime\":false},\"utcTimeStamp\":\"2025-02-01T00:05:36.376Z\",\"states\":[{\"signalGroup\":2,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":4,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:58.1Z\",\"maxEndTime\":\"2025-02-01T00:36:58.1Z\"}}]},{\"signalGroup\":6,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":8,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":1,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":5,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]}]}";
+    // Same as Processed SPaT 1
+    String inputProcessedSpat2;
 
-// // Remove a Signal Group
-// String inputProcessedSpat4 =
-// "{\"schemaVersion\":1,\"messageType\":\"SPAT\",\"odeReceivedAt\":\"2025-02-01T00:05:56.686Z\",\"originIp\":\"172.20.0.1\",\"intersectionId\":12111,\"cti4501Conformant\":false,\"validationMessages\":[{\"message\":\"$.payload.data.timeStamp:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data\",\"schemaPath\":\"#/$defs/J2735SPAT/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id.region:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id\",\"schemaPath\":\"#/$defs/J2735IntersectionReferenceID/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"}],\"revision\":0,\"status\":{\"manualControlIsEnabled\":false,\"stopTimeIsActivated\":false,\"failureFlash\":false,\"preemptIsActive\":false,\"signalPriorityIsActive\":false,\"fixedTimeOperation\":false,\"trafficDependentOperation\":false,\"standbyOperation\":false,\"failureMode\":false,\"off\":false,\"recentMAPmessageUpdate\":false,\"recentChangeInMAPassignedLanesIDsUsed\":false,\"noValidMAPisAvailableAtThisTime\":false,\"noValidSPATisAvailableAtThisTime\":false},\"utcTimeStamp\":\"2025-02-01T00:05:36.496Z\",\"states\":[{\"signalGroup\":2,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":4,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:58.1Z\",\"maxEndTime\":\"2025-02-01T00:36:58.1Z\"}}]},{\"signalGroup\":6,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":8,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":1,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]}]}";
+    // Time change of +1 minute
+    String inputProcessedSpat3;
 
-// // Change the ID of a Signal Group
-// String inputProcessedSpat5 =
-// "{\"schemaVersion\":1,\"messageType\":\"SPAT\",\"odeReceivedAt\":\"2025-02-01T00:05:56.686Z\",\"originIp\":\"172.20.0.1\",\"intersectionId\":12111,\"cti4501Conformant\":false,\"validationMessages\":[{\"message\":\"$.payload.data.timeStamp:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data\",\"schemaPath\":\"#/$defs/J2735SPAT/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id.region:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id\",\"schemaPath\":\"#/$defs/J2735IntersectionReferenceID/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"}],\"revision\":0,\"status\":{\"manualControlIsEnabled\":false,\"stopTimeIsActivated\":false,\"failureFlash\":false,\"preemptIsActive\":false,\"signalPriorityIsActive\":false,\"fixedTimeOperation\":false,\"trafficDependentOperation\":false,\"standbyOperation\":false,\"failureMode\":false,\"off\":false,\"recentMAPmessageUpdate\":false,\"recentChangeInMAPassignedLanesIDsUsed\":false,\"noValidMAPisAvailableAtThisTime\":false,\"noValidSPATisAvailableAtThisTime\":false},\"utcTimeStamp\":\"2025-02-01T00:05:35.576Z\",\"states\":[{\"signalGroup\":2,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":4,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:58.1Z\",\"maxEndTime\":\"2025-02-01T00:36:58.1Z\"}}]},{\"signalGroup\":6,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":8,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":1,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":7,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]}]}";
+    // With a signal group removed
+    String inputProcessedSpat4;
 
-// // Change the Light State of one of the Signal Groups
-// String inputProcessedSpat6 =
-// "{\"schemaVersion\":1,\"messageType\":\"SPAT\",\"odeReceivedAt\":\"2025-02-01T00:05:56.686Z\",\"originIp\":\"172.20.0.1\",\"intersectionId\":12111,\"cti4501Conformant\":false,\"validationMessages\":[{\"message\":\"$.payload.data.timeStamp:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data\",\"schemaPath\":\"#/$defs/J2735SPAT/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id.region:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].id\",\"schemaPath\":\"#/$defs/J2735IntersectionReferenceID/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[0].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[1].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[2].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[3].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[4].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.startTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"},{\"message\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing.nextTime:
-// is missing but it is
-// required\",\"jsonPath\":\"$.payload.data.intersectionStateList.intersectionStatelist[0].states.movementList[5].state_time_speed.movementEventList[0].timing\",\"schemaPath\":\"#/$defs/J2735TimeChangeDetails/required\"}],\"revision\":0,\"status\":{\"manualControlIsEnabled\":false,\"stopTimeIsActivated\":false,\"failureFlash\":false,\"preemptIsActive\":false,\"signalPriorityIsActive\":false,\"fixedTimeOperation\":false,\"trafficDependentOperation\":false,\"standbyOperation\":false,\"failureMode\":false,\"off\":false,\"recentMAPmessageUpdate\":false,\"recentChangeInMAPassignedLanesIDsUsed\":false,\"noValidMAPisAvailableAtThisTime\":false,\"noValidSPATisAvailableAtThisTime\":false},\"utcTimeStamp\":\"2025-02-01T00:05:35.676Z\",\"states\":[{\"signalGroup\":2,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":4,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:58.1Z\",\"maxEndTime\":\"2025-02-01T00:36:58.1Z\"}}]},{\"signalGroup\":6,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:52Z\",\"maxEndTime\":\"2025-02-01T00:36:52.1Z\"}}]},{\"signalGroup\":8,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":1,\"stateTimeSpeed\":[{\"eventState\":\"PROTECTED_MOVEMENT_ALLOWED\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]},{\"signalGroup\":5,\"stateTimeSpeed\":[{\"eventState\":\"STOP_AND_REMAIN\",\"timing\":{\"minEndTime\":\"2025-02-01T00:36:25.2Z\",\"maxEndTime\":\"2025-02-01T00:36:25.2Z\"}}]}]}";
+    // With a signal group's id changed
+    String inputProcessedSpat5;
 
-// String key = "{\"rsuId\": \"10.164.6.16\", \"intersectionId\": 6311,
-// \"region\": -1}";
+    // With a change of the light state of a signal group
+    String inputProcessedSpat6;
 
-// @Autowired
-// DeduplicatorProperties props;
+    String key = "{\"rsuId\": \"10.164.6.16\", \"intersectionId\": 6311,\"region\": -1}";
 
-// @Test
-// public void testTopology() {
+    @Autowired
+    DeduplicatorProperties props;
 
-// props = new DeduplicatorProperties();
-// props.setKafkaTopicProcessedSpat(inputTopic);
-// props.setKafkaTopicDeduplicatedProcessedSpat(outputTopic);
+    @Before
+    public void setup() throws IOException {
+        objectMapper = DateJsonMapper.getInstance();
 
-// ProcessedSpatDeduplicatorTopology processedSpatDeduplicatorTopology = new
-// ProcessedSpatDeduplicatorTopology(props, null);
+        // Load test files from resources
 
-// Topology topology = processedSpatDeduplicatorTopology.buildTopology();
-// objectMapper.registerModule(new JavaTimeModule());
+        // Reference Processed SPaT
+        String processedSpatReference = new String(
+                Files.readAllBytes(Paths
+                        .get("src/test/resources/json/processed_spat/sample.processed_spat-reference.json")));
+        ProcessedSpat processedSpatReferenceData = objectMapper.readValue(processedSpatReference, ProcessedSpat.class);
 
-// try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
+        // Reference Processed SPaT, Should be kept
+        inputProcessedSpat1 = processedSpatReferenceData.toString();
 
-// TestInputTopic<String, String> inputProcessedSpatData =
-// driver.createInputTopic(
-// inputTopic,
-// Serdes.String().serializer(),
-// Serdes.String().serializer());
+        // Duplicate of Number 1, should be dropped
+        inputProcessedSpat2 = processedSpatReferenceData.toString();
 
-// TestOutputTopic<String, ProcessedSpat> outputProcessedSpatData =
-// driver.createOutputTopic(
-// outputTopic,
-// Serdes.String().deserializer(),
-// JsonSerdes.ProcessedSpat().deserializer());
+        // Time change of +1 minute, should be kept
+        ProcessedSpat processedSpatIncreaseTime = objectMapper.readValue(processedSpatReferenceData.toString(),
+                ProcessedSpat.class);
+        // Convert ZonedDateTime to Instant, add 61 seconds, then convert back to
+        // ZonedDateTime
+        ZonedDateTime originalZdt = processedSpatIncreaseTime.getUtcTimeStamp();
+        Instant newInstant = originalZdt.toInstant().plusSeconds(61);
+        processedSpatIncreaseTime.setUtcTimeStamp(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
+        inputProcessedSpat3 = processedSpatIncreaseTime.toString();
 
-// inputProcessedSpatData.pipeInput(key, inputProcessedSpat1);
-// inputProcessedSpatData.pipeInput(key, inputProcessedSpat2);
-// inputProcessedSpatData.pipeInput(key, inputProcessedSpat3);
-// inputProcessedSpatData.pipeInput(key, inputProcessedSpat4);
-// inputProcessedSpatData.pipeInput(key, inputProcessedSpat5);
-// inputProcessedSpatData.pipeInput(key, inputProcessedSpat6);
+        // Signal group removed
+        ProcessedSpat processedSpatSignalGroupRemoved = objectMapper.readValue(processedSpatReferenceData.toString(),
+                ProcessedSpat.class);
+        processedSpatSignalGroupRemoved.getStates().remove(0);
+        inputProcessedSpat4 = processedSpatSignalGroupRemoved.toString();
 
-// List<KeyValue<String, ProcessedSpat>> spatDeduplicatorResults =
-// outputProcessedSpatData.readKeyValuesToList();
+        // Signal group ID changed
+        ProcessedSpat processedSpatSignalGroupIdChanged = objectMapper.readValue(
+                processedSpatSignalGroupRemoved.toString(),
+                ProcessedSpat.class);
+        processedSpatSignalGroupIdChanged.getStates().get(0).setSignalGroup(500);
+        inputProcessedSpat5 = processedSpatSignalGroupIdChanged.toString();
 
-// // validate that only 5 messages make it through
-// assertEquals(5, spatDeduplicatorResults.size());
+        // Signal group light state changed
+        ProcessedSpat processedSpatSignalGroupLightStateChanged = objectMapper.readValue(
+                processedSpatSignalGroupIdChanged.toString(),
+                ProcessedSpat.class);
+        processedSpatSignalGroupLightStateChanged.getStates().get(0).getStateTimeSpeed().get(0)
+                .setEventState(ProcessedMovementPhaseState.PROTECTED_CLEARANCE);
+        inputProcessedSpat6 = processedSpatSignalGroupLightStateChanged.toString();
+    }
 
-// ProcessedSpat spat1 = objectMapper.readValue(inputProcessedSpat1,
-// typeReference);
-// ProcessedSpat spat3 = objectMapper.readValue(inputProcessedSpat3,
-// typeReference); // forwarded because the time on the message changes by 1
-// minute
-// ProcessedSpat spat4 = objectMapper.readValue(inputProcessedSpat4,
-// typeReference); // forwarded because the signal state changes
-// ProcessedSpat spat5 = objectMapper.readValue(inputProcessedSpat5,
-// typeReference); // forwarded because the number of signal groups changed
-// ProcessedSpat spat6 = objectMapper.readValue(inputProcessedSpat6,
-// typeReference); // forwarded because a signal group ID changed
+    @Test
+    public void testSerialization() throws JsonMappingException, JsonProcessingException {
+        ProcessedSpat processedSpat = objectMapper.readValue(inputProcessedSpat1, ProcessedSpat.class);
+        String json = processedSpat.toString();
+        assertEquals(inputProcessedSpat1, json);
+    }
 
-// assertEquals(spat1.getUtcTimeStamp(),
-// spatDeduplicatorResults.get(0).value.getUtcTimeStamp());
-// assertEquals(spat3.getUtcTimeStamp(),
-// spatDeduplicatorResults.get(1).value.getUtcTimeStamp());
-// assertEquals(spat4.getUtcTimeStamp(),
-// spatDeduplicatorResults.get(2).value.getUtcTimeStamp());
-// assertEquals(spat5.getUtcTimeStamp(),
-// spatDeduplicatorResults.get(3).value.getUtcTimeStamp());
-// assertEquals(spat6.getUtcTimeStamp(),
-// spatDeduplicatorResults.get(4).value.getUtcTimeStamp());
+    @Test
+    public void testJsonSerdes() {
+        Serde<ProcessedSpat> serdes = JsonSerdes.ProcessedSpat();
+        ProcessedSpat deserialized = serdes.deserializer().deserialize(null, inputProcessedSpat1.getBytes());
+        byte[] serialized = serdes.serializer().serialize(null, deserialized);
+        assertThat(new String(serialized), jsonEquals(inputProcessedSpat1));
+    }
 
-// } catch (JsonMappingException e) {
-// e.printStackTrace();
-// } catch (JsonProcessingException e) {
-// e.printStackTrace();
-// }
-// }
-// }
+    @Test
+    public void testTopology() {
+        props = new DeduplicatorProperties();
+        props.setKafkaTopicProcessedSpat(inputTopic);
+        props.setKafkaTopicDeduplicatedProcessedSpat(outputTopic);
+
+        ProcessedSpatDeduplicatorTopology processedSpatDeduplicatorTopology = new ProcessedSpatDeduplicatorTopology(
+                props);
+        Topology topology = processedSpatDeduplicatorTopology.buildTopology();
+
+        try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
+
+            TestInputTopic<String, String> inputProcessedSpatData = driver.createInputTopic(
+                    inputTopic,
+                    Serdes.String().serializer(),
+                    Serdes.String().serializer());
+
+            TestOutputTopic<String, ProcessedSpat> outputProcessedSpatData = driver.createOutputTopic(
+                    outputTopic,
+                    Serdes.String().deserializer(),
+                    JsonSerdes.ProcessedSpat().deserializer());
+
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat1);
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat2);
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat3);
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat4);
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat5);
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat6);
+
+            List<KeyValue<String, ProcessedSpat>> processedSpatDeduplicatorResults = outputProcessedSpatData
+                    .readKeyValuesToList();
+
+            // validate that only 5 messages make it through
+            assertEquals(5, processedSpatDeduplicatorResults.size());
+
+            ProcessedSpat processedSpat1 = objectMapper.readValue(inputProcessedSpat1, ProcessedSpat.class);
+            ProcessedSpat processedSpat3 = objectMapper.readValue(inputProcessedSpat3, ProcessedSpat.class);
+            ProcessedSpat processedSpat4 = objectMapper.readValue(inputProcessedSpat4, ProcessedSpat.class);
+            ProcessedSpat processedSpat5 = objectMapper.readValue(inputProcessedSpat5, ProcessedSpat.class);
+            ProcessedSpat processedSpat6 = objectMapper.readValue(inputProcessedSpat6, ProcessedSpat.class);
+
+            assertThat(processedSpatDeduplicatorResults.get(0).value.toString(), jsonEquals(processedSpat1.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(1).value.toString(), jsonEquals(processedSpat3.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(2).value.toString(), jsonEquals(processedSpat4.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(3).value.toString(), jsonEquals(processedSpat5.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(4).value.toString(), jsonEquals(processedSpat6.toString()));
+
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+}

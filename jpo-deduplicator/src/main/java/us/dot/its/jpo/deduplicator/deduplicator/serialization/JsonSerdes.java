@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import us.dot.its.jpo.geojsonconverter.serialization.deserializers.JsonDeserializer;
 import us.dot.its.jpo.geojsonconverter.serialization.serializers.JsonSerializer;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
-import us.dot.its.jpo.ode.model.OdeTimData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
@@ -39,12 +38,6 @@ public class JsonSerdes {
         }
     }
 
-    public static Serde<OdeTimData> OdeTim(DeduplicatorProperties props) {
-        return Serdes.serdeFrom(
-                new JsonSerializer<OdeTimData>(),
-                new JsonDeserializer<>(OdeTimData.class));
-    }
-
     public static Serde<OdeMessageFrameData> OdeMessageFrame(DeduplicatorProperties props) {
         return Serdes.serdeFrom(
                 new JsonSerializer<OdeMessageFrameData>(),
@@ -55,10 +48,6 @@ public class JsonSerdes {
         return Serdes.serdeFrom(
                 new JsonSerializer<JsonNode>(),
                 new JsonDeserializer<>(JsonNode.class));
-    }
-
-    public static Serde<OdeTimData> OdeTim() {
-        return OdeTim(null);
     }
 
     public static Serde<OdeMessageFrameData> OdeMessageFrame() {

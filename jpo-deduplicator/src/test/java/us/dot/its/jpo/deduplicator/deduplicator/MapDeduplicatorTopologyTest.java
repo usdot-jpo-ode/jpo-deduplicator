@@ -2,7 +2,9 @@ package us.dot.its.jpo.deduplicator.deduplicator;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TestInputTopic;
@@ -19,10 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
+import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
 import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,7 +49,7 @@ public class MapDeduplicatorTopologyTest {
 
     @Before
     public void setup() throws IOException {
-        objectMapper = new ObjectMapper();
+        objectMapper = DateJsonMapper.getInstance();
 
         // Load test files from resources
         // Reference MAP
@@ -87,6 +88,21 @@ public class MapDeduplicatorTopologyTest {
     }
 
     @Test
+    public void testSerialization() throws JsonMappingException, JsonProcessingException {
+        OdeMessageFrameData map = objectMapper.readValue(inputMap1, OdeMessageFrameData.class);
+        String json = objectMapper.writeValueAsString(map);
+        assertEquals(inputMap1, json);
+    }
+
+    @Test
+    public void testJsonSerdes() {
+        Serde<OdeMessageFrameData> serdes = JsonSerdes.OdeMessageFrame();
+        OdeMessageFrameData deserialized = serdes.deserializer().deserialize(null, inputMap1.getBytes());
+        byte[] serialized = serdes.serializer().serialize(null, deserialized);
+        assertThat(new String(serialized), jsonEquals(inputMap1));
+    }
+
+    @Test
     public void testTopology() {
 
         props = new DeduplicatorProperties();
@@ -94,7 +110,6 @@ public class MapDeduplicatorTopologyTest {
         props.setKafkaTopicDeduplicatedOdeMapJson(outputTopic);
 
         MapDeduplicatorTopology mapDeduplicatorTopology = new MapDeduplicatorTopology(props);
-
         Topology topology = mapDeduplicatorTopology.buildTopology();
 
         try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
@@ -121,7 +136,6 @@ public class MapDeduplicatorTopologyTest {
             // validate that only 3 messages make it through
             assertEquals(3, mapDeduplicationResults.size());
 
-            objectMapper = new ObjectMapper();
             OdeMessageFrameData map1 = objectMapper.readValue(inputMap1, OdeMessageFrameData.class);
             OdeMessageFrameData map3 = objectMapper.readValue(inputMap4, OdeMessageFrameData.class);
             OdeMessageFrameData map4 = objectMapper.readValue(inputMap5, OdeMessageFrameData.class);
@@ -131,10 +145,8 @@ public class MapDeduplicatorTopologyTest {
             assertThat(mapDeduplicationResults.get(2).value.toJson(), jsonEquals(map4.toJson()));
 
         } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

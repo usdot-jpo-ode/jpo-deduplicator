@@ -11,7 +11,6 @@ The following topics currently support deduplication.
 - topic.ProcessedMapWKT -> topic.DeduplicatedProcessedMapWKT
 - topic.OdeMapJson -> topic.DeduplicatedOdeMapJson
 - topic.OdeTimJson -> topic.DeduplicatedOdeTimJson
-- topic.OdeRawEncodedTIMJson -> topic.DeduplicatedOdeRawEncodedTIMJson
 - topic.OdeBsmJson -> topic.DeduplicatedOdeBsmJson
 - topic.ProcessedSpat -> topic.DeduplicatedProcessedSpat
 

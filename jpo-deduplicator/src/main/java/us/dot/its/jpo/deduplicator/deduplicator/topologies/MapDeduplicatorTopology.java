@@ -7,12 +7,10 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.KafkaStreams.StateListener;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 
-import us.dot.its.jpo.asn.j2735.r2024.Common.IntersectionReferenceID;
 import us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
-import us.dot.its.jpo.ode.plugin.j2735.J2735IntersectionReferenceID;
 
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
@@ -81,12 +79,9 @@ public class MapDeduplicatorTopology {
                     return "unknown";
                 }
 
-                IntersectionReferenceID intersectionId = mf.getValue().getIntersections().get(0).getId();
                 RsuIntersectionKey newKey = new RsuIntersectionKey();
                 newKey.setRsuId(((OdeMessageFrameMetadata) value.getMetadata()).getOriginIp());
-                J2735IntersectionReferenceID j2735IntersectionId = new J2735IntersectionReferenceID();
-                j2735IntersectionId.setId((int) intersectionId.getId().getValue());
-                newKey.setIntersectionReferenceID(j2735IntersectionId);
+                newKey.setIntersectionReferenceID(mf.getValue().getIntersections().get(0).getId());
                 return newKey.toString();
             } catch (Exception e) {
                 logger.error("Error extracting key from Map message: " + e.getMessage(), e);

@@ -73,12 +73,6 @@ public class DeduplicatorProperties implements EnvironmentAware {
    private boolean enableOdeTimDeduplication;
    private String kafkaStateStoreOdeTimJsonName = "OdeTimJson-store";
 
-   // Ode Raw Encoded Tim Json Configuration
-   private String kafkaTopicOdeRawEncodedTimJson;
-   private String kafkaTopicDeduplicatedOdeRawEncodedTimJson;
-   private boolean enableOdeRawEncodedTimDeduplication;
-   private String kafkaStateStoreOdeRawEncodedTimJsonName = "OdeRawEncodedTimJson-store";
-
    // Ode BsmJson Configuration
    private String kafkaTopicOdeBsmJson;
    private String kafkaTopicDeduplicatedOdeBsmJson;
@@ -326,21 +320,6 @@ public class DeduplicatorProperties implements EnvironmentAware {
    @Value("${enableOdeTimDeduplication}")
    public void setEnableOdeTimDeduplication(boolean enableOdeTimDeduplication) {
       this.enableOdeTimDeduplication = enableOdeTimDeduplication;
-   }
-
-   @Value("${kafkaTopicOdeRawEncodedTimJson}")
-   public void setKafkaTopicOdeRawEncodedTimJson(String kafkaTopicOdeRawEncodedTimJson) {
-      this.kafkaTopicOdeRawEncodedTimJson = kafkaTopicOdeRawEncodedTimJson;
-   }
-
-   @Value("${kafkaTopicDeduplicatedOdeRawEncodedTimJson}")
-   public void setKafkaTopicDeduplicatedOdeRawEncodedTimJson(String kafkaTopicDeduplicatedOdeRawEncodedTimJson) {
-      this.kafkaTopicDeduplicatedOdeRawEncodedTimJson = kafkaTopicDeduplicatedOdeRawEncodedTimJson;
-   }
-
-   @Value("${enableOdeRawEncodedTimDeduplication}")
-   public void setEnableOdeRawEncodedTimDeduplication(boolean enableOdeRawEncodedTimDeduplication) {
-      this.enableOdeRawEncodedTimDeduplication = enableOdeRawEncodedTimDeduplication;
    }
 
    @Value("${kafkaTopicOdeBsmJson}")

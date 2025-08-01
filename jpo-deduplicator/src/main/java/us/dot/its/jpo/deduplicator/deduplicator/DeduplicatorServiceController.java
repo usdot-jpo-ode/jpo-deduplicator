@@ -16,11 +16,10 @@ import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.TimDeduplicatorTopology;
-import us.dot.its.jpo.deduplicator.deduplicator.topologies.OdeRawEncodedTimDeduplicatorTopology;
-// import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedBsmDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedBsmDeduplicatorTopology;
 // import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapDeduplicatorTopology;
 // import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapWktDeduplicatorTopology;
-// import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
+import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedSpatDeduplicatorTopology;
 
 @Controller
 @DependsOn("createKafkaTopics")
@@ -65,33 +64,18 @@ public class DeduplicatorServiceController {
                 mapDeduplicatorTopology.start();
             }
 
-            // if (props.isEnableOdeTimDeduplication()) {
-            // logger.info("Starting Tim Deduplicator");
-            // TimDeduplicatorTopology timDeduplicatorTopology = new
-            // TimDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("TimDeduplicator"));
-            // timDeduplicatorTopology.start();
-            // }
+            if (props.isEnableOdeTimDeduplication()) {
+                logger.info("Starting TIM Deduplicator");
+                TimDeduplicatorTopology timDeduplicatorTopology = new TimDeduplicatorTopology(props);
+                timDeduplicatorTopology.start();
+            }
 
-            // if (props.isEnableOdeRawEncodedTimDeduplication()) {
-            // logger.info("Starting Raw Encoded TIM Deduplicator");
-            // OdeRawEncodedTimDeduplicatorTopology odeRawEncodedTimDeduplicatorTopology =
-            // new OdeRawEncodedTimDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("OdeRawEncodedTimDeduplicator"));
-            // odeRawEncodedTimDeduplicatorTopology.start();
-            // }
-
-            // if(props.isEnableProcessedSpatDeduplication()){
-            // logger.info("Starting Processed Spat Deduplicator");
-            // ProcessedSpatDeduplicatorTopology processedSpatDeduplicatorTopology = new
-            // ProcessedSpatDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("ProcessedSpatDeduplicator")
-            // );
-            // processedSpatDeduplicatorTopology.start();
-            // }
+            if (props.isEnableProcessedSpatDeduplication()) {
+                logger.info("Starting Processed Spat Deduplicator");
+                ProcessedSpatDeduplicatorTopology processedSpatDeduplicatorTopology = new ProcessedSpatDeduplicatorTopology(
+                        props);
+                processedSpatDeduplicatorTopology.start();
+            }
 
             if (props.isEnableOdeBsmDeduplication()) {
                 logger.info("Starting BSM Deduplicator");
@@ -99,15 +83,12 @@ public class DeduplicatorServiceController {
                 bsmDeduplicatorTopology.start();
             }
 
-            // if(props.isEnableProcessedBsmDeduplication()){
-            // logger.info("Starting Processed BSM Deduplicator");
-            // ProcessedBsmDeduplicatorTopology processedBsmDeduplicatorTopology = new
-            // ProcessedBsmDeduplicatorTopology(
-            // props,
-            // props.createStreamProperties("ProcessedBsmDeduplicator")
-            // );
-            // processedBsmDeduplicatorTopology.start();
-            // }
+            if (props.isEnableProcessedBsmDeduplication()) {
+                logger.info("Starting Processed BSM Deduplicator");
+                ProcessedBsmDeduplicatorTopology processedBsmDeduplicatorTopology = new ProcessedBsmDeduplicatorTopology(
+                        props);
+                processedBsmDeduplicatorTopology.start();
+            }
 
         } catch (Exception e) {
             logger.error("Encountered issue with creating topologies", e);

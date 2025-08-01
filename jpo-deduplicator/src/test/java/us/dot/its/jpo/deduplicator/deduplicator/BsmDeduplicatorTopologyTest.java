@@ -2,7 +2,9 @@ package us.dot.its.jpo.deduplicator.deduplicator;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TestInputTopic;
@@ -24,10 +26,9 @@ import us.dot.its.jpo.asn.j2735.r2024.Common.Longitude;
 import us.dot.its.jpo.asn.j2735.r2024.Common.Speed;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.BsmDeduplicatorTopology;
+import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
 import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -71,11 +72,11 @@ public class BsmDeduplicatorTopologyTest {
 
     @Before
     public void setup() throws IOException {
-        objectMapper = new ObjectMapper();
+        objectMapper = DateJsonMapper.getInstance();
 
         // Load test files from resources
 
-        // Reference MAP
+        // Reference BSM
         String bsmReference = new String(
                 Files.readAllBytes(Paths
                         .get("src/test/resources/json/ode_bsm/sample.ode-bsm-reference.json")));
@@ -137,14 +138,28 @@ public class BsmDeduplicatorTopologyTest {
         bsmMfSpeedMissing.getValue().getCoreData().setSpeed(null);
         inputBsm8 = bsmSpeedMissing.toJson();
 
-        // Vehicle is missing its set to unavailable, should be forwarded
+        // Vehicle is missing its set to unavailable, should be dropped
         OdeMessageFrameData bsmSetToUnavailable = objectMapper.readValue(bsmReferenceData.toJson(),
                 OdeMessageFrameData.class);
         BasicSafetyMessageMessageFrame bsmMfSetToUnavailable = (BasicSafetyMessageMessageFrame) bsmSetToUnavailable
                 .getPayload().getData();
         bsmMfSetToUnavailable.getValue().getCoreData().setSpeed(new Speed(8191));
         inputBsm9 = bsmSetToUnavailable.toJson();
+    }
 
+    @Test
+    public void testSerialization() throws JsonMappingException, JsonProcessingException {
+        OdeMessageFrameData bsm = objectMapper.readValue(inputBsm1, OdeMessageFrameData.class);
+        String json = objectMapper.writeValueAsString(bsm);
+        assertEquals(inputBsm1, json);
+    }
+
+    @Test
+    public void testJsonSerdes() {
+        Serde<OdeMessageFrameData> serdes = JsonSerdes.OdeMessageFrame();
+        OdeMessageFrameData deserialized = serdes.deserializer().deserialize(null, inputBsm1.getBytes());
+        byte[] serialized = serdes.serializer().serialize(null, deserialized);
+        assertThat(new String(serialized), jsonEquals(inputBsm1));
     }
 
     @Test
@@ -185,10 +200,9 @@ public class BsmDeduplicatorTopologyTest {
             List<KeyValue<String, OdeMessageFrameData>> bsmDeduplicationResults = outputOdeBsmData
                     .readKeyValuesToList();
 
-            // validate that only 8 messages make it through
+            // validate that only 7 messages make it through
             assertEquals(7, bsmDeduplicationResults.size());
 
-            objectMapper = new ObjectMapper();
             OdeMessageFrameData bsm1 = objectMapper.readValue(inputBsm1, OdeMessageFrameData.class);
             OdeMessageFrameData bsm3 = objectMapper.readValue(inputBsm3, OdeMessageFrameData.class);
             OdeMessageFrameData bsm4 = objectMapper.readValue(inputBsm4, OdeMessageFrameData.class);
@@ -206,10 +220,8 @@ public class BsmDeduplicatorTopologyTest {
             assertThat(bsmDeduplicationResults.get(6).value.toJson(), jsonEquals(bsm8.toJson()));
 
         } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
