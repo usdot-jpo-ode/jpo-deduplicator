@@ -43,7 +43,7 @@ kafkaTopicDeduplicatedOdeBsmJson: topic.DeduplicatedOdeBsmJson
 enableOdeBsmDeduplication: ${ENABLE_ODE_BSM_DEDUPLICATION:true}
 odeBsmMaximumTimeDelta: 10000 # Milliseconds
 odeBsmMaximumPositionDelta: 1 # Meter
-odeBsmAlwaysIncludeAtSpeed: 20 # Meter / Second
+odeBsmAlwaysIncludeAtSpeed: 1 # x 0.02 Meter / Second (J2735 defined)
 
 # Processed Map Configuration
 kafkaTopicProcessedSpat: topic.ProcessedSpat

@@ -17,6 +17,7 @@ The first release of the jpo-deduplicator package. This package focuses on remov
  - OdeMapJson
  - OdeBsmJson
  - OdeTimJson
+ - OdeRawEncodedTim
 
 This release also makes additional changes to the submodule components as follows
 
