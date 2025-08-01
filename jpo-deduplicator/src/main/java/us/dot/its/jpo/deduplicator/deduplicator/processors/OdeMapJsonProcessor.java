@@ -66,24 +66,21 @@ public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
                 return false;
             }
 
+            // Check if the Map intersection IDs are the same
             MapDataMessageFrame oldMap = (MapDataMessageFrame) lastMessage.getPayload().getData();
+            int oldMapIntersectionId = (int) oldMap.getValue().getIntersections().get(0).getId().getId().getValue();
             MapDataMessageFrame newMap = (MapDataMessageFrame) newMessage.getPayload().getData();
+            int newMapIntersectionId = (int) newMap.getValue().getIntersections().get(0).getId().getId().getValue();
 
-            // Compare map data for equality
-            if (oldMap == null || newMap == null || oldMap.getValue() == null || newMap.getValue() == null) {
+            if (oldMapIntersectionId != newMapIntersectionId) {
                 return false;
             }
-
-            // For now, treat maps as duplicates if they have the same intersection ID and
-            // are within the time window
-            // This is a simplified approach - in a real implementation you might want to
-            // compare more map properties
-            return true;
-
         } catch (Exception e) {
             logger.warn("Caught General Exception while checking Map duplicates: " + e.getMessage(), e);
         }
 
+        // Treat maps as duplicates if they have the same intersection ID and
+        // are within the 1 hour time window
         return true;
     }
 }
