@@ -30,6 +30,7 @@ The processes that determine which messages are duplicates are unique and custom
 ### OdeTimJson
 - Two messages within a 1 hour time window
 - Two messages have the same packet ID
+- Two message have the same msgCnt value
 
 ### OdeBsmJson
 - Two messages within the defined time threshold defined by the `odeBsmMaximumTimeDelta` value in application.yaml

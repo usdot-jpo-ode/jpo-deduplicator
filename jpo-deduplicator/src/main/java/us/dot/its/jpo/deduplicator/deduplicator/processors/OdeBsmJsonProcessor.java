@@ -87,8 +87,12 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
 
             // If the Vehicle is moving (speed is available and above threshold), forward
             // the message on
-            if (newSpeedAvailable && newCore.getSpeed().getValue() > props.getOdeBsmAlwaysIncludeAtSpeed()) {
-                return false;
+            if (newSpeedAvailable) {
+                // Convert to m/s (J2735 speed is in 0.02 m/s increments * 0 - 8190)
+                double newSpeed = newCore.getSpeed().getValue() * 0.02;
+                if (newSpeed > props.getOdeBsmAlwaysIncludeAtSpeed()) {
+                    return false;
+                }
             }
 
             // If the new core and the old core have different null conditions

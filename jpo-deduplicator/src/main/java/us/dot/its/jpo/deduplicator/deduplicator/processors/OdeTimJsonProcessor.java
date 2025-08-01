@@ -75,6 +75,11 @@ public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
             if (!oldTimPacketId.equals(newTimPacketId)) {
                 return false;
             }
+
+            // Check if the message count of the new TIM is identical to the old TIM
+            if (newTim.getValue().getMsgCnt().getValue() != oldTim.getValue().getMsgCnt().getValue()) {
+                return false;
+            }
         } catch(Exception e){
             logger.warn("Caught General Exception" + e);
         }
