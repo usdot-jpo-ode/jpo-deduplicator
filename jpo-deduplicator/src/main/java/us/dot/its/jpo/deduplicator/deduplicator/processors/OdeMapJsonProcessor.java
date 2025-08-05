@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
-import us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame;
 
 public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData> {
 
@@ -63,16 +62,6 @@ public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
                     newMessage == null || newMessage.getPayload() == null
                     || newMessage.getPayload().getData() == null) {
                 logger.warn("One or both Map messages have null payload or data, treating as non-duplicate");
-                return false;
-            }
-
-            // Check if the Map intersection IDs are the same
-            MapDataMessageFrame oldMap = (MapDataMessageFrame) lastMessage.getPayload().getData();
-            int oldMapIntersectionId = (int) oldMap.getValue().getIntersections().get(0).getId().getId().getValue();
-            MapDataMessageFrame newMap = (MapDataMessageFrame) newMessage.getPayload().getData();
-            int newMapIntersectionId = (int) newMap.getValue().getIntersections().get(0).getId().getId().getValue();
-
-            if (oldMapIntersectionId != newMapIntersectionId) {
                 return false;
             }
         } catch (Exception e) {
