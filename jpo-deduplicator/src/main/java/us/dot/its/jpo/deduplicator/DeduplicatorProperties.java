@@ -129,7 +129,6 @@ public class DeduplicatorProperties implements EnvironmentAware {
       logger.info("groupId: {}", buildProperties.getGroup());
       logger.info("artifactId: {}", buildProperties.getArtifact());
       logger.info("version: {}", version);
-      // OdeMsgMetadata.setStaticSchemaVersion(OUTPUT_SCHEMA_VERSION);
 
       String hostname;
       try {
@@ -191,8 +190,6 @@ public class DeduplicatorProperties implements EnvironmentAware {
 
       // Reduce cache buffering per topology to 1MB
       streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 1 * 1024 * 1024L);
-      // Optionally, to disable caching:
-      // streamProps.put(StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG, 0);
 
       // Decrease default commit interval. Default for 'at least once' mode of 30000ms
       // is too slow.
@@ -207,15 +204,11 @@ public class DeduplicatorProperties implements EnvironmentAware {
       } else if (SystemUtils.IS_OS_WINDOWS) {
          streamProps.put(StreamsConfig.STATE_DIR_CONFIG, "C:/temp/ode");
       }
-      // streamProps.put(StreamsConfig.STATE_DIR_CONFIG, "/var/lib/")\
 
       // Increase max.block.ms and delivery.timeout.ms for streams
       final int FIVE_MINUTES_MS = 5 * 60 * 1000;
       streamProps.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, FIVE_MINUTES_MS);
       streamProps.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, FIVE_MINUTES_MS);
-
-      // Disable batching
-      // streamProps.put(ProducerConfig.BATCH_SIZE_CONFIG, 0);
 
       streamProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "zstd");
       streamProps.put(ProducerConfig.LINGER_MS_CONFIG, getKafkaLingerMs());
@@ -419,7 +412,7 @@ public class DeduplicatorProperties implements EnvironmentAware {
    private static String getEnvironmentVariable(String variableName) {
       String value = System.getenv(variableName);
       if (value == null || value.equals("")) {
-         System.out.println("Something went wrong retrieving the environment variable " + variableName);
+         logger.warn("Something went wrong retrieving the environment variable " + variableName);
       }
       return value;
    }

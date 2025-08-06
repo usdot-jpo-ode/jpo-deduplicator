@@ -2,22 +2,20 @@ package us.dot.its.jpo.deduplicator.deduplicator.processors;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
-import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
 import us.dot.its.jpo.asn.j2735.r2024.BasicSafetyMessage.BasicSafetyMessageMessageFrame;
 import us.dot.its.jpo.asn.j2735.r2024.Common.BSMcoreData;
 import us.dot.its.jpo.asn.j2735.r2024.Common.Speed;
 import us.dot.its.jpo.deduplicator.utils.GeoUtils;
+import us.dot.its.jpo.deduplicator.utils.OdeJsonUtils;
 
 public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData> {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     DeduplicatorProperties props;
 
     private static final Logger logger = LoggerFactory.getLogger(OdeBsmJsonProcessor.class);
@@ -29,25 +27,7 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
 
     @Override
     public Instant getMessageTime(OdeMessageFrameData message) {
-        try {
-            if (message == null || message.getMetadata() == null) {
-                logger.warn("BSM message or metadata is null, using epoch time");
-                return Instant.ofEpochMilli(0);
-            }
-
-            String time = ((OdeMessageFrameMetadata) message.getMetadata()).getOdeReceivedAt();
-            if (time == null || time.isEmpty()) {
-                logger.warn("BSM message has null or empty odeReceivedAt time, using epoch time");
-                return Instant.ofEpochMilli(0);
-            }
-
-            return Instant.from(formatter.parse(time));
-        } catch (Exception e) {
-            logger.warn("Failed to Parse Time: " + (message != null && message.getMetadata() != null
-                    ? ((OdeMessageFrameMetadata) message.getMetadata()).getOdeReceivedAt()
-                    : "null"), e);
-            return Instant.ofEpochMilli(0);
-        }
+        return OdeJsonUtils.getOdeMessageFrameMessageTime(message);
     }
 
     @Override
@@ -62,12 +42,12 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
                 return false;
             }
 
-            // Add null checks for payload and data
-            if (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null ||
-                    newMessage == null || newMessage.getPayload() == null
-                    || newMessage.getPayload().getData() == null) {
-                logger.warn("One or both BSM messages have null payload or data, treating as non-duplicate");
-                return false;
+            // Check for null conditions - treat as non-duplicate if one is null and the other is not
+            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null);
+            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null || newMessage.getPayload().getData() == null);
+            if ((lastMessageIsNull && !newMessageIsNull) || (!lastMessageIsNull && newMessageIsNull)) {
+                logger.warn("One TIM message has a null payload or data, treating as non-duplicate");
+                return true;
             }
 
             BSMcoreData oldCore = ((BasicSafetyMessageMessageFrame) lastMessage.getPayload().getData()).getValue()
