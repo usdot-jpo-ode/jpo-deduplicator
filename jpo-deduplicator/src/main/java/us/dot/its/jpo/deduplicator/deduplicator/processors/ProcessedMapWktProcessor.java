@@ -25,7 +25,7 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
     @Override
     public Instant getMessageTime(ProcessedMap<String> message) {
         try {
-            return message.getProperties().getTimeStamp().toInstant();
+            return message.getProperties().getOdeReceivedAt().toInstant();
         } catch (Exception e) {
             return Instant.ofEpochMilli(0);
         }

@@ -75,9 +75,9 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
 
         // Message 1 but 1 hour later
         ProcessedMap<String> processedMapWkt1HourLater = objectMapper.readValue(processedMapWktReference, typeReference);
-        ZonedDateTime originalZdt = processedMapWkt1HourLater.getProperties().getTimeStamp();
+        ZonedDateTime originalZdt = processedMapWkt1HourLater.getProperties().getOdeReceivedAt();
         Instant newInstant = originalZdt.toInstant().plusSeconds(3601);
-        processedMapWkt1HourLater.getProperties().setTimeStamp(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
+        processedMapWkt1HourLater.getProperties().setOdeReceivedAt(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
         inputProcessedMapWkt3 = processedMapWkt1HourLater.toString();
 
         // A different Message entirely

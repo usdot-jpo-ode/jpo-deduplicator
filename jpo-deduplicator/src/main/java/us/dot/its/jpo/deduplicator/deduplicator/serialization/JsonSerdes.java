@@ -4,8 +4,6 @@ import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import us.dot.its.jpo.geojsonconverter.serialization.deserializers.JsonDeserializer;
 import us.dot.its.jpo.geojsonconverter.serialization.serializers.JsonSerializer;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
@@ -44,17 +42,7 @@ public class JsonSerdes {
                 new SafeJsonDeserializer<>(OdeMessageFrameData.class));
     }
 
-    public static Serde<JsonNode> JSON(DeduplicatorProperties props) {
-        return Serdes.serdeFrom(
-                new JsonSerializer<JsonNode>(),
-                new JsonDeserializer<>(JsonNode.class));
-    }
-
     public static Serde<OdeMessageFrameData> OdeMessageFrame() {
         return OdeMessageFrame(null);
-    }
-
-    public static Serde<JsonNode> JSON() {
-        return JSON(null);
     }
 }

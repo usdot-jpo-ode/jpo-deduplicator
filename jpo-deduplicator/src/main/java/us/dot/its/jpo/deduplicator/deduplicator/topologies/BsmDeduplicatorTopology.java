@@ -9,7 +9,6 @@ import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
-import us.dot.its.jpo.ode.model.OdeMessageFrameMetadata;
 import us.dot.its.jpo.asn.j2735.r2024.BasicSafetyMessage.BasicSafetyMessageMessageFrame;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeBsmJsonProcessorSupplier;
@@ -52,28 +50,6 @@ public class BsmDeduplicatorTopology {
             streams.setStateListener(stateListener);
         logger.info("Starting Bsm Deduplicator Topology");
         streams.start();
-    }
-
-    public Instant getInstantFromBsm(OdeMessageFrameData bsm) {
-        try {
-            if (bsm == null || bsm.getMetadata() == null) {
-                logger.warn("BSM message or metadata is null, using epoch time");
-                return Instant.ofEpochMilli(0);
-            }
-
-            String time = ((OdeMessageFrameMetadata) bsm.getMetadata()).getOdeReceivedAt();
-            if (time == null || time.isEmpty()) {
-                logger.warn("BSM message has null or empty odeReceivedAt time, using epoch time");
-                return Instant.ofEpochMilli(0);
-            }
-
-            return Instant.from(formatter.parse(time));
-        } catch (Exception e) {
-            logger.warn("Failed to parse time from BSM: " + (bsm != null && bsm.getMetadata() != null
-                    ? ((OdeMessageFrameMetadata) bsm.getMetadata()).getOdeReceivedAt()
-                    : "null"), e);
-            return Instant.ofEpochMilli(0);
-        }
     }
 
     public Topology buildTopology() {
