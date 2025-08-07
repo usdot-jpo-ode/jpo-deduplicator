@@ -65,23 +65,31 @@ public class BsmDeduplicatorTopology {
         KStream<String, OdeMessageFrameData> bsmRekeyedStream = inputStream.selectKey((key, value) -> {
             try {
                 if (value == null || value.getPayload() == null || value.getPayload().getData() == null) {
-                    logger.warn("Received BSM message with null payload or data, using default key");
+                    logger.warn("Received BSM message with null payload or data, discarding message");
                     return "unknown";
                 }
 
                 BasicSafetyMessageMessageFrame mf = (BasicSafetyMessageMessageFrame) value.getPayload().getData();
                 if (mf == null || mf.getValue() == null || mf.getValue().getCoreData() == null ||
                         mf.getValue().getCoreData().getId() == null) {
-                    logger.warn("Received BSM message with null message frame data, using default key");
+                    logger.warn("Received BSM message with null message frame data, discarding message");
                     return "unknown";
                 }
 
                 return mf.getValue().getCoreData().getId().getValue();
             } catch (Exception e) {
-                logger.error("Error extracting key from BSM message: " + e.getMessage(), e);
+                logger.error("Error extracting key from BSM message: " + e.getMessage() + ", discarding message", e);
                 return "unknown";
             }
-        }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
+        })
+        .filter((key, value) -> {
+            if ("unknown".equals(key)) {
+                logger.debug("Discarding BSM message with unknown key");
+                return false;
+            }
+            return true;
+        })
+        .repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
         KStream<String, OdeMessageFrameData> deduplicatedStream = bsmRekeyedStream.process(
                 new OdeBsmJsonProcessorSupplier(props.getKafkaStateStoreOdeBsmJsonName(), props),

@@ -68,14 +68,14 @@ public class MapDeduplicatorTopology {
         KStream<String, OdeMessageFrameData> mapRekeyedStream = inputStream.selectKey((key, value) -> {
             try {
                 if (value == null || value.getPayload() == null || value.getPayload().getData() == null) {
-                    logger.warn("Received Map message with null payload or data, using default key");
+                    logger.warn("Received Map message with null payload or data, discarding message");
                     return "unknown";
                 }
 
                 MapDataMessageFrame mf = (MapDataMessageFrame) value.getPayload().getData();
                 if (mf == null || mf.getValue() == null || mf.getValue().getIntersections() == null ||
                         mf.getValue().getIntersections().isEmpty()) {
-                    logger.warn("Received Map message with null message frame data, using default key");
+                    logger.warn("Received Map message with null message frame data, discarding message");
                     return "unknown";
                 }
 
@@ -84,10 +84,18 @@ public class MapDeduplicatorTopology {
                 newKey.setIntersectionReferenceID(mf.getValue().getIntersections().get(0).getId());
                 return newKey.toString();
             } catch (Exception e) {
-                logger.error("Error extracting key from Map message: " + e.getMessage(), e);
+                logger.error("Error extracting key from Map message: " + e.getMessage() + ", discarding message", e);
                 return "unknown";
             }
-        }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
+        })
+        .filter((key, value) -> {
+            if ("unknown".equals(key)) {
+                logger.debug("Discarding Map message with unknown key");
+                return false;
+            }
+            return true;
+        })
+        .repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
         KStream<String, OdeMessageFrameData> deduplicatedStream = mapRekeyedStream.process(
                 new OdeMapJsonProcessorSupplier(props.getKafkaStateStoreOdeMapJsonName(), props),

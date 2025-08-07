@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.format.DateTimeFormatter;
 
 import us.dot.its.jpo.asn.j2735.r2024.TravelerInformation.TravelerInformation;
+import us.dot.its.jpo.asn.j2735.r2024.TravelerInformation.TravelerInformationMessageFrame;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeTimJsonProcessorSupplier;
 import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
@@ -72,17 +73,36 @@ public class TimDeduplicatorTopology {
 
         KStream<String, OdeMessageFrameData> timRekeyedStream = inputStream.selectKey((key, value) -> {
             try {
-                TravelerInformation travellerInformation = (TravelerInformation) value.getPayload().getData().getValue();
+                if (value == null || value.getPayload() == null || value.getPayload().getData() == null) {
+                    logger.warn("Received TIM message with null payload or data, discarding message");
+                    return "unknown";
+                }
+
+                TravelerInformationMessageFrame mf = (TravelerInformationMessageFrame) value.getPayload().getData();
+                if (mf == null || mf.getValue() == null || mf.getValue().getPacketID() == null ||
+                        mf.getValue().getMsgCnt() == null) {
+                    logger.warn("Received TIM message with null message frame data, discarding message");
+                    return "unknown";
+                }
+
                 String rsuIP = value.getMetadata().getOriginIp();
-                String packetId = travellerInformation.getPacketID().getValue();
-                int msgCnt = (int) travellerInformation.getMsgCnt().getValue();
+                String packetId = mf.getValue().getPacketID().getValue();
+                int msgCnt = (int) mf.getValue().getMsgCnt().getValue();
                 String newKey = rsuIP + "_" + packetId + "_" + msgCnt;
                 return newKey;
             } catch (Exception e) {
-                logger.error(e.toString());
-                return "";
+                logger.error("Error extracting key from TIM message: " + e.getMessage() + ", discarding message", e);
+                return "unknown";
             }
-        }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
+        })
+        .filter((key, value) -> {
+            if ("unknown".equals(key)) {
+                logger.debug("Discarding Map message with unknown key");
+                return false;
+            }
+            return true;
+        })
+        .repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
         KStream<String, OdeMessageFrameData> deduplicatedStream = timRekeyedStream.process(new OdeTimJsonProcessorSupplier(props), props.getKafkaStateStoreOdeTimJsonName());
 
