@@ -32,6 +32,7 @@
 			"messageId": 18,
 			"value": {
 				"MapData": {
+					"timeStamp": 282063,
 					"msgIssueRevision": 0,
 					"layerType": "intersectionData",
 					"layerID": 0,

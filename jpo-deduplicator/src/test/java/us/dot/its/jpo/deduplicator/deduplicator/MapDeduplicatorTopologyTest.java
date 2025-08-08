@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import us.dot.its.jpo.asn.j2735.r2024.Common.MinuteOfTheYear;
+import us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
@@ -40,9 +42,9 @@ public class MapDeduplicatorTopologyTest {
 
     String inputMap1 = "";
     String inputMap2 = "";
+    String inputMap3 = "";
     String inputMap4 = "";
     String inputMap5 = "";
-    String inputMap3 = "";
 
     @Autowired
     DeduplicatorProperties props;
@@ -69,6 +71,13 @@ public class MapDeduplicatorTopologyTest {
         Instant instant = Instant.parse(originalTime);
         Instant newInstant = instant.plus(5, ChronoUnit.MINUTES);
         map5MinutesLater.getMetadata().setOdeReceivedAt(newInstant.toString());
+        // ASN1 modified to show that this message is a deduplicated irrelevant to it
+        map5MinutesLater.getMetadata().setAsn1(map5MinutesLater.getMetadata().getAsn1() + "1");
+
+        MapDataMessageFrame mf = (MapDataMessageFrame) map5MinutesLater.getPayload().getData();
+        MinuteOfTheYear newMoy = new MinuteOfTheYear(mf.getValue().getTimeStamp().getValue() + 5);
+        mf.getValue().setTimeStamp(newMoy);
+        map5MinutesLater.getPayload().setData(mf);
         inputMap3 = map5MinutesLater.toJson();
 
         // A different Message entirely - should be kept
@@ -84,6 +93,11 @@ public class MapDeduplicatorTopologyTest {
         instant = Instant.parse(originalTime);
         newInstant = instant.plus(61, ChronoUnit.HOURS);
         map1HourLater.getMetadata().setOdeReceivedAt(newInstant.toString());
+
+        mf = (MapDataMessageFrame) map1HourLater.getPayload().getData();
+        newMoy = new MinuteOfTheYear(mf.getValue().getTimeStamp().getValue() + 60);
+        mf.getValue().setTimeStamp(newMoy);
+        map1HourLater.getPayload().setData(mf);
         inputMap5 = map1HourLater.toJson();
     }
 
@@ -126,9 +140,9 @@ public class MapDeduplicatorTopologyTest {
 
             inputOdeMapData.pipeInput(null, inputMap1);
             inputOdeMapData.pipeInput(null, inputMap2);
+            inputOdeMapData.pipeInput(null, inputMap3);
             inputOdeMapData.pipeInput(null, inputMap4);
             inputOdeMapData.pipeInput(null, inputMap5);
-            inputOdeMapData.pipeInput(null, inputMap3);
 
             List<KeyValue<String, OdeMessageFrameData>> mapDeduplicationResults = outputOdeMapData
                     .readKeyValuesToList();
@@ -137,12 +151,12 @@ public class MapDeduplicatorTopologyTest {
             assertEquals(3, mapDeduplicationResults.size());
 
             OdeMessageFrameData map1 = objectMapper.readValue(inputMap1, OdeMessageFrameData.class);
-            OdeMessageFrameData map3 = objectMapper.readValue(inputMap4, OdeMessageFrameData.class);
-            OdeMessageFrameData map4 = objectMapper.readValue(inputMap5, OdeMessageFrameData.class);
+            OdeMessageFrameData map4 = objectMapper.readValue(inputMap4, OdeMessageFrameData.class);
+            OdeMessageFrameData map5 = objectMapper.readValue(inputMap5, OdeMessageFrameData.class);
 
             assertThat(mapDeduplicationResults.get(0).value.toJson(), jsonEquals(map1.toJson()));
-            assertThat(mapDeduplicationResults.get(1).value.toJson(), jsonEquals(map3.toJson()));
-            assertThat(mapDeduplicationResults.get(2).value.toJson(), jsonEquals(map4.toJson()));
+            assertThat(mapDeduplicationResults.get(1).value.toJson(), jsonEquals(map4.toJson()));
+            assertThat(mapDeduplicationResults.get(2).value.toJson(), jsonEquals(map5.toJson()));
 
         } catch (JsonMappingException e) {
             e.printStackTrace();
