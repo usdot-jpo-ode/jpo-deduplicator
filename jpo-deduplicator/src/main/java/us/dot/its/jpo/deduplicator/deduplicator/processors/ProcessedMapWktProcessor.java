@@ -40,9 +40,11 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
             if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
                 return false;
             }else{
+                String newAsn1 = newMessage.getProperties().getAsn1();
                 ZonedDateTime newValueTimestamp = newMessage.getProperties().getTimeStamp();
                 ZonedDateTime newValueOdeReceivedAt = newMessage.getProperties().getOdeReceivedAt();
 
+                newMessage.getProperties().setAsn1(lastMessage.getProperties().getAsn1());
                 newMessage.getProperties().setTimeStamp(lastMessage.getProperties().getTimeStamp());
                 newMessage.getProperties().setOdeReceivedAt(lastMessage.getProperties().getOdeReceivedAt());
 
@@ -50,6 +52,7 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
                 int newhash = newMessage.getProperties().hashCode();
 
                 if(oldHash != newhash){
+                    newMessage.getProperties().setAsn1(newAsn1);
                     newMessage.getProperties().setTimeStamp(newValueTimestamp);
                     newMessage.getProperties().setOdeReceivedAt(newValueOdeReceivedAt);
                     return false;

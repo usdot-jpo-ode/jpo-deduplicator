@@ -45,23 +45,26 @@ public class ProcessedBsmDeduplicatorTopologyTest {
     // Same as BSM 1 - No Message should be generated
     String inputProcessedBsm2 = "";
 
-    // Increase Time from BSM 1
+    // Verify ASN1 field has no bearing on deduplication
     String inputProcessedBsm3 = "";
 
-    // Vehicle Speed not 0
+    // Increase Time from BSM 1
     String inputProcessedBsm4 = "";
 
-    // Vehicle Position has changed
+    // Vehicle Speed not 0
     String inputProcessedBsm5 = "";
 
-    // Vehicle Position was removed
+    // Vehicle Position has changed
     String inputProcessedBsm6 = "";
 
-    // Vehicle Position was added back in
+    // Vehicle Position was removed
     String inputProcessedBsm7 = "";
 
-    // Vehicle Speed was removed
+    // Vehicle Position was added back in
     String inputProcessedBsm8 = "";
+
+    // Vehicle Speed was removed
+    String inputProcessedBsm9 = "";
 
     String key = "{\"rsuId\":\"172.19.0.1\",\"logId\":\"1234567890\",\"bsmId\":\"31325433\"}";
 
@@ -87,46 +90,61 @@ public class ProcessedBsmDeduplicatorTopologyTest {
         // Duplicate of Number 1, should be dropped
         inputProcessedBsm2 = processedBsmReferenceData.toString();
 
+        // Verify the ASN1 field has no bearing on deduplication by maintaining the original message
+        // but modifying the ASN1 field. Should be dropped
+        ProcessedBsm<Point> processedBsmModifyAsn1 = objectMapper.readValue(processedBsmReferenceData.toString(),
+                new TypeReference<ProcessedBsm<Point>>() {
+                });
+        processedBsmModifyAsn1.getProperties().setAsn1("modified");
+        inputProcessedBsm3 = processedBsmModifyAsn1.toString();
+
         // Increase Time from Bsm 1, Should be forwarded
         ProcessedBsm<Point> processedBsmIncreaseTime = objectMapper.readValue(processedBsmReferenceData.toString(),
                 new TypeReference<ProcessedBsm<Point>>() {
                 });
         // Convert ZonedDateTime to Instant, add 15 seconds, then convert back
-        ZonedDateTime originalZdt = processedBsmIncreaseTime.getProperties().getTimeStamp();
-        Instant newInstant = originalZdt.toInstant().plusSeconds(15);
+        ZonedDateTime originalTimeStampZdt = processedBsmIncreaseTime.getProperties().getTimeStamp();
+        Instant newTimeStampInstant = originalTimeStampZdt.toInstant().plusSeconds(15);
         processedBsmIncreaseTime.getProperties()
-                .setTimeStamp(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
-        inputProcessedBsm3 = processedBsmIncreaseTime.toString();
+                .setTimeStamp(ZonedDateTime.ofInstant(newTimeStampInstant, originalTimeStampZdt.getZone()));
+
+        // Convert OdeReceivedAt to Instant, add 15 seconds, then convert back
+        String originalOdeReceivedAt = processedBsmIncreaseTime.getProperties().getOdeReceivedAt();
+        Instant originalOdeReceivedAtInstant = Instant.parse(originalOdeReceivedAt);
+        Instant newOdeReceivedAtInstant = originalOdeReceivedAtInstant.plusSeconds(15);
+        processedBsmIncreaseTime.getProperties().setOdeReceivedAt(newOdeReceivedAtInstant.toString());
+
+        inputProcessedBsm4 = processedBsmIncreaseTime.toString();
 
         // Vehicle Speed not 0, Should be Forwarded
         ProcessedBsm<Point> processedBsmSpeedNotZero = objectMapper.readValue(processedBsmReferenceData.toString(),
                 new TypeReference<ProcessedBsm<Point>>() {
                 });
         processedBsmSpeedNotZero.getProperties().setSpeed(10.0);
-        inputProcessedBsm4 = processedBsmSpeedNotZero.toString();
+        inputProcessedBsm5 = processedBsmSpeedNotZero.toString();
 
         // Vehicle Position has changed, Should be Forwarded
         ProcessedBsm<Point> processedBsmPositionChanged = new ProcessedBsm<Point>(null,
                 new Point(new double[] { -105.0, 50.0 }), processedBsmReferenceData.getProperties());
-        inputProcessedBsm5 = processedBsmPositionChanged.toString();
+        inputProcessedBsm6 = processedBsmPositionChanged.toString();
 
         // Vehicle Position was removed. Should be Forwarded
         ProcessedBsm<Point> processedBsmPositionRemoved = new ProcessedBsm<Point>(null,
                 null, processedBsmReferenceData.getProperties());
-        inputProcessedBsm6 = processedBsmPositionRemoved.toString();
+        inputProcessedBsm7 = processedBsmPositionRemoved.toString();
 
         // Vehicle Position was added back in. Should be Forwarded
         ProcessedBsm<Point> processedBsmPositionAddedBack = objectMapper.readValue(processedBsmReferenceData.toString(),
                 new TypeReference<ProcessedBsm<Point>>() {
                 });
-        inputProcessedBsm7 = processedBsmPositionAddedBack.toString();
+        inputProcessedBsm8 = processedBsmPositionAddedBack.toString();
 
         // Vehicle is missing its speed section, Should be Forwarded
         ProcessedBsm<Point> processedBsmSpeedMissing = objectMapper.readValue(processedBsmReferenceData.toString(),
                 new TypeReference<ProcessedBsm<Point>>() {
                 });
         processedBsmSpeedMissing.getProperties().setSpeed(null);
-        inputProcessedBsm8 = processedBsmSpeedMissing.toString();
+        inputProcessedBsm9 = processedBsmSpeedMissing.toString();
     }
 
     @Test
@@ -180,6 +198,7 @@ public class ProcessedBsmDeduplicatorTopologyTest {
             inputProcessedBsmData.pipeInput(key, inputProcessedBsm6);
             inputProcessedBsmData.pipeInput(key, inputProcessedBsm7);
             inputProcessedBsmData.pipeInput(key, inputProcessedBsm8);
+            inputProcessedBsmData.pipeInput(key, inputProcessedBsm9);
 
             List<KeyValue<String, ProcessedBsm<Point>>> processedBsmDeduplicationResults = outputProcessedBsmData
                     .readKeyValuesToList();
@@ -188,9 +207,6 @@ public class ProcessedBsmDeduplicatorTopologyTest {
             assertEquals(7, processedBsmDeduplicationResults.size());
 
             ProcessedBsm<Point> processedBsm1 = objectMapper.readValue(inputProcessedBsm1,
-                    new TypeReference<ProcessedBsm<Point>>() {
-                    });
-            ProcessedBsm<Point> processedBsm3 = objectMapper.readValue(inputProcessedBsm3,
                     new TypeReference<ProcessedBsm<Point>>() {
                     });
             ProcessedBsm<Point> processedBsm4 = objectMapper.readValue(inputProcessedBsm4,
@@ -208,14 +224,17 @@ public class ProcessedBsmDeduplicatorTopologyTest {
             ProcessedBsm<Point> processedBsm8 = objectMapper.readValue(inputProcessedBsm8,
                     new TypeReference<ProcessedBsm<Point>>() {
                     });
+            ProcessedBsm<Point> processedBsm9 = objectMapper.readValue(inputProcessedBsm9,
+                    new TypeReference<ProcessedBsm<Point>>() {
+                    });
 
             assertThat(processedBsmDeduplicationResults.get(0).value.toString(), jsonEquals(processedBsm1.toString()));
-            assertThat(processedBsmDeduplicationResults.get(1).value.toString(), jsonEquals(processedBsm3.toString()));
-            assertThat(processedBsmDeduplicationResults.get(2).value.toString(), jsonEquals(processedBsm4.toString()));
-            assertThat(processedBsmDeduplicationResults.get(3).value.toString(), jsonEquals(processedBsm5.toString()));
-            assertThat(processedBsmDeduplicationResults.get(4).value.toString(), jsonEquals(processedBsm6.toString()));
-            assertThat(processedBsmDeduplicationResults.get(5).value.toString(), jsonEquals(processedBsm7.toString()));
-            assertThat(processedBsmDeduplicationResults.get(6).value.toString(), jsonEquals(processedBsm8.toString()));
+            assertThat(processedBsmDeduplicationResults.get(1).value.toString(), jsonEquals(processedBsm4.toString()));
+            assertThat(processedBsmDeduplicationResults.get(2).value.toString(), jsonEquals(processedBsm5.toString()));
+            assertThat(processedBsmDeduplicationResults.get(3).value.toString(), jsonEquals(processedBsm6.toString()));
+            assertThat(processedBsmDeduplicationResults.get(4).value.toString(), jsonEquals(processedBsm7.toString()));
+            assertThat(processedBsmDeduplicationResults.get(5).value.toString(), jsonEquals(processedBsm8.toString()));
+            assertThat(processedBsmDeduplicationResults.get(6).value.toString(), jsonEquals(processedBsm9.toString()));
 
         } catch (JsonMappingException e) {
             e.printStackTrace();

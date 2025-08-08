@@ -46,17 +46,20 @@ public class ProcessedSpatDeduplicatorTopologyTest {
     // Same as Processed SPaT 1
     String inputProcessedSpat2;
 
-    // Time change of +1 minute
+    // Verify ASN1 field has no bearing on deduplication
     String inputProcessedSpat3;
 
-    // With a signal group removed
+    // Time change of +1 minute
     String inputProcessedSpat4;
 
-    // With a signal group's id changed
+    // With a signal group removed
     String inputProcessedSpat5;
 
-    // With a change of the light state of a signal group
+    // With a signal group's id changed
     String inputProcessedSpat6;
+
+    // With a change of the light state of a signal group
+    String inputProcessedSpat7;
 
     String key = "{\"rsuId\": \"10.164.6.16\", \"intersectionId\": 6311,\"region\": -1}";
 
@@ -81,28 +84,40 @@ public class ProcessedSpatDeduplicatorTopologyTest {
         // Duplicate of Number 1, should be dropped
         inputProcessedSpat2 = processedSpatReferenceData.toString();
 
+        // Verify ASN1 field has no bearing on deduplication - should be dropped
+        ProcessedSpat processedSpatModifyAsn1 = objectMapper.readValue(processedSpatReferenceData.toString(),
+                ProcessedSpat.class);
+        processedSpatModifyAsn1.setAsn1("modified");
+        inputProcessedSpat3 = processedSpatModifyAsn1.toString();
+
         // Time change of +1 minute, should be kept
         ProcessedSpat processedSpatIncreaseTime = objectMapper.readValue(processedSpatReferenceData.toString(),
                 ProcessedSpat.class);
-        // Convert ZonedDateTime to Instant, add 61 seconds, then convert back to
-        // ZonedDateTime
+        // Convert ZonedDateTime to Instant, add 61 seconds, then convert back to ZonedDateTime
         ZonedDateTime originalZdt = processedSpatIncreaseTime.getUtcTimeStamp();
         Instant newInstant = originalZdt.toInstant().plusSeconds(61);
         processedSpatIncreaseTime.setUtcTimeStamp(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
-        inputProcessedSpat3 = processedSpatIncreaseTime.toString();
+
+        // Convert OdeReceivedAt to Instant, add 61 seconds, then convert back
+        String originalOdeReceivedAt = processedSpatIncreaseTime.getOdeReceivedAt();
+        Instant originalOdeReceivedAtInstant = Instant.parse(originalOdeReceivedAt);
+        Instant newOdeReceivedAtInstant = originalOdeReceivedAtInstant.plusSeconds(61);
+        processedSpatIncreaseTime.setOdeReceivedAt(newOdeReceivedAtInstant.toString());
+
+        inputProcessedSpat4 = processedSpatIncreaseTime.toString();
 
         // Signal group removed
         ProcessedSpat processedSpatSignalGroupRemoved = objectMapper.readValue(processedSpatReferenceData.toString(),
                 ProcessedSpat.class);
         processedSpatSignalGroupRemoved.getStates().remove(0);
-        inputProcessedSpat4 = processedSpatSignalGroupRemoved.toString();
+        inputProcessedSpat5 = processedSpatSignalGroupRemoved.toString();
 
         // Signal group ID changed
         ProcessedSpat processedSpatSignalGroupIdChanged = objectMapper.readValue(
                 processedSpatSignalGroupRemoved.toString(),
                 ProcessedSpat.class);
         processedSpatSignalGroupIdChanged.getStates().get(0).setSignalGroup(500);
-        inputProcessedSpat5 = processedSpatSignalGroupIdChanged.toString();
+        inputProcessedSpat6 = processedSpatSignalGroupIdChanged.toString();
 
         // Signal group light state changed
         ProcessedSpat processedSpatSignalGroupLightStateChanged = objectMapper.readValue(
@@ -110,7 +125,7 @@ public class ProcessedSpatDeduplicatorTopologyTest {
                 ProcessedSpat.class);
         processedSpatSignalGroupLightStateChanged.getStates().get(0).getStateTimeSpeed().get(0)
                 .setEventState(ProcessedMovementPhaseState.PROTECTED_CLEARANCE);
-        inputProcessedSpat6 = processedSpatSignalGroupLightStateChanged.toString();
+        inputProcessedSpat7 = processedSpatSignalGroupLightStateChanged.toString();
     }
 
     @Test
@@ -156,6 +171,7 @@ public class ProcessedSpatDeduplicatorTopologyTest {
             inputProcessedSpatData.pipeInput(key, inputProcessedSpat4);
             inputProcessedSpatData.pipeInput(key, inputProcessedSpat5);
             inputProcessedSpatData.pipeInput(key, inputProcessedSpat6);
+            inputProcessedSpatData.pipeInput(key, inputProcessedSpat7);
 
             List<KeyValue<String, ProcessedSpat>> processedSpatDeduplicatorResults = outputProcessedSpatData
                     .readKeyValuesToList();
@@ -164,16 +180,16 @@ public class ProcessedSpatDeduplicatorTopologyTest {
             assertEquals(5, processedSpatDeduplicatorResults.size());
 
             ProcessedSpat processedSpat1 = objectMapper.readValue(inputProcessedSpat1, ProcessedSpat.class);
-            ProcessedSpat processedSpat3 = objectMapper.readValue(inputProcessedSpat3, ProcessedSpat.class);
             ProcessedSpat processedSpat4 = objectMapper.readValue(inputProcessedSpat4, ProcessedSpat.class);
             ProcessedSpat processedSpat5 = objectMapper.readValue(inputProcessedSpat5, ProcessedSpat.class);
             ProcessedSpat processedSpat6 = objectMapper.readValue(inputProcessedSpat6, ProcessedSpat.class);
+            ProcessedSpat processedSpat7 = objectMapper.readValue(inputProcessedSpat7, ProcessedSpat.class);
 
             assertThat(processedSpatDeduplicatorResults.get(0).value.toString(), jsonEquals(processedSpat1.toString()));
-            assertThat(processedSpatDeduplicatorResults.get(1).value.toString(), jsonEquals(processedSpat3.toString()));
-            assertThat(processedSpatDeduplicatorResults.get(2).value.toString(), jsonEquals(processedSpat4.toString()));
-            assertThat(processedSpatDeduplicatorResults.get(3).value.toString(), jsonEquals(processedSpat5.toString()));
-            assertThat(processedSpatDeduplicatorResults.get(4).value.toString(), jsonEquals(processedSpat6.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(1).value.toString(), jsonEquals(processedSpat4.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(2).value.toString(), jsonEquals(processedSpat5.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(3).value.toString(), jsonEquals(processedSpat6.toString()));
+            assertThat(processedSpatDeduplicatorResults.get(4).value.toString(), jsonEquals(processedSpat7.toString()));
 
         } catch (JsonMappingException e) {
             e.printStackTrace();

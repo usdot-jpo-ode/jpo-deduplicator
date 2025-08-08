@@ -47,11 +47,14 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
     // Duplicate of Number 1
     String inputProcessedMapWkt2 = "";
 
-    // A different Message entirely
+    // Verify ASN1 field has no bearing on deduplication
     String inputProcessedMapWkt3 = "";
 
-    // Message 1 but 1 hour later
+    // A different Message entirely
     String inputProcessedMapWkt4 = "";
+
+    // Message 1 but 1 hour later
+    String inputProcessedMapWkt5 = "";
 
     String key = "{\"rsuId\":\"10.11.81.12\",\"intersectionId\":12109,\"region\":-1}";
 
@@ -73,18 +76,30 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
         // Duplicate of Number 1
         inputProcessedMapWkt2 = processedMapWktReferenceData.toString();
 
+        // Verify ASN1 field has no bearing on deduplication - should be dropped
+        ProcessedMap<String> processedMapWktModifyAsn1 = objectMapper.readValue(processedMapWktReference, typeReference);
+        processedMapWktModifyAsn1.getProperties().setAsn1("modified");
+        inputProcessedMapWkt3 = processedMapWktModifyAsn1.toString();
+
         // Message 1 but 1 hour later
         ProcessedMap<String> processedMapWkt1HourLater = objectMapper.readValue(processedMapWktReference, typeReference);
-        ZonedDateTime originalZdt = processedMapWkt1HourLater.getProperties().getOdeReceivedAt();
-        Instant newInstant = originalZdt.toInstant().plusSeconds(3601);
-        processedMapWkt1HourLater.getProperties().setOdeReceivedAt(ZonedDateTime.ofInstant(newInstant, originalZdt.getZone()));
-        inputProcessedMapWkt3 = processedMapWkt1HourLater.toString();
+        // Convert ZonedDateTime to Instant, add 1 hour, then convert back
+        ZonedDateTime originalTimeStampZdt = processedMapWkt1HourLater.getProperties().getTimeStamp();
+        Instant newTimeStampInstant = originalTimeStampZdt.toInstant().plusSeconds(3601);
+        processedMapWkt1HourLater.getProperties()
+                .setTimeStamp(ZonedDateTime.ofInstant(newTimeStampInstant, originalTimeStampZdt.getZone()));
+
+        // Convert OdeReceivedAt to Instant, add 1 hour, then convert back
+        ZonedDateTime originalOdeReceivedAtZdt = processedMapWkt1HourLater.getProperties().getOdeReceivedAt();
+        Instant newOdeReceivedAtInstant = originalOdeReceivedAtZdt.toInstant().plusSeconds(3601);
+        processedMapWkt1HourLater.getProperties().setOdeReceivedAt(ZonedDateTime.ofInstant(newOdeReceivedAtInstant, originalOdeReceivedAtZdt.getZone()));
+        inputProcessedMapWkt4 = processedMapWkt1HourLater.toString();
 
         // A different Message entirely
         String differentProcessedMapWktReference = new String(Files
                 .readAllBytes(Paths.get("src/test/resources/json/processed_map_wkt/sample.processed_map_wkt-different.json")));
         ProcessedMap<String> processedMapWktDifferentData = objectMapper.readValue(differentProcessedMapWktReference, typeReference);
-        inputProcessedMapWkt4 = processedMapWktDifferentData.toString();
+        inputProcessedMapWkt5 = processedMapWktDifferentData.toString();
     }
 
     @Test
@@ -130,6 +145,7 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
             inputProcessedMapData.pipeInput(key, inputProcessedMapWkt2);
             inputProcessedMapData.pipeInput(key, inputProcessedMapWkt3);
             inputProcessedMapData.pipeInput(key, inputProcessedMapWkt4);
+            inputProcessedMapData.pipeInput(key, inputProcessedMapWkt5);
 
             List<KeyValue<String, ProcessedMap<String>>> processedMapWktDeduplicatorResults = outputProcessedMapData
                     .readKeyValuesToList();
@@ -139,14 +155,14 @@ public class ProcessedMapWktDeduplicatorTopologyTest {
 
             ProcessedMap<String> processedMapWkt1 = objectMapper.readValue(inputProcessedMapWkt1,
                     typeReference);
-            ProcessedMap<String> processedMapWkt3 = objectMapper.readValue(inputProcessedMapWkt3,
-                    typeReference);
             ProcessedMap<String> processedMapWkt4 = objectMapper.readValue(inputProcessedMapWkt4,
+                    typeReference);
+            ProcessedMap<String> processedMapWkt5 = objectMapper.readValue(inputProcessedMapWkt5,
                     typeReference);
 
             assertThat(processedMapWktDeduplicatorResults.get(0).value.toString(), jsonEquals(processedMapWkt1.toString()));
-            assertThat(processedMapWktDeduplicatorResults.get(1).value.toString(), jsonEquals(processedMapWkt3.toString()));
-            assertThat(processedMapWktDeduplicatorResults.get(2).value.toString(), jsonEquals(processedMapWkt4.toString()));
+            assertThat(processedMapWktDeduplicatorResults.get(1).value.toString(), jsonEquals(processedMapWkt4.toString()));
+            assertThat(processedMapWktDeduplicatorResults.get(2).value.toString(), jsonEquals(processedMapWkt5.toString()));
 
         } catch (JsonMappingException e) {
             e.printStackTrace();
