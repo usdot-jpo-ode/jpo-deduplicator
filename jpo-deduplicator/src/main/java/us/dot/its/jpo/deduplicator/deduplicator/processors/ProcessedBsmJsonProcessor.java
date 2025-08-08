@@ -1,7 +1,5 @@
 package us.dot.its.jpo.deduplicator.deduplicator.processors;
 
-
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -51,10 +49,10 @@ public class ProcessedBsmJsonProcessor extends DeduplicationProcessor<ProcessedB
             }
 
             // If the Vehicle is moving, forward the message on
-            BigDecimal speed = newMessage.getProperties().getSpeed();
-            BigDecimal oldSpeed = lastMessage.getProperties().getSpeed();
-            if (speed != null && speed.doubleValue() > props.getProcessedBsmAlwaysIncludeAtSpeed()) {
-                return false; 
+            Double speed = newMessage.getProperties().getSpeed();
+            Double oldSpeed = lastMessage.getProperties().getSpeed();
+            if (speed != null && speed > props.getProcessedBsmAlwaysIncludeAtSpeed()) {
+                return false;
             }
 
             if((speed == null && oldSpeed != null) || (oldSpeed == null && speed != null)){

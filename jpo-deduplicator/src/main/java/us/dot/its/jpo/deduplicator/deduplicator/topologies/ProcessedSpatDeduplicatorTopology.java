@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
 
 public class ProcessedSpatDeduplicatorTopology {
 
@@ -31,28 +30,25 @@ public class ProcessedSpatDeduplicatorTopology {
     KafkaStreams streams;
     String inputTopic;
     String outputTopic;
-    Properties streamsProperties;
     ObjectMapper objectMapper;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     DeduplicatorProperties props;
 
-
-    public ProcessedSpatDeduplicatorTopology(DeduplicatorProperties props, Properties streamsProperties){
+    public ProcessedSpatDeduplicatorTopology(DeduplicatorProperties props) {
         this.props = props;
-        this.streamsProperties = streamsProperties;
         this.objectMapper = DateJsonMapper.getInstance();
     }
 
-
-    
     public void start() {
         if (streams != null && streams.state().isRunningOrRebalancing()) {
             throw new IllegalStateException("Start called while streams is already running.");
         }
         Topology topology = buildTopology();
-        streams = new KafkaStreams(topology, streamsProperties);
-        if (exceptionHandler != null) streams.setUncaughtExceptionHandler(exceptionHandler);
-        if (stateListener != null) streams.setStateListener(stateListener);
+        streams = new KafkaStreams(topology, props.createStreamProperties("ProcessedSpatDeduplicator"));
+        if (exceptionHandler != null)
+            streams.setUncaughtExceptionHandler(exceptionHandler);
+        if (stateListener != null)
+            streams.setStateListener(stateListener);
         logger.info("Starting Map Deduplicator Topology");
         streams.start();
     }
@@ -60,15 +56,19 @@ public class ProcessedSpatDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, ProcessedSpat> inputStream = builder.stream(props.getKafkaTopicProcessedSpat(), Consumed.with(Serdes.String(), JsonSerdes.ProcessedSpat()));
+        KStream<String, ProcessedSpat> inputStream = builder.stream(props.getKafkaTopicProcessedSpat(),
+                Consumed.with(Serdes.String(), JsonSerdes.ProcessedSpat()));
 
-        builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreProcessedSpatName()),
-                Serdes.String(), JsonSerdes.ProcessedSpat()));
-        
-        KStream<String, ProcessedSpat> deduplicatedStream = inputStream.process(new ProcessedSpatProcessorSupplier(props), props.getKafkaStateStoreProcessedSpatName());
-        
+        builder.addStateStore(
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreProcessedSpatName()),
+                        Serdes.String(), JsonSerdes.ProcessedSpat()));
 
-        deduplicatedStream.to(props.getKafkaTopicDeduplicatedProcessedSpat(), Produced.with(Serdes.String(), JsonSerdes.ProcessedSpat()));
+        KStream<String, ProcessedSpat> deduplicatedStream = inputStream.process(
+                new ProcessedSpatProcessorSupplier(props),
+                props.getKafkaStateStoreProcessedSpatName());
+
+        deduplicatedStream.to(props.getKafkaTopicDeduplicatedProcessedSpat(),
+                Produced.with(Serdes.String(), JsonSerdes.ProcessedSpat()));
 
         return builder.build();
 
@@ -85,11 +85,13 @@ public class ProcessedSpatDeduplicatorTopology {
     }
 
     StateListener stateListener;
+
     public void registerStateListener(StateListener stateListener) {
         this.stateListener = stateListener;
     }
 
     StreamsUncaughtExceptionHandler exceptionHandler;
+
     public void registerUncaughtExceptionHandler(StreamsUncaughtExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }

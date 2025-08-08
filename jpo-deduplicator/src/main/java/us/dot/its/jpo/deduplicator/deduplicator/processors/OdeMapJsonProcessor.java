@@ -2,78 +2,54 @@ package us.dot.its.jpo.deduplicator.deduplicator.processors;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-import us.dot.its.jpo.ode.model.OdeMapData;
-import us.dot.its.jpo.ode.model.OdeMapMetadata;
-import us.dot.its.jpo.ode.model.OdeMapPayload;
+import us.dot.its.jpo.deduplicator.utils.OdeJsonUtils;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMapData>{
-
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData> {
 
     DeduplicatorProperties props;
 
     private static final Logger logger = LoggerFactory.getLogger(OdeMapJsonProcessor.class);
 
-    public OdeMapJsonProcessor(DeduplicatorProperties props){
+    public OdeMapJsonProcessor(String storeName, DeduplicatorProperties props) {
+        this.storeName = storeName;
         this.props = props;
-        this.storeName = props.getKafkaStateStoreOdeMapJsonName();
     }
 
+    @Override
+    public Instant getMessageTime(OdeMessageFrameData message) {
+        return OdeJsonUtils.getOdeMessageFrameMessageTime(message);
+    }
 
     @Override
-    public Instant getMessageTime(OdeMapData message) {
+    public boolean isDuplicate(OdeMessageFrameData lastMessage, OdeMessageFrameData newMessage) {
         try {
-            String time = ((OdeMapMetadata)message.getMetadata()).getOdeReceivedAt();
-            return Instant.from(formatter.parse(time));
-        } catch (Exception e) {
-            return Instant.ofEpochMilli(0);
-        }
-    }
-
-    @Override
-    public boolean isDuplicate(OdeMapData lastMessage, OdeMapData newMessage) {
-        try{
             Instant newValueTime = getMessageTime(newMessage);
             Instant oldValueTime = getMessageTime(lastMessage);
 
-            if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
+            // If the messages are more than an hour apart, forward the new message on
+            if (newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)) {
                 return false;
-                
-            }else{
-                OdeMapPayload oldPayload = (OdeMapPayload)lastMessage.getPayload();
-                OdeMapPayload newPayload = (OdeMapPayload)newMessage.getPayload();
-
-                Integer oldTimestamp = oldPayload.getMap().getTimeStamp();
-                Integer newTimestamp = newPayload.getMap().getTimeStamp();
-                
-
-                newPayload.getMap().setTimeStamp(oldTimestamp);
-
-                int oldHash = hashMapMessage(lastMessage);
-                int newhash = hashMapMessage(newMessage);
-
-                if(oldHash != newhash){
-                    newPayload.getMap().setTimeStamp(newTimestamp);
-                    return false;
-                }
             }
-        } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
+
+            // Check for null conditions - treat as non-duplicate if one is null and the other is not
+            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null);
+            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null || newMessage.getPayload().getData() == null);
+            if ((lastMessageIsNull && !newMessageIsNull) || (!lastMessageIsNull && newMessageIsNull)) {
+                logger.warn("One TIM message has a null payload or data, treating as non-duplicate");
+                return true;
+            }
+        } catch (Exception e) {
+            logger.warn("Caught General Exception while checking Map duplicates: " + e.getMessage(), e);
         }
 
+        // Treat maps as duplicates if they have the same intersection ID and
+        // are within the 1 hour time window
         return true;
-    }
-
-    public int hashMapMessage(OdeMapData map){
-        OdeMapPayload payload = (OdeMapPayload)map.getPayload();
-        return Objects.hash(payload.toJson());
-        
     }
 }

@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
 
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.ProcessedBsmJsonProcessorSupplier;
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
@@ -35,25 +34,22 @@ public class ProcessedBsmDeduplicatorTopology {
     ObjectMapper objectMapper;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     GeodeticCalculator calculator;
-    Properties streamsProperties;
 
-
-    public ProcessedBsmDeduplicatorTopology(DeduplicatorProperties props, Properties streamsProperties){
+    public ProcessedBsmDeduplicatorTopology(DeduplicatorProperties props) {
         this.props = props;
-        this.streamsProperties = streamsProperties;
         this.objectMapper = DateJsonMapper.getInstance();
     }
 
-
-    
     public void start() {
         if (streams != null && streams.state().isRunningOrRebalancing()) {
             throw new IllegalStateException("Start called while streams is already running.");
         }
         Topology topology = buildTopology();
-        streams = new KafkaStreams(topology, streamsProperties);
-        if (exceptionHandler != null) streams.setUncaughtExceptionHandler(exceptionHandler);
-        if (stateListener != null) streams.setStateListener(stateListener);
+        streams = new KafkaStreams(topology, props.createStreamProperties("ProcessedBsmDeduplicator"));
+        if (exceptionHandler != null)
+            streams.setUncaughtExceptionHandler(exceptionHandler);
+        if (stateListener != null)
+            streams.setStateListener(stateListener);
         logger.info("Starting Processed Bsm Deduplicator Topology");
         streams.start();
     }
@@ -61,15 +57,20 @@ public class ProcessedBsmDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, ProcessedBsm<Point>> inputStream = builder.stream(this.props.getKafkaTopicProcessedBsm(), Consumed.with(Serdes.String(), JsonSerdes.ProcessedBsm()));
+        KStream<String, ProcessedBsm<Point>> inputStream = builder.stream(this.props.getKafkaTopicProcessedBsm(),
+                Consumed.with(Serdes.String(), JsonSerdes.ProcessedBsm()));
 
-        builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreProcessedBsmName()),
-                Serdes.String(), JsonSerdes.ProcessedBsm()));
+        builder.addStateStore(
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreProcessedBsmName()),
+                        Serdes.String(), JsonSerdes.ProcessedBsm()));
 
-        KStream<String, ProcessedBsm<Point>> deduplicatedStream = inputStream.process(new ProcessedBsmJsonProcessorSupplier(props.getKafkaStateStoreProcessedBsmName(), props), props.getKafkaStateStoreProcessedBsmName());
+        KStream<String, ProcessedBsm<Point>> deduplicatedStream = inputStream.process(
+                new ProcessedBsmJsonProcessorSupplier(props.getKafkaStateStoreProcessedBsmName(),
+                        props),
+                props.getKafkaStateStoreProcessedBsmName());
 
-        
-        deduplicatedStream.to(this.props.getKafkaTopicDeduplicatedProcessedBsm(), Produced.with(Serdes.String(), JsonSerdes.ProcessedBsm()));
+        deduplicatedStream.to(this.props.getKafkaTopicDeduplicatedProcessedBsm(),
+                Produced.with(Serdes.String(), JsonSerdes.ProcessedBsm()));
 
         return builder.build();
 
@@ -86,11 +87,13 @@ public class ProcessedBsmDeduplicatorTopology {
     }
 
     StateListener stateListener;
+
     public void registerStateListener(StateListener stateListener) {
         this.stateListener = stateListener;
     }
 
     StreamsUncaughtExceptionHandler exceptionHandler;
+
     public void registerUncaughtExceptionHandler(StreamsUncaughtExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
