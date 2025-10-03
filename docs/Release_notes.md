@@ -1,4 +1,13 @@
 JPO-Deduplicator Release Notes
+Version 3.0.0
+The 2025-Q3 release of the jpo-deduplicator package
+- Updated Deduplicator to handle the new Processed Message Types
+- Added OdeMapJson Unit tests
+- Configured Deduplicator to ignore messages with unknown keys
+- Removing unused Pair and Serdes
+- Updated Deduplication Rules 
+
+
 Version 2.1.0
 Summary
 The second release of the jpo-deduplicator package. This release makes minor updates to how the deduplicator handles invalid messages. 
