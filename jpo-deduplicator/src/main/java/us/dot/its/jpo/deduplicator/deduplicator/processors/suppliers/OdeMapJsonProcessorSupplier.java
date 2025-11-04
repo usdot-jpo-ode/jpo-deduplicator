@@ -5,18 +5,21 @@ import org.apache.kafka.streams.processor.api.ProcessorSupplier;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.processors.OdeMapJsonProcessor;
-import us.dot.its.jpo.ode.model.OdeMapData;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-public class OdeMapJsonProcessorSupplier implements ProcessorSupplier<String, OdeMapData, String, OdeMapData> {
-    
-    DeduplicatorProperties props;
+public class OdeMapJsonProcessorSupplier
+        implements ProcessorSupplier<String, OdeMessageFrameData, String, OdeMessageFrameData> {
 
-    public OdeMapJsonProcessorSupplier(DeduplicatorProperties props){
+    private String storeName;
+    private DeduplicatorProperties props;
+
+    public OdeMapJsonProcessorSupplier(String storeName, DeduplicatorProperties props) {
+        this.storeName = storeName;
         this.props = props;
     }
 
     @Override
-    public Processor<String, OdeMapData, String, OdeMapData> get() {
-        return new OdeMapJsonProcessor(props);
+    public Processor<String, OdeMessageFrameData, String, OdeMessageFrameData> get() {
+        return new OdeMapJsonProcessor(storeName, props);
     }
 }

@@ -1,1 +1,1874 @@
-{"mapFeatureCollection":{"type":"FeatureCollection","features":[{"type":"Feature","id":2,"geometry":"LINESTRING (-105.0911523 39.5953376, -105.0899239 39.5953231, -105.0896005 39.5953332, -105.0888831 39.595317, -105.088108 39.5953159, -105.0876637 39.5953153)","properties":{"laneId":2,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":1,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":19,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":4,"connectionID":1}]}},{"type":"Feature","id":3,"geometry":"LINESTRING (-105.0911527 39.5953113, -105.0908101 39.5953039, -105.0900791 39.5952962, -105.0896801 39.5952874, -105.0888781 39.5952839, -105.0885678 39.5952789, -105.0880704 39.5952849, -105.0876638 39.5952849)","properties":{"laneId":3,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":1,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":18,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":4,"connectionID":1}]}},{"type":"Feature","id":1,"geometry":"LINESTRING (-105.0911535 39.5953745, -105.0899328 39.5953544, -105.0897165 39.5953447)","properties":{"laneId":1,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":1,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":28,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"connectionID":1}]}},{"type":"Feature","id":4,"geometry":"LINESTRING (-105.0911537 39.5952537, -105.0903143 39.5952555, -105.0902511 39.5952591, -105.0900995 39.5952797)","properties":{"laneId":4,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":1,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":12,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":7,"connectionID":1}]}},{"type":"Feature","id":6,"geometry":"LINESTRING (-105.0911474 39.5951732, -105.0911048 39.5951738)","properties":{"laneId":6,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":2,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":5,"geometry":"LINESTRING (-105.0911474 39.5952053, -105.0911079 39.5952053)","properties":{"laneId":5,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":2,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":7,"geometry":"LINESTRING (-105.0911443 39.5951332, -105.0911017 39.5951356)","properties":{"laneId":7,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":2,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":12,"geometry":"LINESTRING (-105.0915234 39.5950941, -105.0915234 39.5950602)","properties":{"laneId":12,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":4,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":13,"geometry":"LINESTRING (-105.0915804 39.5950941, -105.0915796 39.595059, -105.0915796 39.595059, -105.0915796 39.5950596)","properties":{"laneId":13,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":4,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":10,"geometry":"LINESTRING (-105.0913299 39.5950922, -105.09133 39.5944158, -105.0913348 39.5939413, -105.0913368 39.592921, -105.0913348 39.5923866, -105.0913348 39.5923866, -105.0913356 39.592386)","properties":{"laneId":10,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":3,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":26,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":6,"connectionID":1}]}},{"type":"Feature","id":9,"geometry":"LINESTRING (-105.0912849 39.5950912, -105.0912838 39.5946624, -105.0912861 39.5940862, -105.0912901 39.5933704, -105.0912882 39.5923858)","properties":{"laneId":9,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":3,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":27,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":6,"connectionID":1}]}},{"type":"Feature","id":11,"geometry":"LINESTRING (-105.0913713 39.5950916, -105.091375 39.5944888, -105.0913568 39.5942534)","properties":{"laneId":11,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":3,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":18,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":1,"connectionID":1}]}},{"type":"Feature","id":8,"geometry":"LINESTRING (-105.0912303 39.5950889, -105.0912421 39.5949129, -105.0912427 39.5942475, -105.0912568 39.5941003)","properties":{"laneId":8,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":3,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":7,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"connectionID":1}]}},{"type":"Feature","id":15,"geometry":"LINESTRING (-105.0916931 39.5951733, -105.0927839 39.5951756, -105.0941732 39.5951722, -105.0952027 39.5951734)","properties":{"laneId":15,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":5,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":6,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":8,"connectionID":1}]}},{"type":"Feature","id":16,"geometry":"LINESTRING (-105.0916852 39.5952059, -105.0931135 39.5952073, -105.0944406 39.595204, -105.0952041 39.5952041)","properties":{"laneId":16,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":5,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":5,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":8,"connectionID":1}]}},{"type":"Feature","id":17,"geometry":"LINESTRING (-105.0916853 39.5952393, -105.0927239 39.5952377, -105.0941207 39.5952375, -105.0943034 39.5952213)","properties":{"laneId":17,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":5,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":26,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":3,"connectionID":1}]}},{"type":"Feature","id":14,"geometry":"LINESTRING (-105.0916926 39.5951407, -105.0940224 39.5951414, -105.095203 39.5951408)","properties":{"laneId":14,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":5,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":13,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"connectionID":1}]}},{"type":"Feature","id":18,"geometry":"LINESTRING (-105.0916766 39.595308, -105.0917443 39.5953067)","properties":{"laneId":18,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":6,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":19,"geometry":"LINESTRING (-105.0916758 39.5953365, -105.0917363 39.5953365)","properties":{"laneId":19,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":6,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":20,"geometry":"LINESTRING (-105.0916734 39.5953755, -105.0917299 39.5953755)","properties":{"laneId":20,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":6,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":23,"geometry":"LINESTRING (-105.091519 39.5954362, -105.0914927 39.5965421, -105.091488 39.5974092, -105.0914843 39.5981324, -105.0914843 39.5981324, -105.0914851 39.5981349)","properties":{"laneId":23,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":7,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":12,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":2,"connectionID":1}]}},{"type":"Feature","id":22,"geometry":"LINESTRING (-105.0915548 39.5954372, -105.0915441 39.59638, -105.0915337 39.5974224, -105.0915281 39.5981345)","properties":{"laneId":22,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":7,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":13,"maneuver":{"maneuverStraightAllowed":true,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":2,"connectionID":1}]}},{"type":"Feature","id":21,"geometry":"LINESTRING (-105.0916048 39.5954391, -105.0916029 39.5957255, -105.0916004 39.5962647, -105.0915885 39.5966976, -105.0915786 39.5977599, -105.0915764 39.5981344)","properties":{"laneId":21,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":7,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":20,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":false,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":true,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"connectionID":1}]}},{"type":"Feature","id":24,"geometry":"LINESTRING (-105.0914747 39.5954382, -105.0914714 39.5958506, -105.0914611 39.596192, -105.0914778 39.5963599)","properties":{"laneId":24,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":7,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":6,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":5,"connectionID":1}]}},{"type":"Feature","id":25,"geometry":"LINESTRING (-105.0914371 39.5954371, -105.0914355 39.5958506, -105.0914461 39.596052)","properties":{"laneId":25,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":0,"ingressApproach":7,"ingressPath":true,"egressPath":false,"maneuvers":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false},"connectsTo":[{"connectingLane":{"lane":5,"maneuver":{"maneuverStraightAllowed":false,"maneuverNoStoppingAllowed":false,"goWithHalt":false,"maneuverLeftAllowed":true,"maneuverUTurnAllowed":false,"maneuverLeftTurnOnRedAllowed":false,"reserved1":false,"maneuverRightAllowed":false,"maneuverLaneChangeAllowed":false,"yieldAllwaysRequired":false,"maneuverRightTurnOnRedAllowed":false,"caution":false}},"signalGroup":5,"connectionID":1}]}},{"type":"Feature","id":26,"geometry":"LINESTRING (-105.0913276 39.5954361, -105.0913284 39.5954678)","properties":{"laneId":26,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":8,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":27,"geometry":"LINESTRING (-105.0912831 39.5954348, -105.0912839 39.5954647)","properties":{"laneId":27,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":8,"ingressApproach":0,"ingressPath":false,"egressPath":true}},{"type":"Feature","id":28,"geometry":"LINESTRING (-105.0912264 39.5954336, -105.091228 39.5954647, -105.091228 39.5954653)","properties":{"laneId":28,"laneType":{"vehicle":{"isVehicleRevocableLane":false,"isVehicleFlyOverLane":false,"permissionOnRequest":false,"hasIRbeaconCoverage":false,"restrictedToBusUse":false,"restrictedToTaxiUse":false,"restrictedFromPublicUse":false,"hovLaneUseOnly":false}},"sharedWith":{"busVehicleTraffic":false,"trackedVehicleTraffic":false,"individualMotorizedVehicleTraffic":false,"taxiVehicleTraffic":false,"overlappingLaneDescriptionProvided":false,"cyclistVehicleTraffic":false,"otherNonMotorizedTrafficTypes":false,"multipleLanesTreatedAsOneLane":false,"pedestrianTraffic":false,"pedestriansTraffic":false},"egressApproach":8,"ingressApproach":0,"ingressPath":false,"egressPath":true}}]},"connectingLanesFeatureCollection":{"type":"FeatureCollection","features":[{"type":"Feature","id":"2-19","geometry":"LINESTRING (-105.0911523 39.5953376, -105.0916758 39.5953365)","properties":{"signalGroupId":4,"ingressLaneId":2,"egressLaneId":19}},{"type":"Feature","id":"3-18","geometry":"LINESTRING (-105.0911527 39.5953113, -105.0916766 39.595308)","properties":{"signalGroupId":4,"ingressLaneId":3,"egressLaneId":18}},{"type":"Feature","id":"1-28","geometry":"LINESTRING (-105.0911535 39.5953745, -105.0912264 39.5954336)","properties":{"ingressLaneId":1,"egressLaneId":28}},{"type":"Feature","id":"4-12","geometry":"LINESTRING (-105.0911537 39.5952537, -105.0915234 39.5950941)","properties":{"signalGroupId":7,"ingressLaneId":4,"egressLaneId":12}},{"type":"Feature","id":"10-26","geometry":"LINESTRING (-105.0913299 39.5950922, -105.0913276 39.5954361)","properties":{"signalGroupId":6,"ingressLaneId":10,"egressLaneId":26}},{"type":"Feature","id":"9-27","geometry":"LINESTRING (-105.0912849 39.5950912, -105.0912831 39.5954348)","properties":{"signalGroupId":6,"ingressLaneId":9,"egressLaneId":27}},{"type":"Feature","id":"11-18","geometry":"LINESTRING (-105.0913713 39.5950916, -105.0916766 39.595308)","properties":{"signalGroupId":1,"ingressLaneId":11,"egressLaneId":18}},{"type":"Feature","id":"8-7","geometry":"LINESTRING (-105.0912303 39.5950889, -105.0911443 39.5951332)","properties":{"ingressLaneId":8,"egressLaneId":7}},{"type":"Feature","id":"15-6","geometry":"LINESTRING (-105.0916931 39.5951733, -105.0911474 39.5951732)","properties":{"signalGroupId":8,"ingressLaneId":15,"egressLaneId":6}},{"type":"Feature","id":"16-5","geometry":"LINESTRING (-105.0916852 39.5952059, -105.0911474 39.5952053)","properties":{"signalGroupId":8,"ingressLaneId":16,"egressLaneId":5}},{"type":"Feature","id":"17-26","geometry":"LINESTRING (-105.0916853 39.5952393, -105.0913276 39.5954361)","properties":{"signalGroupId":3,"ingressLaneId":17,"egressLaneId":26}},{"type":"Feature","id":"14-13","geometry":"LINESTRING (-105.0916926 39.5951407, -105.0915804 39.5950941)","properties":{"ingressLaneId":14,"egressLaneId":13}},{"type":"Feature","id":"23-12","geometry":"LINESTRING (-105.091519 39.5954362, -105.0915234 39.5950941)","properties":{"signalGroupId":2,"ingressLaneId":23,"egressLaneId":12}},{"type":"Feature","id":"22-13","geometry":"LINESTRING (-105.0915548 39.5954372, -105.0915804 39.5950941)","properties":{"signalGroupId":2,"ingressLaneId":22,"egressLaneId":13}},{"type":"Feature","id":"21-20","geometry":"LINESTRING (-105.0916048 39.5954391, -105.0916734 39.5953755)","properties":{"ingressLaneId":21,"egressLaneId":20}},{"type":"Feature","id":"24-6","geometry":"LINESTRING (-105.0914747 39.5954382, -105.0911474 39.5951732)","properties":{"signalGroupId":5,"ingressLaneId":24,"egressLaneId":6}},{"type":"Feature","id":"25-5","geometry":"LINESTRING (-105.0914371 39.5954371, -105.0911474 39.5952053)","properties":{"signalGroupId":5,"ingressLaneId":25,"egressLaneId":5}}]},"properties":{"schemaVersion":1,"messageType":"MAP","odeReceivedAt":"2025-01-31T23:50:49.19Z","originIp":"172.20.0.1","intersectionId":12110,"msgIssueRevision":0,"revision":0,"refPoint":{"latitude":39.5952649,"longitude":-105.0914122,"elevation":1677.0},"cti4501Conformant":false,"laneWidth":366,"mapSource":"RSU","timeStamp":"2025-01-31T23:50:49.19Z"}}
+{
+    "mapFeatureCollection": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "id": 2,
+                "geometry": "LINESTRING (-111.79574771374223 40.37685433004563, -111.79457362498155 40.37684929004059, -111.79437715592712 40.37684416003546, -111.79419817180518 40.37682985002115, -111.79405687479898 40.376808429999734, -111.7939236114442 40.37677980997111, -111.79379306539413 40.37674200993331, -111.79368142200217 40.37670420989551, -111.7935428425045 40.376648049839346, -111.79347420258887 40.37661132980263)",
+                "properties": {
+                    "laneId": 2,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 1,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 14,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 2
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 3,
+                "geometry": "LINESTRING (-111.79575220311058 40.376821570012865, -111.79457551581227 40.37681698000827, -111.79438247294937 40.37681239000368, -111.79420620616122 40.37679915999045, -111.79406762646826 40.37677818996948, -111.79393849811595 40.37675064994194, -111.7938126777692 40.37671437990567, -111.79370304282185 40.37667612986742, -111.79357048857497 40.37662149981279, -111.79349913144468 40.376585769777066)",
+                "properties": {
+                    "laneId": 3,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 1,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 13,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 2
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 1,
+                "geometry": "LINESTRING (-111.79574216110242 40.37688637007767, -111.79457220673274 40.37688025007155, -111.79437514688104 40.37686288005418)",
+                "properties": {
+                    "laneId": 1,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 1,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": true,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": true,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 18,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 12
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 19,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 12
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 4,
+                "geometry": "LINESTRING (-111.79576094556474 40.37678988998119, -111.79509427455045 40.37678682997813, -111.79497991383585 40.37680005999136)",
+                "properties": {
+                    "laneId": 4,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 1,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": true,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 9,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 5
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 5,
+                "geometry": "LINESTRING (-111.79578315612396 40.376754159945456, -111.79572325854731 40.376753619944914)",
+                "properties": {
+                    "laneId": 5,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 2,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 6,
+                "geometry": "LINESTRING (-111.7957885906225 40.3767204999118, -111.79572668467677 40.376719959911256)",
+                "properties": {
+                    "laneId": 6,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 2,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 7,
+                "geometry": "LINESTRING (-111.79587802356573 40.37664390983521, -111.79588948324114 40.37573778892909)",
+                "properties": {
+                    "laneId": 7,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 3,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": true,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": true,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 6,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 14
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 18,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 4
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 19,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 4
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 5,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 14
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 8,
+                "geometry": "LINESTRING (-111.79591925486982 40.376643999835295, -111.79592209025343 40.376445459636756, -111.79590590498636 40.37634798953928)",
+                "properties": {
+                    "laneId": 8,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 3,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": true,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 13,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 7
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 14,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 7
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 9,
+                "geometry": "LINESTRING (-111.79598246045057 40.37665497984628, -111.79597667154142 40.37660880980011)",
+                "properties": {
+                    "laneId": 9,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 4,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 11,
+                "geometry": "LINESTRING (-111.79609953845157 40.37676036995167, -111.79741492243544 40.37676864995995)",
+                "properties": {
+                    "laneId": 11,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 5,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 5,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 6
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 10,
+                "geometry": "LINESTRING (-111.79609965659284 40.37672877992008, -111.79741492181886 40.37673543992674)",
+                "properties": {
+                    "laneId": 10,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 5,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": true,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": true,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 9,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 16
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 6,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 6
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 12,
+                "geometry": "LINESTRING (-111.79609965659284 40.37679204998335, -111.79671930741368 40.37679456998587, -111.79683036018649 40.3767843999757)",
+                "properties": {
+                    "laneId": 12,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 5,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": true,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 18,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 1
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 19,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 13,
+                "geometry": "LINESTRING (-111.79607957257653 40.37682472001602, -111.79614277817231 40.37682571001701)",
+                "properties": {
+                    "laneId": 13,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 6,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 14,
+                "geometry": "LINESTRING (-111.79607957257653 40.37685847004977, -111.79614218749718 40.37685901005031)",
+                "properties": {
+                    "laneId": 14,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 6,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 15,
+                "geometry": "LINESTRING (-111.79599817323981 40.376953870145165, -111.7959941564279 40.37758180077309, -111.79595375164911 40.37773696092825, -111.79595505122101 40.3778544110457)",
+                "properties": {
+                    "laneId": 15,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 7,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": true,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": true,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 14,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 18
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 9,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 8
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 13,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": true,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 18
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 16,
+                "geometry": "LINESTRING (-111.79595623308809 40.37695486014616, -111.79595079857776 40.377576940768236, -111.79593201390126 40.37773165092295)",
+                "properties": {
+                    "laneId": 16,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 7,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": true,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 6,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 3
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 17,
+                "geometry": "LINESTRING (-111.79591452921892 40.37695513014643, -111.79591382036975 40.37757487076617, -111.79592622534442 40.377729940921235)",
+                "properties": {
+                    "laneId": 17,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 7,
+                    "ingressPath": true,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": true,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 5,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": false,
+                                    "maneuverLeftAllowed": true,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 3
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 18,
+                "geometry": "LINESTRING (-111.79586975367667 40.37694478013608, -111.79586975367667 40.376992300183595)",
+                "properties": {
+                    "laneId": 18,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 8,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 19,
+                "geometry": "LINESTRING (-111.79583076705676 40.37694685013815, -111.79583076705676 40.3769959001872)",
+                "properties": {
+                    "laneId": 19,
+                    "laneType": {
+                        "vehicle": {
+                            "isVehicleRevocableLane": false,
+                            "isVehicleFlyOverLane": false,
+                            "hovLaneUseOnly": false,
+                            "restrictedToBusUse": false,
+                            "restrictedToTaxiUse": false,
+                            "restrictedFromPublicUse": false,
+                            "hasIRbeaconCoverage": false,
+                            "permissionOnRequest": false
+                        }
+                    },
+                    "egressApproach": 8,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": true,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 27,
+                "geometry": "LINESTRING (-111.7957846919605 40.37693083012213, -111.79576720702049 40.37693443012573, -111.7957705149823 40.37692525011655)",
+                "properties": {
+                    "laneId": 27,
+                    "laneType": {
+                        "sidewalk": {
+                            "sidewalk-RevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isSidewalkFlyOverLane": false,
+                            "walkBikes": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 26,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 202
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 20,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 204
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 21,
+                "geometry": "LINESTRING (-111.7958172989517 40.376685489876785, -111.7958162356822 40.37667054986184, -111.79582899491346 40.37667306986436)",
+                "properties": {
+                    "laneId": 21,
+                    "laneType": {
+                        "sidewalk": {
+                            "sidewalk-RevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isSidewalkFlyOverLane": false,
+                            "walkBikes": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 20,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 204
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 22,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 206
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 23,
+                "geometry": "LINESTRING (-111.79604637487897 40.376672079863376, -111.7960665769956 40.376669019860316, -111.79606421417505 40.37668188987318)",
+                "properties": {
+                    "laneId": 23,
+                    "laneType": {
+                        "sidewalk": {
+                            "sidewalk-RevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isSidewalkFlyOverLane": false,
+                            "walkBikes": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 22,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 206
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 24,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 208
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 25,
+                "geometry": "LINESTRING (-111.79605712573476 40.37691148010278, -111.79606385979757 40.376922730114025, -111.79605240007474 40.37692174011303)",
+                "properties": {
+                    "laneId": 25,
+                    "laneType": {
+                        "sidewalk": {
+                            "sidewalk-RevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isSidewalkFlyOverLane": false,
+                            "walkBikes": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": true,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    },
+                    "connectsTo": [
+                        {
+                            "connectingLane": {
+                                "lane": 26,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 202
+                        },
+                        {
+                            "connectingLane": {
+                                "lane": 24,
+                                "maneuver": {
+                                    "maneuverStraightAllowed": true,
+                                    "maneuverLeftAllowed": false,
+                                    "maneuverRightAllowed": false,
+                                    "maneuverUTurnAllowed": false,
+                                    "maneuverLeftTurnOnRedAllowed": false,
+                                    "maneuverRightTurnOnRedAllowed": false,
+                                    "maneuverLaneChangeAllowed": false,
+                                    "maneuverNoStoppingAllowed": false,
+                                    "yieldAllwaysRequired": false,
+                                    "goWithHalt": false,
+                                    "caution": false,
+                                    "reserved1": false
+                                }
+                            },
+                            "signalGroup": 208
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 20,
+                "geometry": "LINESTRING (-111.7957722871269 40.37692282011412, -111.79581907115002 40.37668683987814)",
+                "properties": {
+                    "laneId": 20,
+                    "laneType": {
+                        "crosswalk": {
+                            "crosswalkRevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isXwalkFlyOverLane": false,
+                            "fixedCycleTime": false,
+                            "biDirectionalCycleTimes": false,
+                            "hasPushToWalkButton": true,
+                            "audioSupport": false,
+                            "rfSignalRequestPresent": false,
+                            "unsignalizedSegmentsPresent": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 22,
+                "geometry": "LINESTRING (-111.79583312988221 40.376672529863825, -111.79604436605044 40.37667306986437)",
+                "properties": {
+                    "laneId": 22,
+                    "laneType": {
+                        "crosswalk": {
+                            "crosswalkRevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isXwalkFlyOverLane": false,
+                            "fixedCycleTime": false,
+                            "biDirectionalCycleTimes": false,
+                            "hasPushToWalkButton": true,
+                            "audioSupport": false,
+                            "rfSignalRequestPresent": false,
+                            "unsignalizedSegmentsPresent": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 24,
+                "geometry": "LINESTRING (-111.79606315093966 40.37668278987409, -111.79605712574602 40.376910490101785)",
+                "properties": {
+                    "laneId": 24,
+                    "laneType": {
+                        "crosswalk": {
+                            "crosswalkRevocableLane": false,
+                            "bicyleUseAllowed": false,
+                            "isXwalkFlyOverLane": false,
+                            "fixedCycleTime": false,
+                            "biDirectionalCycleTimes": false,
+                            "hasPushToWalkButton": true,
+                            "audioSupport": false,
+                            "rfSignalRequestPresent": false,
+                            "unsignalizedSegmentsPresent": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            },
+            {
+                "type": "Feature",
+                "id": 26,
+                "geometry": "LINESTRING (-111.79604980097587 40.3769212001125, -111.79578882646929 40.37693038012168)",
+                "properties": {
+                    "laneId": 26,
+                    "laneType": {
+                        "crosswalk": {
+                            "crosswalkRevocableLane": false,
+                            "bicyleUseAllowed": true,
+                            "isXwalkFlyOverLane": false,
+                            "fixedCycleTime": false,
+                            "biDirectionalCycleTimes": false,
+                            "hasPushToWalkButton": true,
+                            "audioSupport": false,
+                            "rfSignalRequestPresent": false,
+                            "unsignalizedSegmentsPresent": false
+                        }
+                    },
+                    "egressApproach": 0,
+                    "ingressApproach": 0,
+                    "ingressPath": false,
+                    "egressPath": false,
+                    "maneuvers": {
+                        "maneuverStraightAllowed": false,
+                        "maneuverLeftAllowed": false,
+                        "maneuverRightAllowed": false,
+                        "maneuverUTurnAllowed": false,
+                        "maneuverLeftTurnOnRedAllowed": false,
+                        "maneuverRightTurnOnRedAllowed": false,
+                        "maneuverLaneChangeAllowed": false,
+                        "maneuverNoStoppingAllowed": false,
+                        "yieldAllwaysRequired": false,
+                        "goWithHalt": false,
+                        "caution": false,
+                        "reserved1": false
+                    }
+                }
+            }
+        ]
+    },
+    "connectingLanesFeatureCollection": {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "id": "2-14",
+                "geometry": "LINESTRING (-111.79574771374223 40.37685433004563, -111.79607957257653 40.37685847004977)",
+                "properties": {
+                    "signalGroupId": 2,
+                    "ingressLaneId": 2,
+                    "egressLaneId": 14
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "3-13",
+                "geometry": "LINESTRING (-111.79575220311058 40.376821570012865, -111.79607957257653 40.37682472001602)",
+                "properties": {
+                    "signalGroupId": 2,
+                    "ingressLaneId": 3,
+                    "egressLaneId": 13
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "1-18",
+                "geometry": "LINESTRING (-111.79574216110242 40.37688637007767, -111.79586975367667 40.37694478013608)",
+                "properties": {
+                    "signalGroupId": 12,
+                    "ingressLaneId": 1,
+                    "egressLaneId": 18
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "1-19",
+                "geometry": "LINESTRING (-111.79574216110242 40.37688637007767, -111.79583076705676 40.37694685013815)",
+                "properties": {
+                    "signalGroupId": 12,
+                    "ingressLaneId": 1,
+                    "egressLaneId": 19
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "4-9",
+                "geometry": "LINESTRING (-111.79576094556474 40.37678988998119, -111.79598246045057 40.37665497984628)",
+                "properties": {
+                    "signalGroupId": 5,
+                    "ingressLaneId": 4,
+                    "egressLaneId": 9
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "7-6",
+                "geometry": "LINESTRING (-111.79587802356573 40.37664390983521, -111.7957885906225 40.3767204999118)",
+                "properties": {
+                    "signalGroupId": 14,
+                    "ingressLaneId": 7,
+                    "egressLaneId": 6
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "7-18",
+                "geometry": "LINESTRING (-111.79587802356573 40.37664390983521, -111.79586975367667 40.37694478013608)",
+                "properties": {
+                    "signalGroupId": 4,
+                    "ingressLaneId": 7,
+                    "egressLaneId": 18
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "7-19",
+                "geometry": "LINESTRING (-111.79587802356573 40.37664390983521, -111.79583076705676 40.37694685013815)",
+                "properties": {
+                    "signalGroupId": 4,
+                    "ingressLaneId": 7,
+                    "egressLaneId": 19
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "7-5",
+                "geometry": "LINESTRING (-111.79587802356573 40.37664390983521, -111.79578315612396 40.376754159945456)",
+                "properties": {
+                    "signalGroupId": 14,
+                    "ingressLaneId": 7,
+                    "egressLaneId": 5
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "8-13",
+                "geometry": "LINESTRING (-111.79591925486982 40.376643999835295, -111.79607957257653 40.37682472001602)",
+                "properties": {
+                    "signalGroupId": 7,
+                    "ingressLaneId": 8,
+                    "egressLaneId": 13
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "8-14",
+                "geometry": "LINESTRING (-111.79591925486982 40.376643999835295, -111.79607957257653 40.37685847004977)",
+                "properties": {
+                    "signalGroupId": 7,
+                    "ingressLaneId": 8,
+                    "egressLaneId": 14
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "11-5",
+                "geometry": "LINESTRING (-111.79609953845157 40.37676036995167, -111.79578315612396 40.376754159945456)",
+                "properties": {
+                    "signalGroupId": 6,
+                    "ingressLaneId": 11,
+                    "egressLaneId": 5
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "10-9",
+                "geometry": "LINESTRING (-111.79609965659284 40.37672877992008, -111.79598246045057 40.37665497984628)",
+                "properties": {
+                    "signalGroupId": 16,
+                    "ingressLaneId": 10,
+                    "egressLaneId": 9
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "10-6",
+                "geometry": "LINESTRING (-111.79609965659284 40.37672877992008, -111.7957885906225 40.3767204999118)",
+                "properties": {
+                    "signalGroupId": 6,
+                    "ingressLaneId": 10,
+                    "egressLaneId": 6
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "12-18",
+                "geometry": "LINESTRING (-111.79609965659284 40.37679204998335, -111.79586975367667 40.37694478013608)",
+                "properties": {
+                    "signalGroupId": 1,
+                    "ingressLaneId": 12,
+                    "egressLaneId": 18
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "12-19",
+                "geometry": "LINESTRING (-111.79609965659284 40.37679204998335, -111.79583076705676 40.37694685013815)",
+                "properties": {
+                    "signalGroupId": 1,
+                    "ingressLaneId": 12,
+                    "egressLaneId": 19
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "15-14",
+                "geometry": "LINESTRING (-111.79599817323981 40.376953870145165, -111.79607957257653 40.37685847004977)",
+                "properties": {
+                    "signalGroupId": 18,
+                    "ingressLaneId": 15,
+                    "egressLaneId": 14
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "15-9",
+                "geometry": "LINESTRING (-111.79599817323981 40.376953870145165, -111.79598246045057 40.37665497984628)",
+                "properties": {
+                    "signalGroupId": 8,
+                    "ingressLaneId": 15,
+                    "egressLaneId": 9
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "15-13",
+                "geometry": "LINESTRING (-111.79599817323981 40.376953870145165, -111.79607957257653 40.37682472001602)",
+                "properties": {
+                    "signalGroupId": 18,
+                    "ingressLaneId": 15,
+                    "egressLaneId": 13
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "16-6",
+                "geometry": "LINESTRING (-111.79595623308809 40.37695486014616, -111.7957885906225 40.3767204999118)",
+                "properties": {
+                    "signalGroupId": 3,
+                    "ingressLaneId": 16,
+                    "egressLaneId": 6
+                }
+            },
+            {
+                "type": "Feature",
+                "id": "17-5",
+                "geometry": "LINESTRING (-111.79591452921892 40.37695513014643, -111.79578315612396 40.376754159945456)",
+                "properties": {
+                    "signalGroupId": 3,
+                    "ingressLaneId": 17,
+                    "egressLaneId": 5
+                }
+            }
+        ]
+    },
+    "properties": {
+        "schemaVersion": 2,
+        "messageType": "MAP",
+        "odeReceivedAt": "2025-08-01T15:05:42.572Z",
+        "originIp": "172.18.0.1",
+        "asn1": "001282AB780CC3780302071583B3869DD95048EFE5026411504DC3A7720A7D02F120D4DB5EC1728A71DDD462402DC0514F8D16010A0D0001000102DB49FB2D3693FE40B9FDF1C5BD6EC22CAC71216343610B1459703EC52E0B2556403915340243A00008B00C50680008000816C7447969BA1FF345CC4F9A2DD476D164AB8B8B115B385852CDA1F4095C58C4B421CB89CC121B0000458022834000120008B78ED7CB4D5EFF782E8473F148910006244C80030B01050680004000116A23979360B7F783F22498242500014401488680000016442D103FB7E84018886800000162D21607063FA2C07341A00029000052CA1B257F9F58AC348310007244A00011227000089052000E2C08341A00010000450101B437F41D88511278A290D40007487200038804A10D00000025F11540C313FE5816A834000400000884979CAA90500B80905800062C0A541A000290000442291055483804A148490008241A00018B0315068000400011108BA390B8380702151C78A4490000522680002201AC4340000008AEE2C827A6058807310D00000022BBA2909EE80C581EE83400052001095B3934901176822956EBC13FAE8C92438800492130001090D200122C10741A0001000044D9FCB0480BBB00144FF5B824190000CB045D06800040001141872D92006EB984F2FD760905400031012821A0000005357BD01801840404E086800000157AEFF86006210C1B0069A000400008B1EF53414A45007919A148D40065245200330305401A68001000022B672A70412AD0194870522900198916800CE0C170069A0004000088F508480AABBC08528F148B40067246200340306401A68001000022379C76038F3E82617D4523500194918800D000140068A200000B3933D06E742E1000B0034510000055C242E21048060018006882000008D18A247033CF1000D00345100000476F9C43C50C1980",
+        "intersectionName": "Alpine Hwy & E Main St",
+        "intersectionId": 6025,
+        "msgIssueRevision": 0,
+        "revision": 3,
+        "refPoint": {
+            "latitude": 40.3768087,
+            "longitude": -111.7959202,
+            "elevation": 1386.0
+        },
+        "cti4501Conformant": false,
+        "laneWidth": 366,
+        "speedLimits": [
+            {
+                "type": "VEHICLEMAXSPEED",
+                "speed": 671
+            }
+        ],
+        "mapSource": "RSU",
+        "timeStamp": "2025-03-14T14:39:00Z"
+    }
+}

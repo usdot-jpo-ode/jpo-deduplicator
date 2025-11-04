@@ -2,18 +2,15 @@ package us.dot.its.jpo.deduplicator.deduplicator.processors;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
-import us.dot.its.jpo.ode.model.OdeTimData;
-import us.dot.its.jpo.ode.model.OdeTimMetadata;
+import us.dot.its.jpo.deduplicator.utils.OdeJsonUtils;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeTimData>{
-
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData>{
 
     private static final Logger logger = LoggerFactory.getLogger(OdeTimJsonProcessor.class);
 
@@ -23,20 +20,13 @@ public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeTimData>{
         this.storeName = props.getKafkaStateStoreOdeTimJsonName();
     }
 
-
     @Override
-    public Instant getMessageTime(OdeTimData message) {
-        try {
-            // String time = message.get("metadata").get("odeReceivedAt").asText();
-            String time = ((OdeTimMetadata)message.getMetadata()).getOdeReceivedAt();
-            return Instant.from(formatter.parse(time));
-        } catch (Exception e) {
-            return Instant.ofEpochMilli(0);
-        }
+    public Instant getMessageTime(OdeMessageFrameData message) {
+        return OdeJsonUtils.getOdeMessageFrameMessageTime(message);
     }
 
     @Override
-    public boolean isDuplicate(OdeTimData lastMessage, OdeTimData newMessage) {
+    public boolean isDuplicate(OdeMessageFrameData lastMessage, OdeMessageFrameData newMessage) {
         try{
             Instant oldValueTime = getMessageTime(lastMessage);
             Instant newValueTime = getMessageTime(newMessage);
@@ -45,6 +35,13 @@ public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeTimData>{
                 return false;
             }
 
+            // Check for null conditions - treat as non-duplicate if one is null and the other is not
+            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null);
+            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null || newMessage.getPayload().getData() == null);
+            if ((lastMessageIsNull && !newMessageIsNull) || (!lastMessageIsNull && newMessageIsNull)) {
+                logger.warn("One TIM message has a null payload or data, treating as non-duplicate");
+                return true;
+            }
         } catch(Exception e){
             logger.warn("Caught General Exception" + e);
         }

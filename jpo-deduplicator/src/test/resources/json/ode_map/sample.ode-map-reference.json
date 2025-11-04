@@ -6,16 +6,16 @@
 		"receivedMessageDetails": {
 			"rxSource": "NA"
 		},
-		"payloadType": "us.dot.its.jpo.ode.model.OdeMapPayload",
+		"payloadType": "us.dot.its.jpo.ode.model.OdeMessageFramePayload",
 		"serialId": {
-			"streamId": "d963d421-fba0-4b21-b991-229e8d3bf9c1",
+			"streamId": "339e6941-400a-4f7b-87fd-6020e9af28b7",
 			"bundleSize": 1,
 			"bundleId": 0,
 			"recordId": 0,
 			"serialNumber": 0
 		},
-		"odeReceivedAt": "2025-01-31T00:00:00.000Z",
-		"schemaVersion": 8,
+		"odeReceivedAt": "2025-07-15T21:00:28.938Z",
+		"schemaVersion": 9,
 		"maxDurationTime": 0,
 		"recordGeneratedAt": "",
 		"recordGeneratedBy": "RSU",
@@ -23,81 +23,51 @@
 		"odePacketID": "",
 		"odeTimStartDateTime": "",
 		"asn1": "001283C138003000205E9C014D3EAB092CA624B5518202DC3658042800000400023622C60CA009F66D48ABFAF81388D8AD18070027D9B2FFCFE9804F13667B1FFD009EC2C76E3FFC82C4E0001004B00C5000000800066C4574101813ECD8B757FAE027D9B30E6FF5604EC363561FE7809EC6CD69BFEC813C4D8A617FC9027D9B2147008604FB163666000016250000802580228000001000096229E1309B51A6FE4204DD361CF1FE5009F6018E1000096020A00000080004D88A57F84027D9B3827002804EC36087600A009F62C289407282C310001C0440188800000006C46DBE02813EC5816D800710052200000001B11B6FAD404FB16054A0000401C8800000006C47B3D24813EC5816D801B100C4200000000AF890F12C580007E87100D4200000008AF4C0F12C580077E7A2C0004000160002001CB028D000000800052C160BC40B5FFFD8A9409D86BFEBB5B40141457FEF53B76C008B467014145800080002BFFCBFFC82C6A0001804B024D000000800036C2213C3B013ECD80096D64027D9AFFD8CDFC04F635FF7983BC09F66C0082AA2014280B1B80006012C0B3400000100004B02BCF0F6D7FE065D602788B0138EB900B1240001012C083400000080009B0C2AF0B804FB15FE6DE171AFFF6C63E04EC15FE1DE670060E40002581EA8000004000135DA6DF0180A0A6ADC2C00D0143CD51897FDA028C8ABB25001A0B0680008012C105400000200009AEDBEFAE005053540EE003C0A326A9CF3FED8143C5667780010582C0004009608AA00000080004D76DE7EE402829ABA88FFDC050F354525FFF80A322BCF23FA602C690000C04B0395000000200016BB4FBD4E01414D3215800802940AB108FFF2030D2000110126200000001AEE5103BE050A15F6F1FFC8404D8800000006BB97C18E0142857DFA800010146200000001AEE89099A050A15F8720000B05DD000000800046BE3743B781428D80E1B00002879B00514B4404F63600827D8C09E22C000400015FFE6007016190000402582CE8000004000135ECEE1DE80A146C02E54758143CD8059AD3E027B1B00613DD004F102C360000804B055D000000200046BCC7C3C781428D80108C6E02829B002B2ECE050A16019A4B29B00AB5C3604F136004E410409EC018A10000960C3A00000080004D7DE9878602851B003923CC05053601623B440A0A6BFB8C3A5014140B0640005012C197400000100005AFE570EF2050A36003A47C80A0A6BFD2C45F014140B054000501101A8200000001B05A90EDC050535FFE605800A0A101B8200000001B08A30EC0050535FFE605300A0A101C8200000005B0C6F0EA4050515FFCA0568B0001000E",
-		"mapSource": "RSU",
-		"originIp": "8.8.8.8"
+		"source": "RSU",
+		"originIp": "8.8.8.8",
+		"isCertPresent": false
 	},
 	"payload": {
 		"data": {
-			"msgIssueRevision": 0,
-			"layerType": "intersectionData",
-			"layerID": 0,
-			"intersections": {
-				"intersectionGeometry": [
-					{
-						"id": {
-							"id": 12110
-						},
-						"revision": 0,
-						"refPoint": {
-							"latitude": 39.5952649,
-							"longitude": -105.0914122,
-							"elevation": 1677.0
-						},
-						"laneWidth": 366,
-						"laneSet": {
-							"GenericLane": [
+			"messageId": 18,
+			"value": {
+				"MapData": {
+					"timeStamp": 282063,
+					"msgIssueRevision": 0,
+					"layerType": "intersectionData",
+					"layerID": 0,
+					"intersections": [
+						{
+							"id": {
+								"id": 12110
+							},
+							"revision": 0,
+							"refPoint": {
+								"lat": 395952649,
+								"long": -1050914122,
+								"elevation": 16770
+							},
+							"laneWidth": 366,
+							"laneSet": [
 								{
 									"laneID": 2,
 									"ingressApproach": 1,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2225,
 														"y": 808
 													}
@@ -108,7 +78,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 10517,
 														"y": -161
 													}
@@ -119,7 +89,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2769,
 														"y": 112
 													}
@@ -130,7 +100,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 6142,
 														"y": -180
 													}
@@ -141,7 +111,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 6636,
 														"y": -12
 													}
@@ -152,7 +122,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 3804,
 														"y": -7
 													}
@@ -160,84 +130,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 19,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 4,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 19,
+												"maneuver": "8000"
+											},
+											"signalGroup": 4,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 3,
 									"ingressApproach": 1,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2222,
 														"y": 515
 													}
@@ -248,7 +170,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2933,
 														"y": -82
 													}
@@ -259,7 +181,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 6259,
 														"y": -85
 													}
@@ -270,7 +192,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 3416,
 														"y": -98
 													}
@@ -281,7 +203,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 6867,
 														"y": -39
 													}
@@ -292,7 +214,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2657,
 														"y": -55
 													}
@@ -303,7 +225,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 4259,
 														"y": 67
 													}
@@ -314,7 +236,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 3481,
 														"y": 0
 													}
@@ -322,84 +244,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 18,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 4,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 18,
+												"maneuver": "8000"
+											},
+											"signalGroup": 4,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 1,
 									"ingressApproach": 1,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": true,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "2000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2215,
 														"y": 1218
 													}
@@ -407,7 +281,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 10451,
 														"y": -223
 													}
@@ -418,7 +292,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 1852,
 														"y": -108
 													}
@@ -429,83 +303,35 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 28,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": true,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 28,
+												"maneuver": "2000"
+											},
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 4,
 									"ingressApproach": 1,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": true,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "4000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2213,
 														"y": -124
 													}
@@ -516,7 +342,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 7187,
 														"y": 20
 													}
@@ -527,7 +353,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 541,
 														"y": 40
 													}
@@ -538,7 +364,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 1298,
 														"y": 229
 													}
@@ -546,62 +372,27 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 12,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": true,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 7,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 12,
+												"maneuver": "4000"
+											},
+											"signalGroup": 7,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 6,
 									"egressApproach": 2,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -609,7 +400,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2267,
 														"y": -1019
 													}
@@ -620,7 +411,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 365,
 														"y": 7
 													}
@@ -633,32 +424,12 @@
 									"laneID": 5,
 									"egressApproach": 2,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -666,7 +437,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2267,
 														"y": -662
 													}
@@ -677,7 +448,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 338,
 														"y": 0
 													}
@@ -690,32 +461,12 @@
 									"laneID": 7,
 									"egressApproach": 2,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -723,7 +474,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 2294,
 														"y": -1463
 													}
@@ -734,7 +485,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 365,
 														"y": 27
 													}
@@ -747,32 +498,12 @@
 									"laneID": 12,
 									"egressApproach": 4,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -780,7 +511,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -952,
 														"y": -1898
 													}
@@ -788,7 +519,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 0,
 														"y": -377
 													}
@@ -801,32 +532,12 @@
 									"laneID": 13,
 									"egressApproach": 4,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -834,7 +545,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -1440,
 														"y": -1898
 													}
@@ -842,7 +553,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 7,
 														"y": -390
 													}
@@ -850,7 +561,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 0,
 														"y": 0
 													}
@@ -858,7 +569,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 0,
 														"y": 7
 													}
@@ -871,54 +582,21 @@
 									"laneID": 10,
 									"ingressApproach": 3,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 705,
 														"y": -1919
 													}
@@ -926,7 +604,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -1,
 														"y": -7515
 													}
@@ -937,7 +615,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -41,
 														"y": -5272
 													}
@@ -948,7 +626,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -17,
 														"y": -11337
 													}
@@ -956,7 +634,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 17,
 														"y": -5938
 													}
@@ -967,7 +645,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 0,
 														"y": 0
 													}
@@ -975,7 +653,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -7,
 														"y": -7
 													}
@@ -983,84 +661,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 26,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 6,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 26,
+												"maneuver": "8000"
+											},
+											"signalGroup": 6,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 9,
 									"ingressApproach": 3,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 1090,
 														"y": -1930
 													}
@@ -1071,7 +701,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 9,
 														"y": -4764
 													}
@@ -1082,7 +712,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -20,
 														"y": -6402
 													}
@@ -1093,7 +723,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -34,
 														"y": -7953
 													}
@@ -1104,7 +734,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 16,
 														"y": -10940
 													}
@@ -1115,84 +745,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 27,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 6,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 27,
+												"maneuver": "8000"
+											},
+											"signalGroup": 6,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 11,
 									"ingressApproach": 3,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": true,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "4000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 350,
 														"y": -1925
 													}
@@ -1200,7 +782,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -32,
 														"y": -6698
 													}
@@ -1211,7 +793,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 156,
 														"y": -2616
 													}
@@ -1219,84 +801,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 18,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": true,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 1,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 18,
+												"maneuver": "4000"
+											},
+											"signalGroup": 1,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 8,
 									"ingressApproach": 3,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": true,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "2000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 1557,
 														"y": -1956
 													}
@@ -1307,7 +841,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -101,
 														"y": -1956
 													}
@@ -1315,7 +849,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -5,
 														"y": -7393
 													}
@@ -1326,7 +860,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -121,
 														"y": -1636
 													}
@@ -1334,83 +868,35 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 7,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": true,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 7,
+												"maneuver": "2000"
+											},
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 15,
 									"ingressApproach": 5,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2405,
 														"y": -1018
 													}
@@ -1421,7 +907,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -9339,
 														"y": 26
 													}
@@ -1432,7 +918,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -11895,
 														"y": -38
 													}
@@ -1443,7 +929,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -8814,
 														"y": 13
 													}
@@ -1451,84 +937,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 6,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 8,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 6,
+												"maneuver": "8000"
+											},
+											"signalGroup": 8,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 16,
 									"ingressApproach": 5,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2337,
 														"y": -656
 													}
@@ -1539,7 +977,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -12229,
 														"y": 15
 													}
@@ -1550,7 +988,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -11362,
 														"y": -37
 													}
@@ -1561,7 +999,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -6537,
 														"y": 1
 													}
@@ -1569,84 +1007,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 5,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 8,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 5,
+												"maneuver": "8000"
+											},
+											"signalGroup": 8,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 17,
 									"ingressApproach": 5,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": true,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "4000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2338,
 														"y": -284
 													}
@@ -1657,7 +1047,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -8892,
 														"y": -18
 													}
@@ -1668,7 +1058,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -11959,
 														"y": -2
 													}
@@ -1679,7 +1069,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -1564,
 														"y": -180
 													}
@@ -1687,84 +1077,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 26,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": true,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 3,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 26,
+												"maneuver": "4000"
+											},
+											"signalGroup": 3,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 14,
 									"ingressApproach": 5,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": true,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "2000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2401,
 														"y": -1380
 													}
@@ -1775,7 +1117,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -19947,
 														"y": 8
 													}
@@ -1786,7 +1128,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -10108,
 														"y": -7
 													}
@@ -1794,61 +1136,26 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 13,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": true,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 13,
+												"maneuver": "2000"
+											},
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 18,
 									"egressApproach": 6,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -1856,7 +1163,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2264,
 														"y": 479
 													}
@@ -1867,7 +1174,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -580,
 														"y": -14
 													}
@@ -1880,32 +1187,12 @@
 									"laneID": 19,
 									"egressApproach": 6,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -1913,7 +1200,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2257,
 														"y": 796
 													}
@@ -1924,7 +1211,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -518,
 														"y": 0
 													}
@@ -1937,32 +1224,12 @@
 									"laneID": 20,
 									"egressApproach": 6,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -1970,7 +1237,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -2236,
 														"y": 1229
 													}
@@ -1981,7 +1248,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -484,
 														"y": 0
 													}
@@ -1994,54 +1261,21 @@
 									"laneID": 23,
 									"ingressApproach": 7,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -914,
 														"y": 1903
 													}
@@ -2052,7 +1286,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 225,
 														"y": 12288
 													}
@@ -2063,7 +1297,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 40,
 														"y": 9634
 													}
@@ -2074,7 +1308,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 32,
 														"y": 8035
 													}
@@ -2085,7 +1319,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 0,
 														"y": 0
 													}
@@ -2093,7 +1327,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -7,
 														"y": 28
 													}
@@ -2101,84 +1335,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 12,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 2,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 12,
+												"maneuver": "8000"
+											},
+											"signalGroup": 2,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 22,
 									"ingressApproach": 7,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": true,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "8000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -1221,
 														"y": 1914
 													}
@@ -2189,7 +1375,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 92,
 														"y": 10475
 													}
@@ -2200,7 +1386,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 89,
 														"y": 11582
 													}
@@ -2211,7 +1397,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 48,
 														"y": 7912
 													}
@@ -2222,84 +1408,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 13,
-													"maneuver": {
-														"maneuverStraightAllowed": true,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 2,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 13,
+												"maneuver": "8000"
+											},
+											"signalGroup": 2,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 21,
 									"ingressApproach": 7,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": false,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": true,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "2000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -1649,
 														"y": 1935
 													}
@@ -2310,7 +1448,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 16,
 														"y": 3182
 													}
@@ -2321,7 +1459,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 21,
 														"y": 5991
 													}
@@ -2332,7 +1470,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 102,
 														"y": 4810
 													}
@@ -2340,7 +1478,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 85,
 														"y": 11803
 													}
@@ -2351,7 +1489,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 19,
 														"y": 4161
 													}
@@ -2362,83 +1500,35 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 20,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": false,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": true,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 20,
+												"maneuver": "2000"
+											},
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 24,
 									"ingressApproach": 7,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": true,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "4000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -535,
 														"y": 1926
 													}
@@ -2449,7 +1539,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 28,
 														"y": 4582
 													}
@@ -2460,7 +1550,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 88,
 														"y": 3793
 													}
@@ -2471,7 +1561,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -143,
 														"y": 1866
 													}
@@ -2482,84 +1572,36 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 6,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": true,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 5,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 6,
+												"maneuver": "4000"
+											},
+											"signalGroup": 5,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 25,
 									"ingressApproach": 7,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": true,
-											"egressPath": false
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "80",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
-									"maneuvers": {
-										"maneuverStraightAllowed": false,
-										"maneuverNoStoppingAllowed": false,
-										"goWithHalt": false,
-										"maneuverLeftAllowed": true,
-										"maneuverUTurnAllowed": false,
-										"maneuverLeftTurnOnRedAllowed": false,
-										"reserved1": false,
-										"maneuverRightAllowed": false,
-										"maneuverLaneChangeAllowed": false,
-										"yieldAllwaysRequired": false,
-										"maneuverRightTurnOnRedAllowed": false,
-										"caution": false
-									},
+									"maneuvers": "4000",
 									"nodeList": {
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -213,
 														"y": 1913
 													}
@@ -2570,7 +1612,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 14,
 														"y": 4594
 													}
@@ -2581,7 +1623,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -91,
 														"y": 2238
 													}
@@ -2592,62 +1634,27 @@
 											}
 										]
 									},
-									"connectsTo": {
-										"connectsTo": [
-											{
-												"connectingLane": {
-													"lane": 5,
-													"maneuver": {
-														"maneuverStraightAllowed": false,
-														"maneuverNoStoppingAllowed": false,
-														"goWithHalt": false,
-														"maneuverLeftAllowed": true,
-														"maneuverUTurnAllowed": false,
-														"maneuverLeftTurnOnRedAllowed": false,
-														"reserved1": false,
-														"maneuverRightAllowed": false,
-														"maneuverLaneChangeAllowed": false,
-														"yieldAllwaysRequired": false,
-														"maneuverRightTurnOnRedAllowed": false,
-														"caution": false
-													}
-												},
-												"signalGroup": 5,
-												"connectionID": 1
-											}
-										]
-									}
+									"connectsTo": [
+										{
+											"connectingLane": {
+												"lane": 5,
+												"maneuver": "4000"
+											},
+											"signalGroup": 5,
+											"connectionID": 1
+										}
+									]
 								},
 								{
 									"laneID": 26,
 									"egressApproach": 8,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -2655,7 +1662,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 724,
 														"y": 1902
 													}
@@ -2666,7 +1673,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -7,
 														"y": 352
 													}
@@ -2682,32 +1689,12 @@
 									"laneID": 27,
 									"egressApproach": 8,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -2715,7 +1702,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 1105,
 														"y": 1888
 													}
@@ -2726,7 +1713,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -7,
 														"y": 332
 													}
@@ -2742,32 +1729,12 @@
 									"laneID": 28,
 									"egressApproach": 8,
 									"laneAttributes": {
-										"directionalUse": {
-											"ingressPath": false,
-											"egressPath": true
-										},
-										"shareWith": {
-											"busVehicleTraffic": false,
-											"trackedVehicleTraffic": false,
-											"individualMotorizedVehicleTraffic": false,
-											"taxiVehicleTraffic": false,
-											"overlappingLaneDescriptionProvided": false,
-											"cyclistVehicleTraffic": false,
-											"otherNonMotorizedTrafficTypes": false,
-											"multipleLanesTreatedAsOneLane": false,
-											"pedestrianTraffic": false,
-											"pedestriansTraffic": false
-										},
+										"directionalUse": "40",
+										"sharedWith": "0000",
 										"laneType": {
 											"vehicle": {
-												"isVehicleRevocableLane": false,
-												"isVehicleFlyOverLane": false,
-												"permissionOnRequest": false,
-												"hasIRbeaconCoverage": false,
-												"restrictedToBusUse": false,
-												"restrictedToTaxiUse": false,
-												"restrictedFromPublicUse": false,
-												"hovLaneUseOnly": false
+												"value": "00",
+												"length": 8
 											}
 										}
 									},
@@ -2775,7 +1742,7 @@
 										"nodes": [
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 1591,
 														"y": 1874
 													}
@@ -2786,7 +1753,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": -14,
 														"y": 346
 													}
@@ -2794,7 +1761,7 @@
 											},
 											{
 												"delta": {
-													"nodeXY6": {
+													"node-XY6": {
 														"x": 0,
 														"y": 7
 													}
@@ -2805,10 +1772,10 @@
 								}
 							]
 						}
-					}
-				]
+					]
+				}
 			}
 		},
-		"dataType": "us.dot.its.jpo.ode.plugin.j2735.J2735MAP"
+		"dataType": "us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame"
 	}
 }

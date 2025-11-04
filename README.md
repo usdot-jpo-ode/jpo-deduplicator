@@ -7,13 +7,46 @@ The JPO-Deduplicator is a Kafka Java spring-boot application designed to reduce 
 
 The following topics currently support deduplication.
 
+- topic.OdeMapJson -> topic.DeduplicatedOdeMapJson
 - topic.ProcessedMap -> topic.DeduplicatedProcessedMap
 - topic.ProcessedMapWKT -> topic.DeduplicatedProcessedMapWKT
-- topic.OdeMapJson -> topic.DeduplicatedOdeMapJson
 - topic.OdeTimJson -> topic.DeduplicatedOdeTimJson
-- topic.OdeRawEncodedTIMJson -> topic.DeduplicatedOdeRawEncodedTIMJson
 - topic.OdeBsmJson -> topic.DeduplicatedOdeBsmJson
+- topic.ProcessedBsm -> topic.DeduplicatedProcessedBsm
 - topic.ProcessedSpat -> topic.DeduplicatedProcessedSpat
+
+## Topic Deduplication Rules
+
+The processes that determine which messages are duplicates are unique and customized for each message type. The following is a detailed explanation on each message type's criteria for when messages are deduplicated. All of the criteria must be met for a single message type.
+
+### OdeMapJson
+- Two messages within a 1 hour time window 
+- Two messages have the same intersection ID
+
+### ProcessedMap and ProcessedMapWKT
+- Two messages within a 1 hour time window
+- Two messages have the same hash values after factoring out the odeReceivedAt and timeStamp fields
+
+### OdeTimJson
+- Two messages within a 1 hour time window
+- Two messages have the same packet ID
+- Two message have the same msgCnt value
+
+### OdeBsmJson
+- Two messages within the defined time threshold defined by the `odeBsmMaximumTimeDelta` value in application.yaml
+- The new message's speed is identical to the previous message's speed
+- The new message's speed is below the speed threshold defined by the `odeBsmAlwaysIncludeAtSpeed` value in application.yaml
+- The position delta between the messages is not suitably large defined by the `odeBsmMaximumPositionDelta` value in application.yaml or position information is null
+
+### ProcessedBsm
+- Two messages within the defined time threshold defined by the `odeBsmMaximumTimeDelta` value in application.yaml
+- The new speed is below the speed threshold defined by the `odeBsmAlwaysIncludeAtSpeed` value in application.yaml
+- The position delta between the messages is not suitably large defined by the `odeBsmMaximumPositionDelta` value in application.yaml or position information is null
+
+### ProcessedSpat
+- Two messages within 1 minute time window
+- Signal states are identical
+- Signal light phases are identical
 
 ## Release Notes
 
@@ -105,7 +138,6 @@ To manually configure deduplication for a topic, the following environment varia
 | `ENABLE_PROCESSED_MAP_WKT_DEDUPLICATION` | `true` / `false` - Enable ProcessedMap WKT message Deduplication |
 | `ENABLE_ODE_MAP_DEDUPLICATION` | `true` / `false` - Enable ODE MAP message Deduplication |
 | `ENABLE_ODE_TIM_DEDUPLICATION` | `true` / `false` - Enable ODE TIM message Deduplication |
-| `ENABLE_ODE_RAW_ENCODED_TIM_DEDUPLICATION` | `true` / `false` - Enable ODE Raw Encoded TIM Deduplication |
 | `ENABLE_PROCESSED_SPAT_DEDUPLICATION` | `true` / `false` - Enable ProcessedSpat Deduplication |
 | `ENABLE_ODE_BSM_DEDUPLICATION` | `true` / `false` - Enable ODE BSM Deduplication |
 | `ENABLE_PROCESSED_BSM_DEDUPLICATION` | `true` / `false` - Enable Processed BSM Deduplication |

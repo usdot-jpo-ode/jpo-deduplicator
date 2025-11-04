@@ -3,51 +3,50 @@
     "geometry": {
         "type": "Point",
         "coordinates": [
-            -105.0342901,
-            40.5671913
+            -104.91520469999999,
+            39.647704499999996
         ]
     },
     "properties": {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "messageType": "BSM",
-        "odeReceivedAt": "2024-08-12T12:32:01.811Z",
-        "originIp": "172.19.0.1",
+        "odeReceivedAt": "2025-08-01T08:34:00.051Z",
+        "timeStamp": "2025-08-01T08:34:38.6Z",
+        "originIp": "172.18.0.1",
+        "asn1": "00143D5EC4C1CC2625B226A355BA966083E828EC14140000708BE8E0FD7B4FA100802C80000000000058C0210B5CBE596FE209AE12CF4B976AF881BA6D898640",
         "validationMessages": [],
-        "timeStamp": "2024-08-12T12:32:01.3034091Z",
         "accelSet": {
-            "accelLat": 2001,
-            "accelLong": 0,
-            "accelVert": -127,
-            "accelYaw": 0
+            "accelLong": -0.28,
+            "accelYaw": 0.45
         },
         "accuracy": {
-            "semiMajor": 5,
-            "semiMinor": 2,
-            "orientation": 0
+            "semiMajor": 2.0,
+            "semiMinor": 2.0,
+            "orientation": 0.0
         },
         "brakes": {
             "wheelBrakes": {
-                "leftFront": false,
-                "rightFront": false,
                 "unavailable": true,
+                "leftFront": false,
                 "leftRear": false,
+                "rightFront": false,
                 "rightRear": false
             },
-            "traction": "unavailable",
-            "abs": "unavailable",
-            "scs": "unavailable",
-            "brakeBoost": "unavailable",
-            "auxBrakes": "unavailable"
+            "traction": "UNAVAILABLE",
+            "abs": "UNAVAILABLE",
+            "scs": "UNAVAILABLE",
+            "brakeBoost": "UNAVAILABLE",
+            "auxBrakes": "UNAVAILABLE"
         },
-        "heading": 359.4,
-        "id": "12A7A951",
-        "msgCnt": 25,
-        "secMark": 2800,
+        "heading": 335.6,
+        "id": "13073098",
+        "msgCnt": 123,
+        "secMark": 38600,
         "size": {
-            "width": 208,
-            "length": 586
+            "width": 0,
+            "length": 0
         },
-        "transmission": "UNAVAILABLE",
-        "speed": 0
+        "speed": 0.0,
+        "transmission": "UNAVAILABLE"
     }
 }
