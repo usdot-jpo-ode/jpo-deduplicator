@@ -19,34 +19,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-import java.util.Properties;
-
 public class ProcessedMapDeduplicatorTopology {
 
     private static final Logger logger = LoggerFactory.getLogger(MapDeduplicatorTopology.class);
 
     Topology topology;
     KafkaStreams streams;
-    Properties streamsProperties;
     ObjectMapper objectMapper;
     DeduplicatorProperties props;
 
-    public ProcessedMapDeduplicatorTopology(DeduplicatorProperties props, Properties streamsProperties){
+    public ProcessedMapDeduplicatorTopology(DeduplicatorProperties props) {
         this.props = props;
-        this.streamsProperties = streamsProperties;
         this.objectMapper = DateJsonMapper.getInstance();
     }
 
-    
     public void start() {
         if (streams != null && streams.state().isRunningOrRebalancing()) {
             throw new IllegalStateException("Start called while streams is already running.");
         }
         Topology topology = buildTopology();
-        streams = new KafkaStreams(topology, streamsProperties);
-        if (exceptionHandler != null) streams.setUncaughtExceptionHandler(exceptionHandler);
-        if (stateListener != null) streams.setStateListener(stateListener);
+        streams = new KafkaStreams(topology, props.createStreamProperties("ProcessedMapDeduplicator"));
+        if (exceptionHandler != null)
+            streams.setUncaughtExceptionHandler(exceptionHandler);
+        if (stateListener != null)
+            streams.setStateListener(stateListener);
         logger.info("Starting Processed Map Deduplicator Topology");
         streams.start();
     }
@@ -54,14 +50,19 @@ public class ProcessedMapDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, ProcessedMap<LineString>> inputStream = builder.stream(props.getKafkaTopicProcessedMap(), Consumed.with(Serdes.String(), JsonSerdes.ProcessedMapGeoJson()));
+        KStream<String, ProcessedMap<LineString>> inputStream = builder.stream(props.getKafkaTopicProcessedMap(),
+                Consumed.with(Serdes.String(), JsonSerdes.ProcessedMapGeoJson()));
 
-        builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreProcessedMapName()),
-                Serdes.String(), JsonSerdes.ProcessedMapGeoJson()));
-        
-        KStream<String, ProcessedMap<LineString>> deduplicatedStream = inputStream.process(new ProcessedMapProcessorSupplier(props), props.getKafkaStateStoreProcessedMapName());
-        
-        deduplicatedStream.to(props.getKafkaTopicDeduplicatedProcessedMap(), Produced.with(Serdes.String(), JsonSerdes.ProcessedMapGeoJson()));
+        builder.addStateStore(
+                Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreProcessedMapName()),
+                        Serdes.String(), JsonSerdes.ProcessedMapGeoJson()));
+
+        KStream<String, ProcessedMap<LineString>> deduplicatedStream = inputStream.process(
+                new ProcessedMapProcessorSupplier(props),
+                props.getKafkaStateStoreProcessedMapName());
+
+        deduplicatedStream.to(props.getKafkaTopicDeduplicatedProcessedMap(),
+                Produced.with(Serdes.String(), JsonSerdes.ProcessedMapGeoJson()));
 
         return builder.build();
 
@@ -78,15 +79,15 @@ public class ProcessedMapDeduplicatorTopology {
     }
 
     StateListener stateListener;
+
     public void registerStateListener(StateListener stateListener) {
         this.stateListener = stateListener;
     }
 
     StreamsUncaughtExceptionHandler exceptionHandler;
+
     public void registerUncaughtExceptionHandler(StreamsUncaughtExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
-
-
 
 }

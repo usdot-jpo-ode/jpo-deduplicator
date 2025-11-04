@@ -1,5 +1,10 @@
 package us.dot.its.jpo.deduplicator.deduplicator;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TestInputTopic;
@@ -14,29 +19,29 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.ProcessedMapDeduplicatorTopology;
+import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
 import us.dot.its.jpo.geojsonconverter.pojos.geojson.LineString;
 import us.dot.its.jpo.geojsonconverter.pojos.geojson.map.ProcessedMap;
 import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 public class ProcessedMapDeduplicatorTopologyTest {
 
     String inputTopic = "topic.ProcessedMap";
     String outputTopic = "topic.DeduplicatedProcessedMap";
-
-
-    TypeReference<ProcessedMap<LineString>> typeReference = new TypeReference<>(){};
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper;
+    TypeReference<ProcessedMap<LineString>> typeReference = new TypeReference<>() {
+    };
 
     // Reference MAP
     String inputProcessedMap1 = "";
@@ -44,36 +49,77 @@ public class ProcessedMapDeduplicatorTopologyTest {
     // Duplicate of Number 1
     String inputProcessedMap2 = "";
 
-    // A different Message entirely
+    // Verify ASN1 field has no bearing on deduplication
     String inputProcessedMap3 = "";
 
-    // Message 1 but 1 hour later
+    // A different Message entirely
     String inputProcessedMap4 = "";
 
+    // Message 1 but 1 hour later
+    String inputProcessedMap5 = "";
 
     String key = "{\"rsuId\":\"10.11.81.12\",\"intersectionId\":12109,\"region\":-1}";
 
     @Autowired
     DeduplicatorProperties props;
 
-
     @Before
     public void setup() throws IOException {
+        objectMapper = DateJsonMapper.getInstance();
+
         // Load test files from resources
-        
         // Reference MAP
-        inputProcessedMap1 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-reference.json")));
+        String processedMapReference = new String(Files
+                .readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-reference.json")));
+        ProcessedMap<LineString> processedMapReferenceData = objectMapper.readValue(processedMapReference, typeReference);
+
+        inputProcessedMap1 = processedMapReferenceData.toString();
 
         // Duplicate of Number 1
-        inputProcessedMap2 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-reference.json")));
+        inputProcessedMap2 = processedMapReferenceData.toString();
 
-        // A different Message entirely
-        inputProcessedMap3 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-different.json")));
+        // Verify ASN1 field has no bearing on deduplication - should be dropped
+        ProcessedMap<LineString> processedMapModifyAsn1 = objectMapper.readValue(processedMapReference, typeReference);
+        processedMapModifyAsn1.getProperties().setAsn1("modified");
+        inputProcessedMap3 = processedMapModifyAsn1.toString();
 
         // Message 1 but 1 hour later
-        inputProcessedMap4 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-reference-1-hour-later.json")));
+        ProcessedMap<LineString> processedMap1HourLater = objectMapper.readValue(processedMapReference, typeReference);
+        // Convert ZonedDateTime to Instant, add 1 hour, then convert back
+        ZonedDateTime originalTimeStampZdt = processedMap1HourLater.getProperties().getTimeStamp();
+        Instant newTimeStampInstant = originalTimeStampZdt.toInstant().plusSeconds(3601);
+        processedMap1HourLater.getProperties()
+                .setTimeStamp(ZonedDateTime.ofInstant(newTimeStampInstant, originalTimeStampZdt.getZone()));
+
+        // Convert OdeReceivedAt to Instant, add 1 hour, then convert back
+        ZonedDateTime originalOdeReceivedAtZdt = processedMap1HourLater.getProperties().getOdeReceivedAt();
+        Instant newOdeReceivedAtInstant = originalOdeReceivedAtZdt.toInstant().plusSeconds(3601);
+        processedMap1HourLater.getProperties().setOdeReceivedAt(ZonedDateTime.ofInstant(newOdeReceivedAtInstant, originalOdeReceivedAtZdt.getZone()));
+
+        inputProcessedMap4 = processedMap1HourLater.toString();
+        
+        // A different Message entirely
+        String differentProcessedMapReference = new String(Files
+                .readAllBytes(Paths.get("src/test/resources/json/processed_map/sample.processed_map-different.json")));
+        ProcessedMap<LineString> processedMapDifferentData = objectMapper.readValue(differentProcessedMapReference, typeReference);
+        inputProcessedMap5 = processedMapDifferentData.toString();
     }
-    
+
+    @Test
+    public void testSerialization() throws JsonMappingException, JsonProcessingException {
+        ProcessedMap<LineString> processedMap = objectMapper.readValue(inputProcessedMap1, typeReference);
+        String json = processedMap.toString();
+        assertEquals(inputProcessedMap1, json);
+    }
+
+    @Test
+    public void testJsonSerdes() throws IOException {
+        Serde<ProcessedMap<LineString>> serdes = JsonSerdes.ProcessedMapGeoJson();
+        ProcessedMap<LineString> deserialized = serdes.deserializer().deserialize(null, inputProcessedMap1.getBytes());
+        byte[] serialized = serdes.serializer().serialize(null, deserialized);
+        String serializedString = new String(serialized);
+        assertThat(serializedString, jsonEquals(inputProcessedMap1));
+    }
 
     @Test
     public void testTopology() {
@@ -82,43 +128,48 @@ public class ProcessedMapDeduplicatorTopologyTest {
         props.setKafkaTopicProcessedMap(inputTopic);
         props.setKafkaTopicDeduplicatedProcessedMap(outputTopic);
 
-        ProcessedMapDeduplicatorTopology processedMapDeduplicatorTopology = new ProcessedMapDeduplicatorTopology(props, null);
+        ProcessedMapDeduplicatorTopology processedMapDeduplicatorTopology = new ProcessedMapDeduplicatorTopology(props);
 
         Topology topology = processedMapDeduplicatorTopology.buildTopology();
-        objectMapper.registerModule(new JavaTimeModule());
 
         try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
-            
-            
-            TestInputTopic<String, String> inputProcessedMapData = driver.createInputTopic(
-                inputTopic, 
-                Serdes.String().serializer(), 
-                Serdes.String().serializer());
 
+            TestInputTopic<String, String> inputProcessedMapData = driver.createInputTopic(
+                    inputTopic,
+                    Serdes.String().serializer(),
+                    Serdes.String().serializer());
 
             TestOutputTopic<String, ProcessedMap<LineString>> outputProcessedMapData = driver.createOutputTopic(
-                outputTopic, 
-                Serdes.String().deserializer(), 
-                JsonSerdes.ProcessedMapGeoJson().deserializer());
+                    outputTopic,
+                    Serdes.String().deserializer(),
+                    JsonSerdes.ProcessedMapGeoJson().deserializer());
 
             inputProcessedMapData.pipeInput(key, inputProcessedMap1);
             inputProcessedMapData.pipeInput(key, inputProcessedMap2);
             inputProcessedMapData.pipeInput(key, inputProcessedMap3);
             inputProcessedMapData.pipeInput(key, inputProcessedMap4);
+            inputProcessedMapData.pipeInput(key, inputProcessedMap5);
 
-            List<KeyValue<String, ProcessedMap<LineString>>> mapDeduplicatorResults = outputProcessedMapData.readKeyValuesToList();
+            List<KeyValue<String, ProcessedMap<LineString>>> mapDeduplicatorResults = outputProcessedMapData
+                    .readKeyValuesToList();
 
             // validate that only 3 messages make it through
             assertEquals(3, mapDeduplicatorResults.size());
 
-            ProcessedMap<LineString> map1 = objectMapper.readValue(inputProcessedMap1, typeReference);
-            ProcessedMap<LineString> map3 = objectMapper.readValue(inputProcessedMap3, typeReference);
-            ProcessedMap<LineString> map4 = objectMapper.readValue(inputProcessedMap4, typeReference);
+            ProcessedMap<LineString> map1 = objectMapper.readValue(inputProcessedMap1,
+                    typeReference);
+            ProcessedMap<LineString> map4 = objectMapper.readValue(inputProcessedMap4,
+                    typeReference);
+            ProcessedMap<LineString> map5 = objectMapper.readValue(inputProcessedMap5,
+                    typeReference);
 
-            assertEquals(map1.getProperties().getOdeReceivedAt(), mapDeduplicatorResults.get(0).value.getProperties().getOdeReceivedAt());
-            assertEquals(map3.getProperties().getOdeReceivedAt(), mapDeduplicatorResults.get(1).value.getProperties().getOdeReceivedAt());
-            assertEquals(map4.getProperties().getOdeReceivedAt(), mapDeduplicatorResults.get(2).value.getProperties().getOdeReceivedAt());
-           
+            assertEquals(map1.getProperties().getOdeReceivedAt(),
+                    mapDeduplicatorResults.get(0).value.getProperties().getOdeReceivedAt());
+            assertEquals(map4.getProperties().getOdeReceivedAt(),
+                    mapDeduplicatorResults.get(1).value.getProperties().getOdeReceivedAt());
+            assertEquals(map5.getProperties().getOdeReceivedAt(),
+                    mapDeduplicatorResults.get(2).value.getProperties().getOdeReceivedAt());
+
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {

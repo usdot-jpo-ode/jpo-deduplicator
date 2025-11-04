@@ -8,9 +8,7 @@ import org.apache.kafka.streams.KafkaStreams.StateListener;
 import org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler;
 
 import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
-import us.dot.its.jpo.ode.model.OdeTimData;
-import us.dot.its.jpo.ode.model.OdeTimMetadata;
-import us.dot.its.jpo.ode.plugin.j2735.travelerinformation.TravelerInformation;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
@@ -21,8 +19,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
 
+import us.dot.its.jpo.asn.j2735.r2024.TravelerInformation.TravelerInformationMessageFrame;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.processors.suppliers.OdeTimJsonProcessorSupplier;
 import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
@@ -34,14 +32,12 @@ public class TimDeduplicatorTopology {
 
     Topology topology;
     KafkaStreams streams;
-    Properties streamsProperties;
     ObjectMapper objectMapper;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     DeduplicatorProperties props;
 
-    public TimDeduplicatorTopology(DeduplicatorProperties props, Properties streamsProperties) {
+    public TimDeduplicatorTopology(DeduplicatorProperties props) {
         this.props = props;
-        this.streamsProperties = streamsProperties;
         this.objectMapper = DateJsonMapper.getInstance();
     }
 
@@ -50,7 +46,7 @@ public class TimDeduplicatorTopology {
             throw new IllegalStateException("Start called while streams is already running.");
         }
         Topology topology = buildTopology();
-        streams = new KafkaStreams(topology, streamsProperties);
+        streams = new KafkaStreams(topology, props.createStreamProperties("TimDeduplicator"));
         if (exceptionHandler != null)
             streams.setUncaughtExceptionHandler(exceptionHandler);
         if (stateListener != null)
@@ -68,34 +64,48 @@ public class TimDeduplicatorTopology {
     public Topology buildTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, OdeTimData> inputStream = builder.stream(props.getKafkaTopicOdeTimJson(),
-                Consumed.with(Serdes.String(), JsonSerdes.OdeTim()));
+        KStream<String, OdeMessageFrameData> inputStream = builder.stream(props.getKafkaTopicOdeTimJson(),
+                Consumed.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
         builder.addStateStore(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(props.getKafkaStateStoreOdeTimJsonName()),
-                Serdes.String(), JsonSerdes.OdeTim()));
+                Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
-        KStream<String, OdeTimData> timRekeyedStream = inputStream.selectKey((key, value) -> {
+        KStream<String, OdeMessageFrameData> timRekeyedStream = inputStream.selectKey((key, value) -> {
             try {
+                if (value == null || value.getPayload() == null || value.getPayload().getData() == null) {
+                    logger.warn("Received TIM message with null payload or data, discarding message");
+                    return "unknown";
+                }
 
-                TravelerInformation travellerInformation = (TravelerInformation)value.getPayload().getData();
-            
+                TravelerInformationMessageFrame mf = (TravelerInformationMessageFrame) value.getPayload().getData();
+                if (mf == null || mf.getValue() == null || mf.getValue().getPacketID() == null ||
+                        mf.getValue().getMsgCnt() == null) {
+                    logger.warn("Received TIM message with null message frame data, discarding message");
+                    return "unknown";
+                }
 
-                String rsuIP = ((OdeTimMetadata)value.getMetadata()).getOriginIp();
-                // String packetId = ((OdeTimPayload)value.getPayload()).getData();//   .get("packetID").asText();
-                String packetId = travellerInformation.getPacketID().toString();
-                int msgCnt = travellerInformation.getMsgCnt().intValue();
-
+                String rsuIP = value.getMetadata().getOriginIp();
+                String packetId = mf.getValue().getPacketID().getValue();
+                int msgCnt = (int) mf.getValue().getMsgCnt().getValue();
                 String newKey = rsuIP + "_" + packetId + "_" + msgCnt;
                 return newKey;
             } catch (Exception e) {
-                logger.error(e.toString());
-                return "";
+                logger.error("Error extracting key from TIM message: " + e.getMessage() + ", discarding message", e);
+                return "unknown";
             }
-        }).repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeTim()));
+        })
+        .filter((key, value) -> {
+            if ("unknown".equals(key)) {
+                logger.debug("Discarding Map message with unknown key");
+                return false;
+            }
+            return true;
+        })
+        .repartition(Repartitioned.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
-        KStream<String, OdeTimData> deduplicatedStream = timRekeyedStream.process(new OdeTimJsonProcessorSupplier(props), props.getKafkaStateStoreOdeTimJsonName());
+        KStream<String, OdeMessageFrameData> deduplicatedStream = timRekeyedStream.process(new OdeTimJsonProcessorSupplier(props), props.getKafkaStateStoreOdeTimJsonName());
 
-        deduplicatedStream.to(props.getKafkaTopicDeduplicatedOdeTimJson(), Produced.with(Serdes.String(), JsonSerdes.OdeTim()));
+        deduplicatedStream.to(props.getKafkaTopicDeduplicatedOdeTimJson(), Produced.with(Serdes.String(), JsonSerdes.OdeMessageFrame()));
 
         return builder.build();
 

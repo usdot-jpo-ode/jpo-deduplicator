@@ -1,7 +1,10 @@
 package us.dot.its.jpo.deduplicator.deduplicator;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TestInputTopic;
@@ -16,17 +19,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import us.dot.its.jpo.asn.j2735.r2024.Common.MinuteOfTheYear;
+import us.dot.its.jpo.asn.j2735.r2024.MapData.MapDataMessageFrame;
 import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.deduplicator.topologies.MapDeduplicatorTopology;
-import us.dot.its.jpo.geojsonconverter.serialization.JsonSerdes;
-import us.dot.its.jpo.ode.model.OdeMapData;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import us.dot.its.jpo.geojsonconverter.DateJsonMapper;
+import us.dot.its.jpo.deduplicator.deduplicator.serialization.JsonSerdes;
+import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-
 
 public class MapDeduplicatorTopologyTest {
 
@@ -38,25 +44,76 @@ public class MapDeduplicatorTopologyTest {
     String inputMap2 = "";
     String inputMap3 = "";
     String inputMap4 = "";
+    String inputMap5 = "";
 
     @Autowired
     DeduplicatorProperties props;
 
     @Before
     public void setup() throws IOException {
+        objectMapper = DateJsonMapper.getInstance();
+
         // Load test files from resources
-        
         // Reference MAP
-        inputMap1 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
+        String mapReference = new String(
+                Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
+        OdeMessageFrameData mapReferenceData = objectMapper.readValue(mapReference, OdeMessageFrameData.class);
 
-        // Duplicate of Number 1
-        inputMap2 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference.json")));
+        inputMap1 = mapReferenceData.toJson();
 
-        // A different Message entirely
-        inputMap3 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-different.json")));
+        // Duplicate of Number 1 - should be deduplicated
+        inputMap2 = mapReferenceData.toJson();
 
-        // Message 1 but 1 hour later
-        inputMap4 = new String(Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-reference-1-hour-later.json")));
+        // Message 1 but 5 minutes later - should be deduplicated
+        OdeMessageFrameData map5MinutesLater = objectMapper.readValue(mapReferenceData.toJson(),
+                OdeMessageFrameData.class);
+        String originalTime = mapReferenceData.getMetadata().getOdeReceivedAt();
+        Instant instant = Instant.parse(originalTime);
+        Instant newInstant = instant.plus(5, ChronoUnit.MINUTES);
+        map5MinutesLater.getMetadata().setOdeReceivedAt(newInstant.toString());
+        // ASN1 modified to show that this message is a deduplicated irrelevant to it
+        map5MinutesLater.getMetadata().setAsn1(map5MinutesLater.getMetadata().getAsn1() + "1");
+
+        MapDataMessageFrame mf = (MapDataMessageFrame) map5MinutesLater.getPayload().getData();
+        MinuteOfTheYear newMoy = new MinuteOfTheYear(mf.getValue().getTimeStamp().getValue() + 5);
+        mf.getValue().setTimeStamp(newMoy);
+        map5MinutesLater.getPayload().setData(mf);
+        inputMap3 = map5MinutesLater.toJson();
+
+        // A different Message entirely - should be kept
+        String mapDifferent = new String(
+                Files.readAllBytes(Paths.get("src/test/resources/json/ode_map/sample.ode-map-different.json")));
+        OdeMessageFrameData mapDifferentData = objectMapper.readValue(mapDifferent, OdeMessageFrameData.class);
+        inputMap4 = mapDifferentData.toJson();
+
+        // Message 1 but 1 hour later - should be kept
+        OdeMessageFrameData map1HourLater = objectMapper.readValue(mapReferenceData.toJson(),
+                OdeMessageFrameData.class);
+        originalTime = map1HourLater.getMetadata().getOdeReceivedAt();
+        instant = Instant.parse(originalTime);
+        newInstant = instant.plus(61, ChronoUnit.HOURS);
+        map1HourLater.getMetadata().setOdeReceivedAt(newInstant.toString());
+
+        mf = (MapDataMessageFrame) map1HourLater.getPayload().getData();
+        newMoy = new MinuteOfTheYear(mf.getValue().getTimeStamp().getValue() + 60);
+        mf.getValue().setTimeStamp(newMoy);
+        map1HourLater.getPayload().setData(mf);
+        inputMap5 = map1HourLater.toJson();
+    }
+
+    @Test
+    public void testSerialization() throws JsonMappingException, JsonProcessingException {
+        OdeMessageFrameData map = objectMapper.readValue(inputMap1, OdeMessageFrameData.class);
+        String json = objectMapper.writeValueAsString(map);
+        assertEquals(inputMap1, json);
+    }
+
+    @Test
+    public void testJsonSerdes() {
+        Serde<OdeMessageFrameData> serdes = JsonSerdes.OdeMessageFrame();
+        OdeMessageFrameData deserialized = serdes.deserializer().deserialize(null, inputMap1.getBytes());
+        byte[] serialized = serdes.serializer().serialize(null, deserialized);
+        assertThat(new String(serialized), jsonEquals(inputMap1));
     }
 
     @Test
@@ -66,49 +123,44 @@ public class MapDeduplicatorTopologyTest {
         props.setKafkaTopicOdeMapJson(inputTopic);
         props.setKafkaTopicDeduplicatedOdeMapJson(outputTopic);
 
-        MapDeduplicatorTopology mapDeduplicatorTopology = new MapDeduplicatorTopology(props, null);
-
+        MapDeduplicatorTopology mapDeduplicatorTopology = new MapDeduplicatorTopology(props);
         Topology topology = mapDeduplicatorTopology.buildTopology();
 
         try (TopologyTestDriver driver = new TopologyTestDriver(topology)) {
-            
-            
+
             TestInputTopic<Void, String> inputOdeMapData = driver.createInputTopic(
-                inputTopic, 
-                Serdes.Void().serializer(), 
-                Serdes.String().serializer());
+                    inputTopic,
+                    Serdes.Void().serializer(),
+                    Serdes.String().serializer());
 
-
-            TestOutputTopic<String, OdeMapData> outputOdeMapData = driver.createOutputTopic(
-                outputTopic, 
-                Serdes.String().deserializer(), 
-                JsonSerdes.OdeMap().deserializer());
+            TestOutputTopic<String, OdeMessageFrameData> outputOdeMapData = driver.createOutputTopic(
+                    outputTopic,
+                    Serdes.String().deserializer(),
+                    JsonSerdes.OdeMessageFrame().deserializer());
 
             inputOdeMapData.pipeInput(null, inputMap1);
             inputOdeMapData.pipeInput(null, inputMap2);
             inputOdeMapData.pipeInput(null, inputMap3);
             inputOdeMapData.pipeInput(null, inputMap4);
+            inputOdeMapData.pipeInput(null, inputMap5);
 
-            List<KeyValue<String, OdeMapData>> mapDeduplicationResults = outputOdeMapData.readKeyValuesToList();
+            List<KeyValue<String, OdeMessageFrameData>> mapDeduplicationResults = outputOdeMapData
+                    .readKeyValuesToList();
 
             // validate that only 3 messages make it through
             assertEquals(3, mapDeduplicationResults.size());
 
-            objectMapper = new ObjectMapper();
-            OdeMapData map1 = objectMapper.readValue(inputMap1, OdeMapData.class);
-            OdeMapData map3 = objectMapper.readValue(inputMap3, OdeMapData.class);
-            OdeMapData map4 = objectMapper.readValue(inputMap4, OdeMapData.class);
+            OdeMessageFrameData map1 = objectMapper.readValue(inputMap1, OdeMessageFrameData.class);
+            OdeMessageFrameData map4 = objectMapper.readValue(inputMap4, OdeMessageFrameData.class);
+            OdeMessageFrameData map5 = objectMapper.readValue(inputMap5, OdeMessageFrameData.class);
 
+            assertThat(mapDeduplicationResults.get(0).value.toJson(), jsonEquals(map1.toJson()));
+            assertThat(mapDeduplicationResults.get(1).value.toJson(), jsonEquals(map4.toJson()));
+            assertThat(mapDeduplicationResults.get(2).value.toJson(), jsonEquals(map5.toJson()));
 
-            assertEquals(map1.getMetadata().getOdeReceivedAt(), mapDeduplicationResults.get(0).value.getMetadata().getOdeReceivedAt());
-            assertEquals(map3.getMetadata().getOdeReceivedAt(), mapDeduplicationResults.get(1).value.getMetadata().getOdeReceivedAt());
-            assertEquals(map4.getMetadata().getOdeReceivedAt(), mapDeduplicationResults.get(2).value.getMetadata().getOdeReceivedAt());
-           
         } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
