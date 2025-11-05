@@ -27,19 +27,17 @@ FROM amazoncorretto:21
 WORKDIR /home
 
 COPY --from=builder /home/jpo-deduplicator/src/main/resources/application.yaml /home
-COPY --from=builder /home/jpo-deduplicator/src/main/resources/logback.xml /home
 COPY --from=builder /home/jpo-deduplicator/target/jpo-deduplicator.jar /home
 
 #COPY cert.crt /home/cert.crt
 #RUN keytool -import -trustcacerts -keystore /usr/local/openjdk-11/lib/security/cacerts -storepass changeit -noprompt -alias mycert -file cert.crt
 
 RUN amazon-linux-extras install -y epel && \
-     yum install -y jemalloc-devel
+    yum install -y jemalloc-devel
 ENV LD_PRELOAD="/usr/lib64/libjemalloc.so"
 
 ENTRYPOINT ["java", \
     "-Djava.rmi.server.hostname=$DOCKER_HOST_IP", \
-    "-Dlogback.configurationFile=/home/logback.xml", \
     "-Xmx1024M", \
     "-Xms128M", \
     "-XX:+UseG1GC", \
