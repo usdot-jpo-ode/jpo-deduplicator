@@ -1,4 +1,7 @@
 JPO-Deduplicator Release Notes
+Version 3.0.1
+Hotfix to address "DockerHub Build and Push" GitHub action not triggering.
+
 Version 3.0.0
 The 2025-Q3 release of the jpo-deduplicator package
 - Updated Deduplicator to handle the new Processed Message Types
