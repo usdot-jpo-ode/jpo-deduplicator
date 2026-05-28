@@ -35,7 +35,8 @@ public class ProcessedSpatProcessor extends DeduplicationProcessor<ProcessedSpat
             Instant newValueTime = getMessageTime(newMessage);
             Instant oldValueTime = getMessageTime(lastMessage);
             
-            if(newValueTime.minus(Duration.ofMinutes(1)).isAfter(oldValueTime)) {
+            if(newValueTime.minus(Duration.ofSeconds(props.getProcessedSpatMaximumTimeDeltaSeconds())).isAfter(oldValueTime)) {
+                logger.info("Processed SPaT messages are more than {} seconds apart, treating as non-duplicate", props.getProcessedSpatMaximumTimeDeltaSeconds());
                 return false;
             } else {
                 HashMap<Integer, List<ProcessedMovementEvent>> lastMessageStates = new HashMap<>();
@@ -44,27 +45,31 @@ public class ProcessedSpatProcessor extends DeduplicationProcessor<ProcessedSpat
                 }
 
                 if(lastMessageStates.size() != newMessage.getStates().size()){
-                    return false; // message cannot be duplicate if the signal groups have a different number of signal groups
+                    logger.debug("Processed SPaT signal group count changed ({} -> {}), treating as non-duplicate",
+                            lastMessageStates.size(), newMessage.getStates().size());
+                    return false;
                 }
 
                 for(ProcessedMovementState state: newMessage.getStates()){
                     List<ProcessedMovementEvent> lastMessageState = lastMessageStates.get(state.getSignalGroup());
 
                     if(lastMessageState == null){
-                        return false; // messages cannot be duplicates if they have different signal groups
+                        logger.debug("Processed SPaT has new signal group {}, treating as non-duplicate", state.getSignalGroup());
+                        return false;
                     }
 
-                    
                     for(int i=0; i< state.getStateTimeSpeed().size(); i++){
                         if(state.getStateTimeSpeed().get(i).getEventState() != lastMessageState.get(i).getEventState()){
-                            return false; // Some signal group light has changed. Therefore the SPaTs are different
+                            logger.debug("Processed SPaT signal group {} event state changed, treating as non-duplicate", state.getSignalGroup());
+                            return false;
                         }
                     }
                 }
             }
         } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
+            logger.warn("Caught General Exception while checking Processed SPaT duplicates: " + e.getMessage(), e);
         }
+        logger.debug("Processed SPaT message is a duplicate");
         return true;   
     }
 }

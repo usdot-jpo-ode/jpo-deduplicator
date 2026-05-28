@@ -102,6 +102,13 @@ public class DeduplicatorProperties implements EnvironmentAware {
    private double processedBsmAlwaysIncludeAtSpeed;
    private String kafkaStateStoreProcessedBsmName = "ProcessedBsm-store";
 
+   // Configurable time-window parameters (in minutes or seconds)
+   private long odeMapMaximumTimeDeltaMinutes = 60;
+   private long odeTimMaximumTimeDeltaMinutes = 60;
+   private long processedMapMaximumTimeDeltaMinutes = 60;
+   private long processedMapWktMaximumTimeDeltaMinutes = 60;
+   private long processedSpatMaximumTimeDeltaSeconds = 60;
+
    private int lingerMs = 0;
 
    @Autowired
@@ -393,6 +400,31 @@ public class DeduplicatorProperties implements EnvironmentAware {
    @Value("${processedBsmAlwaysIncludeAtSpeed}")
    public void setProcessedBsmAlwaysIncludeAtSpeed(double processedBsmAlwaysIncludeAtSpeed) {
       this.processedBsmAlwaysIncludeAtSpeed = processedBsmAlwaysIncludeAtSpeed;
+   }
+
+   @Value("${odeMapMaximumTimeDeltaMinutes}")
+   public void setOdeMapMaximumTimeDeltaMinutes(long odeMapMaximumTimeDeltaMinutes) {
+      this.odeMapMaximumTimeDeltaMinutes = odeMapMaximumTimeDeltaMinutes;
+   }
+
+   @Value("${odeTimMaximumTimeDeltaMinutes}")
+   public void setOdeTimMaximumTimeDeltaMinutes(long odeTimMaximumTimeDeltaMinutes) {
+      this.odeTimMaximumTimeDeltaMinutes = odeTimMaximumTimeDeltaMinutes;
+   }
+
+   @Value("${processedMapMaximumTimeDeltaMinutes}")
+   public void setProcessedMapMaximumTimeDeltaMinutes(long processedMapMaximumTimeDeltaMinutes) {
+      this.processedMapMaximumTimeDeltaMinutes = processedMapMaximumTimeDeltaMinutes;
+   }
+
+   @Value("${processedMapWktMaximumTimeDeltaMinutes}")
+   public void setProcessedMapWktMaximumTimeDeltaMinutes(long processedMapWktMaximumTimeDeltaMinutes) {
+      this.processedMapWktMaximumTimeDeltaMinutes = processedMapWktMaximumTimeDeltaMinutes;
+   }
+
+   @Value("${processedSpatMaximumTimeDeltaSeconds}")
+   public void setProcessedSpatMaximumTimeDeltaSeconds(long processedSpatMaximumTimeDeltaSeconds) {
+      this.processedSpatMaximumTimeDeltaSeconds = processedSpatMaximumTimeDeltaSeconds;
    }
 
    @Override

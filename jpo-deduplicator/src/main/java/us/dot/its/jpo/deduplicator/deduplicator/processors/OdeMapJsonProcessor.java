@@ -32,22 +32,26 @@ public class OdeMapJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
             Instant newValueTime = getMessageTime(newMessage);
             Instant oldValueTime = getMessageTime(lastMessage);
 
-            // If the messages are more than an hour apart, forward the new message on
-            if (newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)) {
+            // If the messages are more than the configured time apart, forward the new message on
+            if (newValueTime.minus(Duration.ofMinutes(props.getOdeMapMaximumTimeDeltaMinutes())).isAfter(oldValueTime)) {
+                logger.info("ODE MAP messages are more than {} minutes apart, treating as non-duplicate", props.getOdeMapMaximumTimeDeltaMinutes());
                 return false;
             }
 
-            // Check for null conditions - treat as non-duplicate if one is null and the other is not
-            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null);
-            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null || newMessage.getPayload().getData() == null);
+            // Check for null conditions - treat as non-duplicate if one is null and the
+            // other is not
+            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null
+                    || lastMessage.getPayload().getData() == null);
+            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null
+                    || newMessage.getPayload().getData() == null);
             if ((lastMessageIsNull && !newMessageIsNull) || (!lastMessageIsNull && newMessageIsNull)) {
-                logger.warn("One TIM message has a null payload or data, treating as non-duplicate");
+                logger.warn("One MAP message has a null payload or data, treating as non-duplicate");
                 return true;
             }
         } catch (Exception e) {
             logger.warn("Caught General Exception while checking Map duplicates: " + e.getMessage(), e);
         }
-
+        logger.debug("One MAP message is a duplicate");
         // Treat maps as duplicates if they have the same intersection ID and
         // are within the 1 hour time window
         return true;

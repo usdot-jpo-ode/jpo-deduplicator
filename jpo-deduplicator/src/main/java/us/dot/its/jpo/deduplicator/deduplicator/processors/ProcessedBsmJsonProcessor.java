@@ -45,6 +45,7 @@ public class ProcessedBsmJsonProcessor extends DeduplicationProcessor<ProcessedB
 
             // If the messages are more than a certain time apart, forward the new message on
             if(newValueTime.minus(Duration.ofMillis(props.getProcessedBsmMaximumTimeDelta())).isAfter(oldValueTime)){
+                logger.info("Processed BSM messages are more than {}ms apart, treating as non-duplicate", props.getProcessedBsmMaximumTimeDelta());
                 return false;  
             }
 
@@ -52,18 +53,22 @@ public class ProcessedBsmJsonProcessor extends DeduplicationProcessor<ProcessedB
             Double speed = newMessage.getProperties().getSpeed();
             Double oldSpeed = lastMessage.getProperties().getSpeed();
             if (speed != null && speed > props.getProcessedBsmAlwaysIncludeAtSpeed()) {
+                logger.debug("Processed BSM vehicle speed {}m/s exceeds threshold {}m/s, treating as non-duplicate", speed, props.getProcessedBsmAlwaysIncludeAtSpeed());
                 return false;
             }
 
             if((speed == null && oldSpeed != null) || (oldSpeed == null && speed != null)){
+                logger.debug("Processed BSM speed nullability changed, treating as non-duplicate");
                 return false;
             }
 
             // If the new core and the old core have different null conditions
             if((lastMessage.getGeometry() == null && newMessage.getGeometry() != null) || // Used to be null, but now is non-null
                 (lastMessage.getGeometry() != null && newMessage.getGeometry() == null)){ // Used to be populated, but is now null
+                logger.debug("Processed BSM geometry nullability changed, treating as non-duplicate");
                 return false;
             }else if(lastMessage.getGeometry() == null && newMessage.getGeometry() == null){ // both are null, message is a duplicate
+                logger.debug("Processed BSM message has null geometry, treating as duplicate");
                 return true;
             }else{
 
@@ -74,16 +79,18 @@ public class ProcessedBsmJsonProcessor extends DeduplicationProcessor<ProcessedB
                     ((Point)lastMessage.getGeometry()).getCoordinates()[0]
                 );
 
-                // If the position delta between the messages is suitable large, forward the message on
+                // If the position delta between the messages is suitably large, forward the message on
                 if(distance > props.getProcessedBsmMaximumPositionDelta()){
+                    logger.debug("Processed BSM position delta {}m exceeds threshold {}m, treating as non-duplicate", distance, props.getProcessedBsmMaximumPositionDelta());
                     return false;
                 }
             }
 
         } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
+            logger.warn("Caught General Exception while checking Processed BSM duplicates: " + e.getMessage(), e);
         }
 
+        logger.debug("Processed BSM message is a duplicate");
         return true;
     }
 }

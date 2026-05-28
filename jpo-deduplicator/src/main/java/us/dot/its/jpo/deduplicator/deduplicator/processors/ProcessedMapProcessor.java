@@ -39,7 +39,8 @@ public class ProcessedMapProcessor extends DeduplicationProcessor<ProcessedMap<L
             Instant newValueTime = getMessageTime(newMessage);
             Instant oldValueTime = getMessageTime(lastMessage);
 
-            if (newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)) {
+            if (newValueTime.minus(Duration.ofMinutes(props.getProcessedMapMaximumTimeDeltaMinutes())).isAfter(oldValueTime)) {
+                logger.info("Processed MAP messages are more than {} minutes apart, treating as non-duplicate", props.getProcessedMapMaximumTimeDeltaMinutes());
                 return false;
             } else {
                 String newAsn1 = newMessage.getProperties().getAsn1();
@@ -57,13 +58,15 @@ public class ProcessedMapProcessor extends DeduplicationProcessor<ProcessedMap<L
                     newMessage.getProperties().setAsn1(newAsn1);
                     newMessage.getProperties().setTimeStamp(newValueTimestamp);
                     newMessage.getProperties().setOdeReceivedAt(newValueOdeReceivedAt);
+                    logger.debug("Processed MAP message content has changed, treating as non-duplicate");
                     return false;
                 }
             }
 
         } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
+            logger.warn("Caught General Exception while checking Processed MAP duplicates: " + e.getMessage(), e);
         }
+        logger.debug("Processed MAP message is a duplicate");
         return true;   
     }
 }

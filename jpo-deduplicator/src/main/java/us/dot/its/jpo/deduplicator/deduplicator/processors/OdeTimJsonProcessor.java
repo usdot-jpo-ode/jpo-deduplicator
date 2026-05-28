@@ -10,12 +10,13 @@ import us.dot.its.jpo.deduplicator.DeduplicatorProperties;
 import us.dot.its.jpo.deduplicator.utils.OdeJsonUtils;
 import us.dot.its.jpo.ode.model.OdeMessageFrameData;
 
-public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData>{
+public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeMessageFrameData> {
 
     private static final Logger logger = LoggerFactory.getLogger(OdeTimJsonProcessor.class);
 
     DeduplicatorProperties props;
-    public OdeTimJsonProcessor(DeduplicatorProperties props){
+
+    public OdeTimJsonProcessor(DeduplicatorProperties props) {
         this.props = props;
         this.storeName = props.getKafkaStateStoreOdeTimJsonName();
     }
@@ -27,24 +28,29 @@ public class OdeTimJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
 
     @Override
     public boolean isDuplicate(OdeMessageFrameData lastMessage, OdeMessageFrameData newMessage) {
-        try{
+        try {
             Instant oldValueTime = getMessageTime(lastMessage);
             Instant newValueTime = getMessageTime(newMessage);
 
-            if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
+            if (newValueTime.minus(Duration.ofMinutes(props.getOdeTimMaximumTimeDeltaMinutes())).isAfter(oldValueTime)) {
+                logger.info("ODE TIM messages are more than {} minutes apart, treating as non-duplicate", props.getOdeTimMaximumTimeDeltaMinutes());
                 return false;
             }
 
-            // Check for null conditions - treat as non-duplicate if one is null and the other is not
-            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null);
-            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null || newMessage.getPayload().getData() == null);
+            // Check for null conditions - treat as non-duplicate if one is null and the
+            // other is not
+            boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null
+                    || lastMessage.getPayload().getData() == null);
+            boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null
+                    || newMessage.getPayload().getData() == null);
             if ((lastMessageIsNull && !newMessageIsNull) || (!lastMessageIsNull && newMessageIsNull)) {
                 logger.warn("One TIM message has a null payload or data, treating as non-duplicate");
                 return true;
             }
-        } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
+        } catch (Exception e) {
+            logger.warn("Caught General Exception while checking TIM duplicates: " + e.getMessage(), e);
         }
+        logger.debug("TIM message is a duplicate");
         return true;
     }
 }

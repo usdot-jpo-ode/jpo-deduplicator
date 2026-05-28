@@ -36,9 +36,9 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
             Instant newValueTime = getMessageTime(newMessage);
             Instant oldValueTime = getMessageTime(lastMessage);
 
-            // If the messages are more than a certain time apart, forward the new message
-            // on
+            // If the messages are more than a certain time apart, forward the new message on
             if (newValueTime.minus(Duration.ofMillis(props.getOdeBsmMaximumTimeDelta())).isAfter(oldValueTime)) {
+                logger.info("BSM messages are more than {}ms apart, treating as non-duplicate", props.getOdeBsmMaximumTimeDelta());
                 return false;
             }
 
@@ -46,7 +46,7 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
             boolean lastMessageIsNull = (lastMessage == null || lastMessage.getPayload() == null || lastMessage.getPayload().getData() == null);
             boolean newMessageIsNull = (newMessage == null || newMessage.getPayload() == null || newMessage.getPayload().getData() == null);
             if ((lastMessageIsNull && !newMessageIsNull) || (!lastMessageIsNull && newMessageIsNull)) {
-                logger.warn("One TIM message has a null payload or data, treating as non-duplicate");
+                logger.warn("One BSM message has a null payload or data, treating as non-duplicate");
                 return true;
             }
 
@@ -55,22 +55,22 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
             BSMcoreData newCore = ((BasicSafetyMessageMessageFrame) newMessage.getPayload().getData()).getValue()
                     .getCoreData();
 
-            // Check if speed availability status has changed (null, unavailable, or
-            // available)
+            // Check if speed availability status has changed (null, unavailable, or available)
             boolean oldSpeedAvailable = isSpeedAvailable(oldCore.getSpeed());
             boolean newSpeedAvailable = isSpeedAvailable(newCore.getSpeed());
 
             // If the speed availability status has changed, forward the message
             if (oldSpeedAvailable != newSpeedAvailable) {
+                logger.debug("BSM speed availability changed (was: {}, now: {}), treating as non-duplicate", oldSpeedAvailable, newSpeedAvailable);
                 return false;
             }
 
-            // If the Vehicle is moving (speed is available and above threshold), forward
-            // the message on
+            // If the Vehicle is moving (speed is available and above threshold), forward the message on
             if (newSpeedAvailable) {
                 // Convert to m/s (J2735 speed is in 0.02 m/s increments * 0 - 8190)
                 double newSpeed = newCore.getSpeed().getValue() * 0.02;
                 if (newSpeed > props.getOdeBsmAlwaysIncludeAtSpeed()) {
+                    logger.debug("BSM vehicle speed {}m/s exceeds threshold {}m/s, treating as non-duplicate", newSpeed, props.getOdeBsmAlwaysIncludeAtSpeed());
                     return false;
                 }
             }
@@ -81,10 +81,12 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
                     && (newCore.getLat() != null || newCore.getLong_() != null)) ||
                     ((oldCore.getLat() != null || oldCore.getLong_() != null)
                             && (newCore.getLat() == null || newCore.getLong_() == null))) {
+                logger.debug("BSM position nullability changed, treating as non-duplicate");
                 return false;
                 // both are null, message is a duplicate
             } else if (oldCore.getLat() == null && newCore.getLat() == null && oldCore.getLong_() == null
                     && newCore.getLong_() == null) {
+                logger.debug("BSM message has null position, treating as duplicate");
                 return true;
             } else {
                 double distance = GeoUtils.calculateGeodeticDistanceJ2735(
@@ -93,16 +95,17 @@ public class OdeBsmJsonProcessor extends DeduplicationProcessor<OdeMessageFrameD
                         oldCore.getLat().getValue(),
                         oldCore.getLong_().getValue());
 
-                // If the position delta between the messages is suitable large, forward the
-                // message on
+                // If the position delta between the messages is suitably large, forward the message on
                 if (distance > props.getOdeBsmMaximumPositionDelta()) {
+                    logger.debug("BSM position delta {}m exceeds threshold {}m, treating as non-duplicate", distance, props.getOdeBsmMaximumPositionDelta());
                     return false;
                 }
             }
         } catch (Exception e) {
-            logger.warn("Caught General Exception" + e);
+            logger.warn("Caught General Exception while checking BSM duplicates: " + e.getMessage(), e);
         }
 
+        logger.debug("BSM message is a duplicate");
         return true;
     }
 

@@ -14,7 +14,7 @@ logging:
     org.springframework.web: WARN
     guru.springframework.controllers: WARN
     org.springframework.integration.mqtt: INFO
-    us.dot.its.jpo.ode.mec.deposit: ${LOGGING_LEVEL:INFO}
+    us.dot.its.jpo.deduplicator.deduplicator: ${LOGGING_LEVEL:INFO}
     org.apache.kafka: WARN
 
 # Processed Map Configuration
@@ -41,9 +41,9 @@ enableOdeTimDeduplication: ${ENABLE_ODE_TIM_DEDUPLICATION:true}
 kafkaTopicOdeBsmJson: topic.OdeBsmJson
 kafkaTopicDeduplicatedOdeBsmJson: topic.DeduplicatedOdeBsmJson
 enableOdeBsmDeduplication: ${ENABLE_ODE_BSM_DEDUPLICATION:true}
-odeBsmMaximumTimeDelta: 10000 # Milliseconds
-odeBsmMaximumPositionDelta: 1 # Meter
-odeBsmAlwaysIncludeAtSpeed: 1 # Meter / Second
+odeBsmMaximumTimeDelta: ${ODE_BSM_MAXIMUM_TIME_DELTA_MS:10000} # Milliseconds
+odeBsmMaximumPositionDelta: ${ODE_BSM_MAXIMUM_POSITION_DELTA:1} # Meter
+odeBsmAlwaysIncludeAtSpeed: ${ODE_BSM_ALWAYS_INCLUDE_AT_SPEED:1} # Meter / Second
 
 # Processed Map Configuration
 kafkaTopicProcessedSpat: topic.ProcessedSpat
@@ -54,9 +54,16 @@ enableProcessedSpatDeduplication: ${ENABLE_PROCESSED_SPAT_DEDUPLICATION:true}
 kafkaTopicProcessedBsm: topic.ProcessedBsm
 kafkaTopicDeduplicatedProcessedBsm: topic.DeduplicatedProcessedBsm
 enableProcessedBsmDeduplication: ${ENABLE_PROCESSED_BSM_DEDUPLICATION:true}
-processedBsmMaximumTimeDelta: 10000 # Milliseconds
-processedBsmMaximumPositionDelta: 1 # Meter
-processedBsmAlwaysIncludeAtSpeed: 1 # Meter / Second
+processedBsmMaximumTimeDelta: ${PROCESSED_BSM_MAXIMUM_TIME_DELTA_MS:10000} # Milliseconds
+processedBsmMaximumPositionDelta: ${PROCESSED_BSM_MAXIMUM_POSITION_DELTA:1} # Meter
+processedBsmAlwaysIncludeAtSpeed: ${PROCESSED_BSM_ALWAYS_INCLUDE_AT_SPEED:1} # Meter / Second
+
+# Deduplication time-window configuration (overridable via environment variables)
+odeMapMaximumTimeDeltaMinutes: ${ODE_MAP_MAXIMUM_TIME_DELTA_MINUTES:60}
+odeTimMaximumTimeDeltaMinutes: ${ODE_TIM_MAXIMUM_TIME_DELTA_MINUTES:60}
+processedMapMaximumTimeDeltaMinutes: ${PROCESSED_MAP_MAXIMUM_TIME_DELTA_MINUTES:60}
+processedMapWktMaximumTimeDeltaMinutes: ${PROCESSED_MAP_WKT_MAXIMUM_TIME_DELTA_MINUTES:60}
+processedSpatMaximumTimeDeltaSeconds: ${PROCESSED_SPAT_MAXIMUM_TIME_DELTA_SECONDS:60}
 
 # Amount of time to wait to try and increase batching
 kafka.linger_ms: 50

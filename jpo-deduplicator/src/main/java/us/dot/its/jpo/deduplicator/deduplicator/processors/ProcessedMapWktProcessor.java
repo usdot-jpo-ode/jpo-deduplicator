@@ -37,7 +37,8 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
             Instant newValueTime = getMessageTime(newMessage);
             Instant oldValueTime = getMessageTime(lastMessage);
             
-            if(newValueTime.minus(Duration.ofHours(1)).isAfter(oldValueTime)){
+            if(newValueTime.minus(Duration.ofMinutes(props.getProcessedMapWktMaximumTimeDeltaMinutes())).isAfter(oldValueTime)){
+                logger.info("Processed MAP WKT messages are more than {} minutes apart, treating as non-duplicate", props.getProcessedMapWktMaximumTimeDeltaMinutes());
                 return false;
             }else{
                 String newAsn1 = newMessage.getProperties().getAsn1();
@@ -55,13 +56,15 @@ public class ProcessedMapWktProcessor extends DeduplicationProcessor<ProcessedMa
                     newMessage.getProperties().setAsn1(newAsn1);
                     newMessage.getProperties().setTimeStamp(newValueTimestamp);
                     newMessage.getProperties().setOdeReceivedAt(newValueOdeReceivedAt);
+                    logger.debug("Processed MAP WKT message content has changed, treating as non-duplicate");
                     return false;
                 }
             }
         } catch(Exception e){
-            logger.warn("Caught General Exception" + e);
+            logger.warn("Caught General Exception while checking Processed MAP WKT duplicates: " + e.getMessage(), e);
         }
 
+        logger.debug("Processed MAP WKT message is a duplicate");
         return true;
     }
 }
